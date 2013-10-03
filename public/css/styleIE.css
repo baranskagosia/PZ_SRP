@@ -1,0 +1,43 @@
+/* 
+    Document   : styleIE
+    Created on : 2012-11-11, 17:52:04
+    Author     : Gosia
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+#logo{
+  margin:0px 0px 0px -150px;
+}
+
+#nav{
+margin-left:-100px;
+
+}
+
+
+#pojemnik{
+ left:400px;
+ min-width:500px;
+ max-width:600px;
+ min-height:600px;
+ padding-left:40px;
+}
+
+#srodek{
+    background-color: #8ae234;/*zielony*/
+    min-height: 1000px;
+     min-width:600px;
+    max-width:800px;
+    margin:0px;
+    padding: 0px;
+}
+
+
+

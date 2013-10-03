@@ -1,0 +1,59 @@
+<?php echo $this->doctype() ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
+  <head>
+    <?php echo $this->headTitle() ?>
+    <?php echo $this->headLink() ?>
+    <?php echo $this->headScript() ?>
+    <?php echo $this->headMeta() ?>
+     
+      <?php echo $this->headLink() 
+                ->prependStylesheet($this->baseUrl('css/style.css'));
+       //         ->appendStylesheet($this->baseUrl('js/jquery-ui-1.9.1.custom/jquery-ui-1.9.1.custom/css/sunny/jquery-ui-1.9.1.custom.mini.css'));
+              ?>
+
+<!--[if lt IE 8]>
+            <?php echo $this->headLink() 
+                ->prependStylesheet($this->baseUrl('css/styleIE.css'));?>
+        <![endif]-->
+
+
+  </head>
+<body>
+
+<div id="head">
+    <div id="logo">
+         <h1>Delfinek</h1>
+         <p>Kryta pływalnia</p>
+    </div>
+    <div id="napis">
+    <p>Projekt zespołowy</p>
+    </div>
+  
+    
+</div>
+    <div id="menu">
+        <ul id="menuglowne">
+             <li> <a href="<?php echo $this->baseUrl('index/index')?>">HOME</a></li>
+             <li><a href="<?php echo $this->baseUrl('index/logowanie')?>">LOGOWANIE</a></li>
+            <li><a href="<?php echo $this->baseUrl('index/grafik')?>">REZERWACJA</a></li>
+             <li><a href="<?php echo $this->baseUrl('index/cennik')?>">CENNIK</a></li>
+            <li><a href="<?php echo $this->baseUrl('index/galeria')?>">GALERIA</a></li>
+            <li><a href="<?php echo $this->baseUrl('index/kontakt')?>">KONTAKT</a></li>
+        </ul>
+    </div>
+
+    <div id="srodek">
+   <div id="nav">
+
+
+
+    <div id="pojemnik">
+    <?php echo $this->layout()->content; ?>
+            
+    </div>
+    </div>
+        
+
+</body>
+</html>
