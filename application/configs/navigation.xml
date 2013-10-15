@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configdata>
+    <nav>
+         <login>
+            <label>Zaloguj</label>
+            <controller>authentication</controller>
+            <action>login</action>
+             <resource>login</resource>
+         </login>
+
+         <homeKlient>
+            <label>News</label>
+            <controller>klient</controller>
+            <action>index</action>
+            <resource>homeKlient</resource>
+         </homeKlient>
+
+         <klientDane>
+             <label>Dane</label>
+             <controller>klient</controller>
+             <action>dane</action>
+             <resource>klient</resource>
+         </klientDane>
+
+          <umowKlient>
+             <label>Rezerwój</label>
+             <controller>klient</controller>
+             <action>rezerwoj</action>
+             <resource>umowKlient</resource>
+         </umowKlient>
+
+
+          <historiaKlient>
+             <label>Historia</label>
+             <controller>klient</controller>
+             <action>wizyty</action>
+             <resource>historiaKlient</resource>
+         </historiaKlient>
+
+         <homeRecepcja>
+                 <label>News</label>
+                 <controller>recepcja</controller>
+                <action>index</action>
+                <resource>homeRecepcja</resource>
+        </homeRecepcja>
+
+         <daneRecepcja>
+                 <label>Dane</label>
+                 <controller>recepcja</controller>
+                <action>show</action>
+                <resource>daneRecepcja</resource>
+        </daneRecepcja>
+
+        <recepcjaRezerwacje>
+                 <label>Rezerwacje</label>
+                 <controller>recepcja</controller>
+                <action>rezerwacje</action>
+                <resource>recepcjaRezerwacje</resource>
+        </recepcjaRezerwacje>
+        
+        <recepcjaGrafik>
+                 <label>Grafik zajęć</label>
+                 <controller>recepcja</controller>
+                <action>grafik</action>
+                <resource>recepcjaGrafik</resource>
+        </recepcjaGrafik>
+      
+
+        <klienciWyswietl>
+                 <label>Klienci</label>
+                 <controller>recepcja</controller>
+                <action>klienci</action>
+                <resource>klienciWyswietl</resource>
+        </klienciWyswietl>
+
+
+        <homeAdmin>
+                 <label>News</label>
+                 <controller>admin</controller>
+                <action>index</action>
+                <resource>homeAdmin</resource>
+        </homeAdmin>
+       
+
+        <addRecepcja>
+            <label>Dodaj Użytkownika</label>
+            <controller>admin</controller>
+            <action>new-recepcja</action>
+            <resource>addRecepcja</resource>
+        </addRecepcja>
+
+         <addKlient>
+            <label>Dodaj Klienta</label>
+            <controller>admin</controller>
+            <action>new-klient</action>
+            <resource>addKlient</resource>
+        </addKlient>
+
+        <tabelki>
+            <label>Tabele</label>
+            <resource>tabelki</resource>
+            <uri>#</uri>
+                <pages>
+                        <cennik>
+                            <label>Cennik</label>
+                            <controller>admin</controller>
+                            <action>cennik</action>
+                        </cennik>
+                       
+                        
+                </pages>
+        </tabelki>
+     
+        <logout>
+            <label>Wyloguj</label>
+            <controller>authentication</controller>
+            <action>logout</action>
+            <resource>logout</resource>
+        </logout>
+    </nav>
+</configdata>

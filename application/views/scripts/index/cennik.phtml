@@ -1,4 +1,26 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Index</b> and script/action name <b>cennik</b></p>
-</div>
+
+<?php
+$cennik=0;
+$l=0;
+
+$db = Zend_Db_Table::getDefaultAdapter(); 
+$sql='SELECT * FROM Cennik';
+$cennik = $db-> query($sql)->fetchAll();
+
+
+echo "<p>Cennik basenu</p>"; 
+  echo "<table>
+        <thead>
+          <tr>
+            <th>Rodzaj biletu</th>
+            <th>Cena</th>
+            </tr></thead><tbody>";
+            foreach ($cennik as $cen){
+              $Bilet[$l]=$cen['Taryfa'];
+              $Cena[$l]=$cen['Cena'];
+              echo "<tr><td>$Bilet[$l]</td><td>$Cena[$l]</td></tr>";
+              $l++;
+    
+          }
+echo "</tbody></table>";
+?>

@@ -19,21 +19,40 @@
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Klient">
           <actionMethod actionName="index"/>
+          <actionMethod actionName="dane"/>
+          <actionMethod actionName="daneEdit"/>
         </controllerFile>
         <controllerFile controllerName="Recepcja">
           <actionMethod actionName="index"/>
         </controllerFile>
         <controllerFile controllerName="Admin">
           <actionMethod actionName="index"/>
+          <actionMethod actionName="newRecepcja"/>
+          <actionMethod actionName="newKlient"/>
+          <actionMethod actionName="newRecepcjaZapisz"/>
+          <actionMethod actionName="newKlientZapisz"/>
+        </controllerFile>
+        <controllerFile controllerName="Authentication">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="login"/>
+          <actionMethod actionName="logout"/>
         </controllerFile>
       </controllersDirectory>
-      <formsDirectory enabled="false"/>
+      <formsDirectory>
+        <formFile formName="Login"/>
+        <formFile formName="NewUser"/>
+      </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
           <layoutScriptFile layoutName="layout"/>
         </layoutScriptsDirectory>
       </layoutsDirectory>
-      <modelsDirectory/>
+      <modelsDirectory>
+        <modelFile modelName="Info"/>
+        <modelFile modelName="LibraryAcl"/>
+        <modelFile modelName="Users"/>
+        <modelFile modelName="Klient"/>
+      </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
       <viewsDirectory>
@@ -70,6 +89,33 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Index">
             <viewScriptFile forActionName="logowanie"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Authentication">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Authentication">
+            <viewScriptFile forActionName="login"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Authentication">
+            <viewScriptFile forActionName="logout"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="newRecepcja"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="newKlient"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="newRecepcjaZapisz"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Admin">
+            <viewScriptFile forActionName="newKlientZapisz"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Klient">
+            <viewScriptFile forActionName="dane"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Klient">
+            <viewScriptFile forActionName="daneEdit"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

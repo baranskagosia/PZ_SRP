@@ -1,7 +1,7 @@
 
 
 body{
-   background-color: #eae4e5;
+   background-color: #D4CACC;
    margin:0;
    padding:0px;
    min-width:400px;
@@ -20,7 +20,7 @@ padding:0;
     text-align:left;
     min-height:60px;
     color:#e3f2df;
-    background-color: #2F3440;
+    background-color: #58A2B9;;
     /*background:#f6ad1a;
 
    padding:0px;
@@ -53,7 +53,7 @@ padding:0;
     min-height:60px;
     min-width: 700px;
     max-width:100%;
-    background-color: #3F5666;
+    background-color: #376585;
     /*background-color: #9c001a;
     background-color: #e3f2df;*/
      position:relative;
@@ -186,7 +186,7 @@ ul.navigation li:hover > ul {
      float:left;
      width:110px;
      text-align: left;
-     background-color:#9c001a;
+     background-color:#376585;;
      color:#ffffff;
   /*  border-bottom: 3px solid #a8bfb7;*/
 }
@@ -461,3 +461,7 @@ label.valid{
 /*label.required{
     margin-top:2px;
 }*/
+.message{
+    color:red;
+    font-weight: bold;
+}

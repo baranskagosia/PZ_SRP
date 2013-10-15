@@ -25,7 +25,11 @@ class IndexController extends Zend_Controller_Action
 
     public function cennikAction()
     {
-        // action body
+         
+         
+         
+         
+    
     }
 
     public function rezerwacjaAction()
