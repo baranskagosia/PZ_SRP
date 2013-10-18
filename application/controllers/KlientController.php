@@ -10,21 +10,23 @@ class KlientController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $helper= $this->view->getHelper('LoggedInAs');
-        $IDKlient=$helper->loggedInAs();
-        $this->view->kto=$IDKlient;
+         $helper= $this->view->getHelper('LoggedInAs');
+         $idKlient=$helper->loggedInAs();
+    
+        $this->view->idKlient=$idKlient;
 // action body
     }
 
     public function daneAction()
     {
-        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
         $helper= $this->view->getHelper('LoggedInAs');
-        $IDKlient=$helper->loggedInAs();
+        $idKlient=$helper->loggedInAs();
+    
+        $this->view->idKlient=$idKlient;
 
-        $DbTable = new Application_Model_Users();
-        $Dane = $DbTable->dane($IDKlient);
-        $this->view->dane = $Dane;
+        $DbTable = new Application_Model_Klient();
+        $dane = $DbTable->klientDane($idKlient);
+        $this->view->dane = $dane;
 
     }
 

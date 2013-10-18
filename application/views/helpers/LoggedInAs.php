@@ -12,12 +12,13 @@ class Zend_View_Helper_LoggedInAs extends Zend_View_Helper_Abstract
 
          $role =$auth->getStorage()->read()->Role;
          $userID = $auth->getIdentity()->idUzytkownik;
+         //echo $userID;
+         
                if ($role == 'klient') {
                         $DbTableKlient = new Application_Model_Klient();
-                        $klient = $DbTableKlient->klientIDUzytkownik($userID);
-                        $result=$klient->fetchAll();
-                        $IDKlient= $result[0]['idKlient'];
-                        return $IDKlient;
+                        $klient = $DbTableKlient->klientIDUzytkownik($userID)->fetchAll();
+                        $idKlient= $klient[0]['idKlient'];
+                        return $idKlient;
                   }
 
         }

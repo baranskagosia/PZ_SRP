@@ -36,14 +36,10 @@ class AdminController extends Zend_Controller_Action
                         $this->view->message= $message;
                     }
                     else{
-                        if($Rola=='klient'){
-                            $DbTable->addNewCustomer($Login, $Haslo, $Rola);
-                            $this->_redirect('/admin/new-klient-zapisz');
-                        }
-                        else{
+                       
                         $DbTable->addNewUser($Login, $Haslo, $Rola);
                         $this->_redirect('/admin/new-recepcja-zapisz');
-                        }
+                        
                         }
                     
                     }

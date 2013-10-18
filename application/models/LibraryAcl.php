@@ -45,6 +45,7 @@ class Application_Model_LibraryAcl extends Zend_Acl
 //Role w systemie
 
         $this->addRole(new Zend_Acl_Role('klient'));
+        $this->addRole(new Zend_Acl_Role('gosc'));
         $this->addRole(new Zend_Acl_Role('recepcja'));
         $this->addRole(new Zend_Acl_Role('admin')); //admin ma tez mozliwosci jak pacjent
 

@@ -23,7 +23,7 @@ class Application_Form_NewUser extends Zend_Form
                 ->addValidator( 'NotEmpty',true,array('messages'=>'Hasło nie może być puste'))
                 ->addValidator('Alnum');
 
-      $options= array('recepcja'=>'recepcja','klient'=>'klient','admin'=>'admin');
+      $options= array('recepcja'=>'recepcja','admin'=>'admin');
       $role = new Zend_Form_Element_Select('Role');
       $role ->setLabel('Rola:')
                     ->addMultiOptions($options);

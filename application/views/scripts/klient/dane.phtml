@@ -1,19 +1,18 @@
 <?php
-
-$IDKlient=1;
+$idKlient= $this->idKlient;
 foreach ($this->dane as $klient):?>
 
 <?php echo
 
 "
-    <h1>Dane klienta<a href='".$this->url(array( 'action'=>'edit', 'id'=>$IDPacjent))."' class='button'>Edytuj</a> </h1>
+    <h1>Dane klienta</h1>
 
             <p>Imię:". $klient['Imie']."</p>
-            <p>Nazwisko:". $klient['Nazwisko']."</p>
-            <p>Telefon:". $klient['Telefon']."</p>
-            <p>Mail:". $klient['Mail']."</p>";
+            <p>Nazwisko:". $klient['Nazwisko']."</p>";
+            //<p>Telefon:". $klient['Telefon']."</p>"
+            //<p>Mail:". $klient['Mail']."</p>";
    
-echo "<p><a href='".$this->url(array( 'action'=>'dane-edit', 'id'=>$IDKlient))."' class='button'>Edytuj</a> </p>";
+echo "<p><a href='".$this->url(array( 'action'=>'dane-edit', 'id'=>$idKlient))."' class='button'>Edytuj</a> </p>";
 ?>
 <?php endforeach;
   ?>
