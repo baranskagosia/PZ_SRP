@@ -33,21 +33,24 @@ class AuthenticationController extends Zend_Controller_Action
                  $auth =Zend_Auth::getInstance();
                  $result= $auth->authenticate($authAdapter);
 
-                 if($result->isValid()){
+               if($result->isValid() ){
                      $identity =$authAdapter ->getResultRowObject();
                                 $authStorage =$auth ->getStorage();
                                  $authStorage->write($identity);
-                                
+                                 $this->_redirect($identity->Role);
                        }
-
+                  else{
+                      $this->view->errorMessage = "Niepoprawna nazwa użytkownika lub hasła.";
+                  }     
                  }
    
              else{
-                    $this->view->errorMessage = "Niepoprawna nazwa hała lub użytkownika";
+                    $this->view->errorMessage = "Wprowadzone dane są niepoprawne.";
                  }
 
-           $this->_redirect($identity->Role);
+          
          }
+         
   $this->view->form =$form;
     
     }
