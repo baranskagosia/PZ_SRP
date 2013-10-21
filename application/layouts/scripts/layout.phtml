@@ -20,42 +20,43 @@
 
   </head>
 <body>
+<div id="header">
+	<div id="header_log">
+             <li><a href="<?php echo $this->baseUrl('klient')?>">LOGOWANIE</a></li>
+             <li><a href="">REJESTRACJA</a></li>
+    </div>
+</div>
 
 <div id="head">
+	
     <div id="logo">
-         <h1>Delfinek</h1>
-         <p>Kryta pływalnia</p>
+    	<img src="/PZ_SRP/public/img/loo.gif" style="position: absolute"></img>
     </div>
-    <div id="napis">
-    <p>Projekt zespołowy</p>
-    </div>
-  
     
-</div>
     <div id="menu">
-        <ul id="menuglowne">
-             <li> <a href="<?php echo $this->baseUrl('index/index')?>">HOME</a></li>
-             <li><a href="<?php echo $this->baseUrl('klient')?>">LOGOWANIE</a></li>
-            <li><a href="<?php echo $this->baseUrl('index/grafik')?>">REZERWACJA</a></li>
-             <li><a href="<?php echo $this->baseUrl('index/cennik')?>">CENNIK</a></li>
-            <li><a href="<?php echo $this->baseUrl('index/galeria')?>">GALERIA</a></li>
-            <li><a href="<?php echo $this->baseUrl('index/kontakt')?>">KONTAKT</a></li>
-        </ul>
-    </div>
+    	<ul id="menuglowne">
+	            <li><a href="<?php echo $this->baseUrl('index/index')?>">HOME</a></li>
+	            <li><a href="<?php echo $this->baseUrl('index/onas')?>">O NAS</a></li>
+	            <li><a href="<?php echo $this->baseUrl('index/grafik')?>">REZERWACJA</a></li>
+	            <li><a href="<?php echo $this->baseUrl('index/cennik')?>">CENNIK</a></li>
+	            <li><a href="<?php echo $this->baseUrl('index/galeria')?>">GALERIA</a></li>
+	            <li><a href="<?php echo $this->baseUrl('index/kontakt')?>">KONTAKT</a></li>
+		</ul>
+    </div>    
+</div>
 
     <div id="srodek">
-  <div id="nav">
-<?php echo $this->navigation() ?>
-  
-  </div>
+		<div id="nav">
+			<?php echo $this->navigation() ?>
+  		</div>
 
-
-    <div id="pojemnik">
-    <?php echo $this->layout()->content; ?>
-            
-    </div>
+		<div id="pojemnik">
+    		<?php echo $this->layout()->content; ?>
+	    </div>
     </div>
         
-
+	<div id="footer">
+		© 2013 Delfinek - Projekt zespołowy
+	</div>
 </body>
 </html>
