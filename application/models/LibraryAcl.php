@@ -9,6 +9,7 @@ class Application_Model_LibraryAcl extends Zend_Acl
 //     $this->add(new Zend_Acl_Resource('authentication'));
       
        $this-> add(new Zend_Acl_Resource('error'));
+        $this-> add(new Zend_Acl_Resource('rezerwacja'));
 
        $this->add(new Zend_Acl_Resource('homeKlient'));
        $this->add(new Zend_Acl_Resource('klient'));
@@ -52,7 +53,7 @@ class Application_Model_LibraryAcl extends Zend_Acl
         //kto ma do czego dotęp kto, controller,akcja
 //Dostęp
 
-        $this->allow(null,array('index','error'));
+        $this->allow(null,array('index','error', 'rezerwacja'));
        
         
        // $this->allow(null,'authentication' ,'login');
@@ -61,7 +62,7 @@ class Application_Model_LibraryAcl extends Zend_Acl
        //  $this->allow('pacjent','wizyta','umow-pacjent');
 //dostę RECEPCJA
         
-        $this->allow('recepcja',array('index','recepcja','homeRecepcja','daneRecepcja','recepcjaRezerwacje','recepcjaGrafik','klienciWyswietl','logout' ));
+        $this->allow('recepcja',array('index','recepcja','rezerwacja','homeRecepcja','daneRecepcja','recepcjaRezerwacje','recepcjaGrafik','klienciWyswietl','logout' ));
 //dostęp admin
       
 //  $this->deny ('admin','login');

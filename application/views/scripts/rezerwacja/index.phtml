@@ -1,0 +1,30 @@
+<br /><br />
+<div id="view-content">
+	<p>View script for controller <b>Rezerwacja</b> and script/action name <b>index</b></p>
+</div>
+
+<?php
+$url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+$tmp = explode('/', $url);
+print_r($tmp);
+$data=$tmp[7];
+$time=$tmp[8];
+$tor=$tmp[9];
+
+echo $poczatek=$time.":00";
+$koniec=$time+1;
+$koniec=$koniec.":00";
+
+
+$form=$this->form;
+
+    $form->Poczatek->setValue($poczatek);
+    $form->Koniec->setValue($koniec);
+    $form->Tor->setValue($tor);
+            
+echo $form;
+//echo $data." ".$time;
+// $tmp[0] = subdomain
+// $tmp[1] = domain
+// $tmp[2] = com?>

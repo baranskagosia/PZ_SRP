@@ -15,6 +15,7 @@
           <actionMethod actionName="rezerwacja"/>
           <actionMethod actionName="grafik"/>
           <actionMethod actionName="logowanie"/>
+          <actionMethod actionName="kalendarz"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Klient">
@@ -37,10 +38,14 @@
           <actionMethod actionName="login"/>
           <actionMethod actionName="logout"/>
         </controllerFile>
+        <controllerFile controllerName="Rezerwacja">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Login"/>
         <formFile formName="NewUser"/>
+        <formFile formName="Rezerwacja"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -116,6 +121,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Klient">
             <viewScriptFile forActionName="daneEdit"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="kalendarz"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Rezerwacja">
+            <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

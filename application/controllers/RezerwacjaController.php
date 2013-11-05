@@ -1,6 +1,6 @@
 <?php
 
-class RecepcjaController extends Zend_Controller_Action
+class RezerwacjaController extends Zend_Controller_Action
 {
 
     public function init()
@@ -10,6 +10,8 @@ class RecepcjaController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $form= new Application_Form_Rezerwacja;
+        $this->view->form= $form;
     }
 
 

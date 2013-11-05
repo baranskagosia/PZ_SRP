@@ -13,14 +13,14 @@ class IndexController extends Zend_Controller_Action
         // action body
     }
 
-	public function onasAction()
+    public function onasAction()
     {
         // action body
     }
-	
+
     public function galeriaAction()
     {
-        // action body
+       
     }
 
     public function kontaktAction()
@@ -44,7 +44,11 @@ class IndexController extends Zend_Controller_Action
 
     public function grafikAction()
     {
-        // action body
+        $DbTable = new Application_Model_Info();
+        $iloscTorow = $DbTable->IloscTorow();
+        $this->view->iloscTorow = $iloscTorow;
+        
+     
     }
 
     public function logowanieAction()
@@ -52,8 +56,15 @@ class IndexController extends Zend_Controller_Action
         // action body
     }
 
+    public function kalendarzAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

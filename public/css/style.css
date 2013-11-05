@@ -106,8 +106,7 @@ h1, h2, h3{
 #menu{
 	padding: 0px 0px 0px 0px;
 	max-width: 1000px;
-	min-width: 700px
-	margin-bottom: 20px;
+	min-width: 700px;
 	float: right;
 	margin: -110px 30px 40px 10px
 }
@@ -565,4 +564,26 @@ label.valid{
 .message{
     color:red;
     font-weight: bold;
+}
+
+.rezerwacja td{
+    padding:5px 10px 20px 5px;
+    margin: 15px ;
+    background-color: rgb(227, 232, 235);
+    display:inline-block;
+}
+
+.rezerwacja a{
+    text-decoration: none;
+    font-weight: bold;
+    color: rgb(25,46,61);
+}
+
+.rezerwacja a :hover{
+    color: rgb(25,46,61);
+}
+td.first_row {
+    padding: 0px 0px 10px 0px;
+    background-color: transparent;
+    font-weight: bolder;
 }

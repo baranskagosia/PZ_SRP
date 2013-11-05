@@ -1,4 +1,49 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Index</b> and script/action name <b>grafik</b></p>
+
+        <?php 
+        $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+    $tmp = explode('/', $url);
+    //print_r($tmp);
+    $data=$tmp[7];
+    $tory= $this->iloscTorow;
+    $ilosc_torow=$tory[0]['Ilosc_Torow'];
+
+        echo "<h3>Rezerwacje dla dnia: </h3><h2>".$data."</h2>";
+        $dataZ = new Zend_Date();
+        $dataZ->set($data);
+       // print_r($dataZ->get(Zend_Date::DATES));
+        
+        $dzienTygodnia= $dataZ->get(Zend_Date::WEEKDAY_DIGIT);
+        //print_r($dzienTygodnia);
+        
+        $db = Zend_Db_Table::getDefaultAdapter(); 
+        $sql="SELECT * FROM godziny_otwarcia WHERE DzienTygodnia LIKE ".$dzienTygodnia ;
+        $otwarty = $db-> query($sql)->fetchAll();
+       // print_r($otwarty);
+  
+        $od= date("H:i", strtotime($otwarty[0]['GodzinaOtwarcia']));
+        $do= date("H:i", strtotime($otwarty[0]['GodzinaZamkniecia']));
+        $czas=$do-$od;
+        //print_r($czas);
+        $akk=$od;
+ 
+for($j=1;$j<=$ilosc_torow;$j++){
+ echo 
+ "<table class='rezerwacja'>
+    <tbody>
+        <tr><td class='first_row'>TOR ".$j."</td>";
+               
+        for($i=1;$i<=$czas;$i++){
+            $data_time=$data."/".$akk;
+            echo "<td><a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a></td>";
+                $akk = date('H:i', strtotime($akk . ' + 1 hours')); 
+                //akk++
+         }
+      echo"</tr>
+    </tbody>
+ </table>";
+$akk=$od;          
+}
+        ?>
+        <p></p>
 </div>
