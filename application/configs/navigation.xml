@@ -23,9 +23,9 @@
          </klientDane>
 
           <umowKlient>
-             <label>Rezerwój</label>
+             <label>Rezerwacje</label>
              <controller>klient</controller>
-             <action>rezerwoj</action>
+             <action>rezerwacje</action>
              <resource>umowKlient</resource>
          </umowKlient>
 
