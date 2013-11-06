@@ -13,41 +13,21 @@
 		sob - nie: 10:00 - 18:00<br>
 		<br><br>
 		<b>Formularz kontaktowy:</b><br><br> 
-			<form action="" method="POST"> 
-			<input class="champTextFormulaire" placeholder="Imię" name="name" type="text" value="" size="30"/><br> 
-			
-			<input class="champTextFormulaire" placeholder="E-mail" name="email" type="text" value="" size="30"/><br> 
-			
-			<textarea id="champMessage" placeholder="Wiadomość" name="message" rows="7" cols="30"></textarea><br> 
-			<input class="btnEnvoiFormulaire" type="submit" name="submit" value="Wyślij"/> 
+			<form name="contactform" method="post" action="kontakt.php">   
+				<label for="imie"><b>Imię:</b></label><br>
+			        <input type="text" id="imie" name="imie"/>
+			        <br>
+			        <label for="email"><b>E-mail:</b></label><br>
+			        <input type="text" id="email" name="email"/>
+			        <br>  
+			        <label for="wiadomosc"><b>Wiadomość:</b></label><br>
+			        <textarea id="wiadomosc" name="wiadomosc" cols="30" rows="5"></textarea>
+			        <br>            
+			        <input type="submit" value="Wyślij" id="send" name="send" />
 			</form>
-			 
-			<?php /* do ogarniecia bo cos nie dziala :x */
-			
-			if (isset($_POST['submit'])) {
-			if (($name=="")||($email=="")||($message=="")) 
-			    { 
-			    print '<script type="text/javascript">'; 
-			    print 'alert("Wszystkie pola są wymagane!")'; 
-			    print '</script>'; 
-			exit;
-			   } 
-			
-			else
-			{         
-			    $from="Od: $name<$email>\r\nReturn-path: $email"; 
-			    $subject="Wiadomość wysłana przez formularz kontaktowy"; 
-			    mail("mona.teski@gmail.com", $subject, $message, $from); 
-			    print '<script type="text/javascript">'; 
-			    print 'alert("Wysłane")'; 
-			    print '</script>'; 
-			exit;
-			    } 
-			}   
-			?>
+
 	</div>
 	<div id="srodek_view">
 		<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.pl/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=bulwar+S%C5%82oneczny,+Wroclaw&amp;aq=0&amp;oq=wroc%C5%82aw+ul.+s%C5%82one&amp;sll=51.104232,17.044162&amp;sspn=0.105847,0.338173&amp;ie=UTF8&amp;hq=&amp;hnear=bulwar+S%C5%82oneczny,+50-257+Wroc%C5%82aw,+Wojew%C3%B3dztwo+dolno%C5%9Bl%C4%85skie&amp;t=m&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe><br /><small><a href="https://maps.google.pl/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=bulwar+S%C5%82oneczny,+Wroclaw&amp;aq=0&amp;oq=wroc%C5%82aw+ul.+s%C5%82one&amp;sll=51.104232,17.044162&amp;sspn=0.105847,0.338173&amp;ie=UTF8&amp;hq=&amp;hnear=bulwar+S%C5%82oneczny,+50-257+Wroc%C5%82aw,+Wojew%C3%B3dztwo+dolno%C5%9Bl%C4%85skie&amp;t=m&amp;z=14&amp;iwloc=A" style="color:#0000FF;text-align:left">View Larger Map</a></small>
 	</div>
-	
 </div>

@@ -1,4 +1,4 @@
-
+<div id="srodek_info_grafik">
         <?php 
         $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
@@ -31,7 +31,9 @@ for($j=1;$j<=$ilosc_torow;$j++){
  echo 
  "<table class='rezerwacja'>
     <tbody>
-        <tr><td class='first_row'>TOR ".$j."</td>";
+        <tr><td class='first_row'><a href='/PZ_SRP/public/img/b".$j.".jpg' target='_blank'>TOR ".$j."</a></td>";
+        
+        //<tr><td class='first_row'>TOR ".$j."</td>";
                
         for($i=1;$i<=$czas;$i++){
             $data_time=$data."/".$akk;
@@ -45,5 +47,11 @@ for($j=1;$j<=$ilosc_torow;$j++){
 $akk=$od;          
 }
         ?>
+
         <p></p>
+</div>
+<div id="srodek_view_grafik">
+	<br><b>PLAN BASENU:</b><br>
+	<img src="/PZ_SRP/public/img/ball.jpg" width="600" height="300">
+</div>
 </div>
