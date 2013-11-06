@@ -7,7 +7,7 @@ body{
 }
 
 body a:hover{
-	color:#FF00FF;
+	color:rgb(35, 122, 169)/*#FF00FF*/;
 } 
 
 h1, h2, h3{
@@ -351,6 +351,7 @@ tbody
 {
 background-color: #F6F7FE;
 
+
 }
 
 form dt {
@@ -448,7 +449,10 @@ margin:2px 0 0 60px ;
 
 #legenda td{
     padding:0px 25px 0px 25px;
-    background-color: #ffffff;
+    text-transform: uppercase;
+    font-size:small;
+    font-weight: bold;
+    text-align: left;
 }
 
 .errors
@@ -457,7 +461,7 @@ margin:2px 0 0 60px ;
     color:red;
     font-size:small;
 }
-.zaplanowana , .odwolana, .info{
+.confirm-box , .error-box, .info{
 margin-bottom: 10px;
 padding:15px 10px 15px 60px;
 text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -468,16 +472,16 @@ border-radius: 4px;
 background-repeat:no-repeat;
 background-position: 10px center;
 }
-.zaplanowana{
+.confirm-box{
     color: #4F8A10;
     background-color: #DFF2BF;
-    background-image:url('../images/icon/check.png');
+    background-image:url('../img/icon/check.png');
 }
-.odwolana {
+.error-box {
 color: #D80000;/*#b94a48*/
 background-color: #FFBABA; /*#f2dede*/
 border: 1px solid #fbeed5;
-background-image: url('../images/icon/delete.png');
+background-image: url('../img/icon/delete.png');
 
 }
 
@@ -485,7 +489,7 @@ background-image: url('../images/icon/delete.png');
 color: #00529B;
 background-color: #BDE5F8;
 border: 1px solid #aacedf;
-background-image: url('../images/icon/information.png');
+background-image: url('../img/icon/information.png');
 }
 #przyjecia td{
     font-size:1em;
@@ -580,7 +584,7 @@ label.valid{
 .rezerwacja td{
     padding:5px 10px 20px 5px;
     margin: 15px ;
-    background-color: rgb(227, 232, 235);
+   /* background-color: rgb(227, 232, 235);*/
     display:inline-block;
 }
 
@@ -591,12 +595,13 @@ label.valid{
 }
 
 .rezerwacja a :hover{
-    color: rgb(25,46,61);
+    color: rgb(35, 122, 169) /*rgb(25,46,61)*/;
 }
 td.first_row {
     padding: 0px 0px 10px 0px;
     background-color: transparent;
     font-weight: bolder;
+<<<<<<< HEAD
 }
 
 
@@ -664,3 +669,16 @@ td.calendar-day-head {
 td.calendar-day, td.calendar-day-np { width:120px; }
 
 
+    margin:auto;
+}
+.zajete{
+    background-color: #FF3333/*#F5785A*/;
+    font-weight: bold;
+    color: rgb(25,46,61);
+}
+.wolny{
+    background-color: rgb(68, 207, 24)/*greenyellow #F5785A*/;}
+
+.zajete_nieWylacznosc{
+    background-color: rgb(255, 173, 0);
+}
