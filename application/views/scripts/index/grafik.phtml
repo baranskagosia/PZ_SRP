@@ -13,14 +13,23 @@
         $dataZ->set($data);
        // print_r($dataZ->get(Zend_Date::DATES));
         
+      
         $dzienTygodnia= $dataZ->get(Zend_Date::WEEKDAY_DIGIT);
         //print_r($dzienTygodnia);
         
         $db = Zend_Db_Table::getDefaultAdapter(); 
         $sql="SELECT * FROM godziny_otwarcia WHERE DzienTygodnia LIKE ".$dzienTygodnia ;
         $otwarty = $db-> query($sql)->fetchAll();
+       
+        
        // print_r($otwarty);
   
+        //Godziny zajęte
+       //$db1 = Zend_Db_Table::getDefaultAdapter(); 
+        $data_format=date("Y-m-d", strtotime($data));
+        
+        //print_r($zajete_terminy);
+       
         $od= date("H:i", strtotime($otwarty[0]['GodzinaOtwarcia']));
         $do= date("H:i", strtotime($otwarty[0]['GodzinaZamkniecia']));
         $czas=$do-$od;
@@ -32,18 +41,65 @@ for($j=1;$j<=$ilosc_torow;$j++){
  "<table class='rezerwacja'>
     <tbody>
         <tr><td class='first_row'>TOR ".$j."</td>";
-               
+        //Pobranie zajętych terminów dla konkretnego toru.
+            $sql_zajete="SELECT Date(DataCzas) AS Data, Time(DataCzas) As Godzina, TorPreferowany, CzyNaWylacznasc
+                FROM rezerwacja 
+                        WHERE Date(DataCzas) LIKE '".$data_format."' AND TorPreferowany = ". $j." 
+                        ORDER BY Godzina ASC" ;
+            $zajete_terminy[$j]=$db->query($sql_zajete)->fetchAll();
+           // print_r($zajete_terminy);
         for($i=1;$i<=$czas;$i++){
             $data_time=$data."/".$akk;
-            echo "<td><a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a></td>";
-                $akk = date('H:i', strtotime($akk . ' + 1 hours')); 
-                //akk++
-         }
+            //sprawdzenie czy dany termin nie jest już zajęty 
+            
+            $zajete = false;
+           
+            for($z=0;$z<sizeof($zajete_terminy[$j]);$z++){
+              $zajeta_godzina= date("H:i", strtotime($zajete_terminy[$j][$z]['Godzina']));
+                if($akk==$zajeta_godzina){
+                    $zajete = true;
+                    if($zajete_terminy[$j][$z]['CzyNaWylacznasc']==1){
+                        echo "<td class='zajete'>".$akk."</a></td>";
+                    }
+                    else{
+                        echo "<td class='zajete_nieWylacznosc'>
+                                    <a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a>
+                             </td>";
+                    }
+                    break;
+                }
+            }
+       if (!$zajete) {
+          echo "<td class='wolny'><a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a></td>";
+        }
+              $akk = date('H:i', strtotime($akk . ' + 1 hours')); 
+    }
       echo"</tr>
     </tbody>
  </table>";
 $akk=$od;          
 }
         ?>
-        <p></p>
+        <p>Legenda:</p>
+        <p><table id="legenda">
+            <tbody>
+                <tr>
+                    <td class='wolny'> 
+                    </td><td>Wolny</td>
+                    
+                </tr>
+                <tr>
+                    <td class='zajete'> </td>
+                    <td>Zajęty na wyłączność</td>
+                </tr>
+                    <td class='zajete_nieWylacznosc'> </td>
+                    <td>Zarezerwowany nie na wyłączność</td> 
+                    
+                </tr>
+                    
+                   
+                </tr>
+            </tbody>
+            </tbody>
+        </table></p>
 </div>
