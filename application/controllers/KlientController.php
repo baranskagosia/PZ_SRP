@@ -37,6 +37,7 @@ class KlientController extends Zend_Controller_Action
         public function createAction()
     {
         $usersModel = new Application_Model_Users();
+        $klientModel = new Application_Model_Klient();
         $registrationForm = new Application_Form_NewKlient();
         
         if($this->getRequest()->isPost()) {
@@ -44,10 +45,17 @@ class KlientController extends Zend_Controller_Action
                 $values = $registrationForm->getValues();
                 
                 $badRegistration = false;
-                
+                $db = Zend_Db_Table::getDefaultAdapter();
                 try {
-                    $usersModel->addNewUser($values['Mail'], $values['Haslo'], 'klient');
+                    $db->beginTransaction();
+                    
+                    $usersModel->addNewUser($values['Mail'], md5($values['Haslo']), 'klient');
+                    $idUzytkownik = $usersModel->getAdapter()->lastInsertId();
+                    $klientModel->add($values['Imie'], $values['Nazwisko'], 1);
+                    
+                    $db->commit();
                 } catch(Zend_Db_Statement_Exception $e) {
+                    $db->rollback();
                     throw $e;
                     //TODO: sprawdzenie warunków, przy których może wystąpić
                     // "wyścig"
