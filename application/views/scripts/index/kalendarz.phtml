@@ -1,8 +1,182 @@
 <br /><br />
 <div id="view-content">
-	<p>View script for controller <b>Index</b> and script/action name <b>kalendarz</b></p>
-        <p>Miejsce na kalendarz</p>
-        <?php $data='04.11.2013';
-        echo "<p>Grafik w <a href='".$this->baseUrl('/index/grafik/'.$data)."'> http://localhost/PZ_SRP/public/index/grafik</a></p>";?>
-</div>
 
+
+	Wybierz miesiąc i rok:<br><br>    
+    <form id="form" action"kalendarz.php" method="POST">
+   	<select name='miesiac'>
+		<option value="01">Styczeń</option>
+	 	<option value="02">Luty</option>
+		<option value="03">Marzec</option>
+  		<option value="04">Kwiecień</option>
+		<option value="05">Maj</option>
+	 	<option value="06">Czerwiec</option>
+		<option value="07">Lipiec</option>
+  		<option value="08">Sierpień</option>
+		<option value="09">Wrzesień</option>
+	 	<option value="10">Październik</option>
+		<option value="11" selected>Listopad</option>
+  		<option value="12">Grudzień</option>
+	</select>
+	
+	<select name='rok'>
+		<option value="2013">2013</option>
+	 	<option value="2014">2014</option>
+	</select>
+	<input type="submit" value="OK">
+	</form>
+	
+	<br><br>
+
+	<?php    
+    
+    
+	//echo 'Dzisiaj jest '. $day_now.' '.$month_now1.' '.$year_now . ' roku.<br><br>';
+	global $m;
+	
+	global $m1;
+	
+	$m = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
+	
+	global $r;
+	$r = isset($_POST['rok']) ? ($_POST['rok']) :false;
+	
+	global $today;
+	$today = mktime(0,0,0,date("m"),date("d"),date("Y"));
+	
+	global $day_now;
+	$day_now = date('d',mktime(0,0,0,date("m"),date("d"),date("Y")));
+	global $month_now;
+	$month_now = date('m',mktime(0,0,0,date("m"),date("d"),date("Y")));
+	global $year_now;
+	$year_now = date('Y',mktime(0,0,0,date("m"),date("d"),date("Y")));
+	
+    function draw_calendar($month,$year){
+	
+	
+	/* draw table */
+	$calendar = '<table cellpadding="0" cellspacing="0" class="calendar">';
+
+		/* table headings */
+		$headings = array('Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela',);
+		$calendar.= '<tr class="calendar-row"><td class="calendar-day-head">'.implode('</td><td class="calendar-day-head">',$headings).'</td></tr>';
+	
+		/* days and weeks vars now ... */
+		$running_day = date('w',mktime(0,0,0,$month,1,$year)-1);
+		$days_in_month = date('t',mktime(0,0,0,$month,1,$year));
+		$days_in_this_week = 1;
+		$day_counter = 0;
+		$dates_array = array();
+	
+		/* row for week one */
+		$calendar.= '<tr class="calendar-row">';
+	
+		/* print "blank" days until the first of the current week */
+		for($x = 0; $x < $running_day; $x++):
+			$calendar.= '<td class="calendar-day-np"> </td>';
+			$days_in_this_week++;
+		endfor;
+	
+		global $m;
+	
+		global $m1;
+	
+		$m = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
+	
+		global $r;
+		$r = isset($_POST['rok']) ? ($_POST['rok']) :false;
+	
+		
+		/* keep going with days.... */
+		for($list_day = 1; $list_day <= $days_in_month; $list_day++):
+			
+			$date = $list_day.'.'.$m.'.'.$r;
+			
+			$calendar.= '<td class="calendar-day">';
+			
+				/* add in the day number */
+				$calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+	/*			$calendar.= '<div class="day-number">'.$list_day.'</div>'; */
+	
+	
+
+				/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
+				/*$calendar.= str_repeat('<p> </p>',2);
+				*/
+			$calendar.= '</td>';
+			if($running_day == 6):
+			
+				$calendar.= '</tr>';
+				if(($day_counter+1) != $days_in_month):
+					$calendar.= '<tr class="calendar-row">';
+				endif;
+				$running_day = -1;
+				$days_in_this_week = 0;
+			endif;
+			$days_in_this_week++; $running_day++; $day_counter++;
+		endfor;
+	
+		/* finish the rest of the days in the week */
+		if($days_in_this_week < 8):
+			for($x = 1; $x <= (8 - $days_in_this_week); $x++):
+				$calendar.= '<td class="calendar-day-np"> </td>';
+			endfor;
+		endif;
+	
+		/* final row */
+		$calendar.= '</tr>';
+	
+		/* end the table */
+		$calendar.= '</table>';
+		
+		/* all done, return result */
+		return $calendar;
+	}
+	
+	$today = mktime(0,0,0,date("m"),date("d"),date("Y"));
+		
+	$day_now = date('d',mktime(0,0,0,date("m"),date("d"),date("Y")));
+	$month_now = date('m',mktime(0,0,0,date("m"),date("d"),date("Y")));
+	$year_now = date('Y',mktime(0,0,0,date("m"),date("d"),date("Y")));
+	
+	$months1 = array('stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia');
+	
+	switch($month_now){
+		case 01: $month_now1 = $months1[0]; break;
+		case 02: $month_now1 = $months1[1]; break;
+		case 03: $month_now1 = $months1[2]; break;
+		case 04: $month_now1 = $months1[3]; break;
+		case 05: $month_now1 = $months1[4]; break;
+		case 06: $month_now1 = $months1[5]; break; 
+		case 07: $month_now1 = $months1[6]; break;
+		case 08: $month_now1 = $months1[7]; break;
+		case 09: $month_now1 = $months1[8]; break;
+		case 10: $month_now1 = $months1[9]; break;
+		case 11: $month_now1 = $months1[10]; break;
+		case 12: $month_now1 = $months1[11]; break;
+	}
+
+	switch($m){
+		case 01: $m1 = $months1[0]; break;
+		case 02: $m1 = $months1[1]; break;
+		case 03: $m1 = $months1[2]; break;
+		case 04: $m1 = $months1[3]; break;
+		case 05: $m1 = $months1[4]; break;
+		case 06: $m1 = $months1[5]; break; 
+		case 07: $m1 = $months1[6]; break;
+		case 08: $m1 = $months1[7]; break;
+		case 09: $m1 = $months1[8]; break;
+		case 10: $m1 = $months1[9]; break;
+		case 11: $m1 = $months1[10]; break;
+		case 12: $m1 = $months1[11]; break;
+	}
+	
+	echo '<br>';
+	echo '<b>Kalendarz rezerwacji dla '.$m1.' roku '.$r.'</b><br><br>';
+	
+	echo draw_calendar($m, $r);
+	
+	echo '<br><br>Legenda:';	
+	?>
+		           
+</div>

@@ -53,12 +53,12 @@ class Application_Model_LibraryAcl extends Zend_Acl
         //kto ma do czego dotęp kto, controller,akcja
 //Dostęp
 
-        $this->allow(null,array('index','error', 'rezerwacja'));
+        $this->allow(null,array('index','error',));
        
         
        // $this->allow(null,'authentication' ,'login');
      
-        $this->allow('klient', array('index','klient', 'homeKlient','klientDane','umowKlient','historiaKlient','logout'));
+        $this->allow('klient', array('index','klient', 'rezerwacja', 'homeKlient','klientDane','umowKlient','historiaKlient','logout'));
        //  $this->allow('pacjent','wizyta','umow-pacjent');
 //dostę RECEPCJA
         

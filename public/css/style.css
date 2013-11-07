@@ -24,6 +24,7 @@ h1, h2, h3{
     font-size: 16px;
     color: rgb(187, 187, 187);
     box-shadow:0px 0px 5px #000000;
+	z-index:1;
 }
 
 #header_log{
@@ -187,6 +188,16 @@ box-shadow: 2px 2px 5px #000;
 	width: 490px;
 	max-width: 600px;
 	float: right;	
+}
+
+#srodek_info_grafik{
+	width: 800px;
+	float:left;
+}
+
+#srodek_view_grafik{
+	width: 300px;
+	float: inherit;	
 }
 
 #pojemnik{
@@ -590,6 +601,74 @@ td.first_row {
     padding: 0px 0px 10px 0px;
     background-color: transparent;
     font-weight: bolder;
+<<<<<<< HEAD
+}
+
+
+
+/* calendar */
+table.calendar{
+	position: static;
+}
+
+table a{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+table a:hover{
+	color: #FFFFFF;
+}
+
+tr.calendar-row{  
+
+}
+
+td.calendar-day{ 
+	min-height:80px; 
+	font-size:11px; 
+	position:relative; 
+} 
+
+	* html div.calendar-day { 
+		height:80px; 
+		}
+td.calendar-day :hover{
+	background:#999999;
+	} 
+
+td.calendar-day-np	{ 
+	background:#FFFFFF; 
+	min-height:80px; } * html div.calendar-day-np { height:80px; }
+
+
+td.calendar-day-head { 
+	background:#FFFFFF; 
+	font-weight:bold; 
+	text-align:center; 
+	width:100px; 
+	padding:5px; 
+}
+
+	div.day-number		{ 
+	
+	background:rgb(35, 122, 169);
+	padding:7px; 
+	color:#fff; 
+	font-weight:bold;
+	font-size: 16px; 
+	width:90px;
+	height: 25px; 
+	margin-top:3px;
+	margin-left:5px;
+}
+	/*float:center; 
+	text-align:center; }
+/* shared */
+
+td.calendar-day, td.calendar-day-np { width:120px; }
+
+
     margin:auto;
 }
 .zajete{
