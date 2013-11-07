@@ -1,61 +1,67 @@
 <br /><br />
 <div id="view-content">
 
-
-	Wybierz miesiąc i rok:<br><br>    
-    <form id="form" action"kalendarz.php" method="POST">
-   	<select name='miesiac'>
-		<option value="01">Styczeń</option>
-	 	<option value="02">Luty</option>
-		<option value="03">Marzec</option>
-  		<option value="04">Kwiecień</option>
-		<option value="05">Maj</option>
-	 	<option value="06">Czerwiec</option>
-		<option value="07">Lipiec</option>
-  		<option value="08">Sierpień</option>
-		<option value="09">Wrzesień</option>
-	 	<option value="10">Październik</option>
-		<option value="11" selected>Listopad</option>
-  		<option value="12">Grudzień</option>
-	</select>
-	
-	<select name='rok'>
-		<option value="2013">2013</option>
-	 	<option value="2014">2014</option>
-	</select>
-	<input type="submit" value="OK">
-	</form>
-	
-	<br><br>
-
 	<?php    
-    
-    
-	//echo 'Dzisiaj jest '. $day_now.' '.$month_now1.' '.$year_now . ' roku.<br><br>';
-	global $m;
+		
+	//$month = $_SESSION['month'];
+	//$year = $_SESSION['year'];
 	
-	global $m1;
+	//echo $month.' '.$year;
+	echo draw_calendar(11,2013);
 	
-	$m = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
+	function jaki_miesiac($month){
+			$months1 = array('styczeń','luty','marzec','kwiecieć','maj','czerwiec','lipiec','sierpień','wrzesień','październik','listopad','grudzień');
+		
+		switch($month){
+			case 01: $month_now1 = $months1[0]; break;
+			case 02: $month_now1 = $months1[1]; break;
+			case 03: $month_now1 = $months1[2]; break;
+			case 04: $month_now1 = $months1[3]; break;
+			case 05: $month_now1 = $months1[4]; break;
+			case 06: $month_now1 = $months1[5]; break; 
+			case 07: $month_now1 = $months1[6]; break;
+			case 08: $month_now1 = $months1[7]; break;
+			case 09: $month_now1 = $months1[8]; break;
+			case 10: $month_now1 = $months1[9]; break;
+			case 11: $month_now1 = $months1[10]; break;
+			case 12: $month_now1 = $months1[11]; break;
+		}
+		return $month_now1;
+	}
 	
-	global $r;
-	$r = isset($_POST['rok']) ? ($_POST['rok']) :false;
+    //echo 'Dzisiaj jest '. $day_now.' '.$month_now1.' '.$year_now . ' roku.<br><br>';
 	
-	global $today;
+	//global $m;
+	
+	//global $m1;
+	
+	
+	//global $r;
+	
+	//$m = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
+	//$r = isset($_POST['rok']) ? ($_POST['rok']) :false;
+	
 	$today = mktime(0,0,0,date("m"),date("d"),date("Y"));
-	
-	global $day_now;
 	$day_now = date('d',mktime(0,0,0,date("m"),date("d"),date("Y")));
-	global $month_now;
 	$month_now = date('m',mktime(0,0,0,date("m"),date("d"),date("Y")));
-	global $year_now;
 	$year_now = date('Y',mktime(0,0,0,date("m"),date("d"),date("Y")));
 	
-    function draw_calendar($month,$year){
+	function draw_calendar($month,$year){
+		
+	global $today;
+	global $day_now;
+	global $month_now;
+	global $year_now;
 	
+	$month = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
+	$year = isset($_POST['rok']) ? ($_POST['rok']) :false;
 	
-	/* draw table */
-	$calendar = '<table cellpadding="0" cellspacing="0" class="calendar">';
+	//echo 'Kalendarz dla '.$month.' '.$year;
+	echo '<center><h1>'.jaki_miesiac($month).'  '.$year.'</h1></center>';
+	echo '<br><br>'
+		//* draw table */
+	;
+		$calendar = '<table cellpadding="0" cellspacing="0" class="calendar">';
 
 		/* table headings */
 		$headings = array('Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela',);
@@ -71,41 +77,66 @@
 		/* row for week one */
 		$calendar.= '<tr class="calendar-row">';
 	
+		$licznik = 0;
+		
 		/* print "blank" days until the first of the current week */
 		for($x = 0; $x < $running_day; $x++):
 			$calendar.= '<td class="calendar-day-np"> </td>';
 			$days_in_this_week++;
+			$licznik++;
 		endfor;
-	
-		global $m;
-	
-		global $m1;
-	
-		$m = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
-	
-		global $r;
-		$r = isset($_POST['rok']) ? ($_POST['rok']) :false;
-	
 		
-		/* keep going with days.... */
+		$today = mktime(0,0,0,date("m"),date("d"),date("Y"));
+		$day_now = date('d',mktime(0,0,0,date("m"),date("d"),date("Y")));
+		$month_now = date('m',mktime(0,0,0,date("m"),date("d"),date("Y")));
+		$year_now = date('Y',mktime(0,0,0,date("m"),date("d"),date("Y")));
+		
+	
+			/* keep going with days.... */
 		for($list_day = 1; $list_day <= $days_in_month; $list_day++):
+			$licznik++;
 			
-			$date = $list_day.'.'.$m.'.'.$r;
+			$date = $list_day.'.'.$month.'.'.$year;
 			
 			$calendar.= '<td class="calendar-day">';
 			
 				/* add in the day number */
-				$calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+				if($licznik%7==0){
+						$calendar.='<div class="day-number-nieczynne">'.$list_day.'</div>';		
+				}
+				else{
+					if($year == $year_now){
+						if($month < $month_now){
+							$calendar.='<div class="day-number-nieczynne-stare">'.$list_day.'</div>';		
+						}
+						else{
+							if($month == $month_now){
+								if($list_day < $day_now){
+									$calendar.='<div class="day-number-nieczynne-stare">'.$list_day.'</div>';		
+								}
+								else {
+									$calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+								}
+							}
+							else{
+								$calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+							}
+						}
+					}
+					else{
+							$calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+					}
+				}
 	/*			$calendar.= '<div class="day-number">'.$list_day.'</div>'; */
-	
-	
-
+				
+			
 				/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
 				/*$calendar.= str_repeat('<p> </p>',2);
 				*/
 			$calendar.= '</td>';
-			if($running_day == 6):
 			
+			if($running_day == 6):
+				
 				$calendar.= '</tr>';
 				if(($day_counter+1) != $days_in_month):
 					$calendar.= '<tr class="calendar-row">';
@@ -129,33 +160,52 @@
 		/* end the table */
 		$calendar.= '</table>';
 		
-		/* all done, return result */
+		//* all done, return result */
 		return $calendar;
-	}
-	
+		
+	} // koniec funkcji!!!
+	/*
 	$today = mktime(0,0,0,date("m"),date("d"),date("Y"));
 		
 	$day_now = date('d',mktime(0,0,0,date("m"),date("d"),date("Y")));
 	$month_now = date('m',mktime(0,0,0,date("m"),date("d"),date("Y")));
 	$year_now = date('Y',mktime(0,0,0,date("m"),date("d"),date("Y")));
-	
 	$months1 = array('stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia');
 	
-	switch($month_now){
-		case 01: $month_now1 = $months1[0]; break;
-		case 02: $month_now1 = $months1[1]; break;
-		case 03: $month_now1 = $months1[2]; break;
-		case 04: $month_now1 = $months1[3]; break;
-		case 05: $month_now1 = $months1[4]; break;
-		case 06: $month_now1 = $months1[5]; break; 
-		case 07: $month_now1 = $months1[6]; break;
-		case 08: $month_now1 = $months1[7]; break;
-		case 09: $month_now1 = $months1[8]; break;
-		case 10: $month_now1 = $months1[9]; break;
-		case 11: $month_now1 = $months1[10]; break;
-		case 12: $month_now1 = $months1[11]; break;
+	function jaki_miesiac($mm){
+			$months1 = array('stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia');
+		
+		switch($mm){
+			case 01: $month_now1 = $months1[0]; break;
+			case 02: $month_now1 = $months1[1]; break;
+			case 03: $month_now1 = $months1[2]; break;
+			case 04: $month_now1 = $months1[3]; break;
+			case 05: $month_now1 = $months1[4]; break;
+			case 06: $month_now1 = $months1[5]; break; 
+			case 07: $month_now1 = $months1[6]; break;
+			case 08: $month_now1 = $months1[7]; break;
+			case 09: $month_now1 = $months1[8]; break;
+			case 10: $month_now1 = $months1[9]; break;
+			case 11: $month_now1 = $months1[10]; break;
+			case 12: $month_now1 = $months1[11]; break;
+		}
+		return $month_now1;
 	}
-
+		switch($month_now){
+			case 01: $month_now1 = $months1[0]; break;
+			case 02: $month_now1 = $months1[1]; break;
+			case 03: $month_now1 = $months1[2]; break;
+			case 04: $month_now1 = $months1[3]; break;
+			case 05: $month_now1 = $months1[4]; break;
+			case 06: $month_now1 = $months1[5]; break; 
+			case 07: $month_now1 = $months1[6]; break;
+			case 08: $month_now1 = $months1[7]; break;
+			case 09: $month_now1 = $months1[8]; break;
+			case 10: $month_now1 = $months1[9]; break;
+			case 11: $month_now1 = $months1[10]; break;
+			case 12: $month_now1 = $months1[11]; break;
+		}
+	
 	switch($m){
 		case 01: $m1 = $months1[0]; break;
 		case 02: $m1 = $months1[1]; break;
@@ -170,13 +220,55 @@
 		case 11: $m1 = $months1[10]; break;
 		case 12: $m1 = $months1[11]; break;
 	}
+	*/
 	
-	echo '<br>';
-	echo '<b>Kalendarz rezerwacji dla '.$m1.' roku '.$r.'</b><br><br>';
-	
-	echo draw_calendar($m, $r);
-	
-	echo '<br><br>Legenda:';	
 	?>
-		           
+	
+	
+	<br><br>
+	<b>Wybierz inny miesiąc i rok:</b><br><br>    
+    <form id="form" action"kalendarz.php" method="POST">
+   	<select name='miesiac'>
+		<option value="01">Styczeń</option>
+	 	<option value="02">Luty</option>
+		<option value="03">Marzec</option>
+  		<option value="04">Kwiecień</option>
+		<option value="05">Maj</option>
+	 	<option value="06">Czerwiec</option>
+		<option value="07">Lipiec</option>
+  		<option value="08">Sierpień</option>
+		<option value="09">Wrzesień</option>
+	 	<option value="10">Październik</option>
+		<option value="11" selected>Listopad</option>
+  		<option value="12">Grudzień</option>
+	</select>
+	
+	<select name='rok'>
+		<option value="2013" selected>2013</option>
+	 	<option value="2014">2014</option>
+	</select>
+	<input type="submit" value="OK">
+	</form>
+	
+	<br><br>
+
+	<b>Legenda:</b>
+	<table id="legenda">
+            <tbody>
+                <tr>
+                    <td class='czynne'> 
+                    </td><td>Czynne</td>
+                    
+                </tr>
+                <tr>
+                    <td class='nieczynne'> </td>
+                    <td>Nieczynne</td>
+                </tr>
+                <tr>
+                    <td class='nieczynne-stare'> </td>
+                    <td>Nieczynne (przeszłe dni)</td>
+                </tr>    
+            </tbody>
+            </tbody>
+        </table></p>	           
 </div>
