@@ -13,6 +13,7 @@ class RezerwacjaController extends Zend_Controller_Action
         $helper= $this->view->getHelper('LoggedInAs');
         $IDUzytkownik=$helper->loggedInAs();
         $this->view->IDUzytkownik=$IDUzytkownik;
+       
         $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
         $tmp = explode('/', $url);

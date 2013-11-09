@@ -75,8 +75,23 @@ class KlientController extends Zend_Controller_Action
         // action body
     }
 
+    public function odwolajRezerwacjeAction()
+    {
+        $IDRezerwacja = $this->getRequest()->getParam('IDRezerwacja');
+        $this->view->IDRezerwacja=$IDRezerwacja;
+        $table=new Application_Model_Rezerwacja;
+       
+             $where = $table->getAdapter()->quoteInto('idrezerwacja= ?', $IDRezerwacja);
+             $table->delete($where);
+       
+       $this->_redirect('klient/rezerwacje');
+        
+    }
+
 
 }
+
+
 
 
 

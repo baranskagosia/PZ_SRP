@@ -1,4 +1,28 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Klient</b> and script/action name <b>rezerwacje</b></p>
-</div>
+<?php 
+$IDRezerwacja=9;?>
+
+<script>
+function myFunction()
+{
+var x;
+var id="<?php echo $IDRezerwacja; ?>";
+var r=confirm("Czy jesteś pewny, że chcesz odwołać rezerwację?");
+if (r==true)
+  {
+  x="<p class='confirm-box'>Dokonano usunięcia rezerwacji</p>";
+     window.location.href="<?php echo $this->baseUrl('klient/odwolaj-rezerwacje/IDRezerwacja/')?>" +id;
+  }
+else
+  {
+  x="<p class='info'>Anulowano usuwanie rezerwacji</p>";
+  }
+document.getElementById("informacje").innerHTML=x;
+}
+</script>
+<?php 
+
+echo " <button onclick='myFunction()'>Odwołaj</button>";
+echo "<p id='informacje'></p>";
+
+
+?>

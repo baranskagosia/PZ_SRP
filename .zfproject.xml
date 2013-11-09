@@ -24,6 +24,7 @@
           <actionMethod actionName="daneEdit"/>
           <actionMethod actionName="rezerwacje"/>
           <actionMethod actionName="historia"/>
+          <actionMethod actionName="odwolajRezerwacje"/>
         </controllerFile>
         <controllerFile controllerName="Recepcja">
           <actionMethod actionName="index"/>
@@ -49,6 +50,7 @@
         <formFile formName="Login"/>
         <formFile formName="NewUser"/>
         <formFile formName="Rezerwacja"/>
+        <formFile formName="OdwolajRezerwacje"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -140,6 +142,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Klient">
             <viewScriptFile forActionName="historia"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Klient">
+            <viewScriptFile forActionName="odwolajRezerwacje"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
