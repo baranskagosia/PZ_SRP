@@ -33,7 +33,7 @@
           <historiaKlient>
              <label>Historia</label>
              <controller>klient</controller>
-             <action>wizyty</action>
+             <action>historia</action>
              <resource>historiaKlient</resource>
          </historiaKlient>
 

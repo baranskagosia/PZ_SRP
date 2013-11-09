@@ -29,12 +29,13 @@ class KlientController extends Zend_Controller_Action
         $this->view->dane = $dane;
 
     }
-    
-    public function newAction() {
+
+    public function newAction()
+    {
         $this->view->registrationForm = new Application_Form_NewKlient();
     }
-    
-        public function createAction()
+
+    public function createAction()
     {
         $usersModel = new Application_Model_Users();
         $registrationForm = new Application_Form_NewKlient();
@@ -64,8 +65,22 @@ class KlientController extends Zend_Controller_Action
         // action body
     }
 
+    public function rezerwacjeAction()
+    {
+        // action body
+    }
+
+    public function historiaAction()
+    {
+        // action body
+    }
+
 
 }
+
+
+
+
 
 
 
