@@ -1,3 +1,11 @@
+<script language="JavaScript">
+var frmvalidator  = new Validator("contactform");
+frmvalidator.addValidation("name","req","Please provide your name");
+frmvalidator.addValidation("email","req","Please provide your email");
+frmvalidator.addValidation("email","email",
+  "Please enter a valid email address");
+</script>
+
 <br /><br />
 <div id="view-content">
 	<div id="srodek_info">
@@ -13,19 +21,84 @@
 		sob - nie: 10:00 - 18:00<br>
 		<br><br>
 		<b>Formularz kontaktowy:</b><br><br> 
-			<form name="contactform" method="post" action="kontakt.php">   
-				<label for="imie"><b>Imię:</b></label><br>
-			        <input type="text" id="imie" name="imie"/>
-			        <br>
-			        <label for="email"><b>E-mail:</b></label><br>
-			        <input type="text" id="email" name="email"/>
-			        <br>  
-			        <label for="wiadomosc"><b>Wiadomość:</b></label><br>
-			        <textarea id="wiadomosc" name="wiadomosc" cols="30" rows="5"></textarea>
-			        <br>            
-			        <input type="submit" value="Wyślij" id="send" name="send" />
-			</form>
 
+		<?php 
+//			echo $this->form;
+//			echo 'form';
+	/**
+	echo contactUsAction();
+	
+function contactUsAction()
+{
+$form = new Forms_Kontakt();
+if (($post = $this->getRequest()->getPost())) {
+
+// validate the forms $_POST values using built in Zend functionality
+if ($form->isValid($post))
+{
+
+// Get values
+$data = $form->getValues();
+
+// Check if we have this email address saved. If not, save it.
+$emailTable = Doctrine_Core::getTable('EmailAddresses');
+$emailAddress = $emailTable->findOneByEmail($data['email']);
+// We do not have this email address, save it (here we could do anything else we think is necessary when saving a new email address, such as informing the user!
+if(!$emailAddress)
+{
+$email_address = new EmailAddresses();
+$email_address->fromArray($data);
+$email_address->save();
+}
+
+// Construct the contact email that will be sent to the admin
+$message =
+"
+
+Contact Form Email
+
+Email Address: <strong>".$data['email']."</strong>
+
+Name: <strong>".$data['name']."</strong>
+
+Phone Number: <strong>".$data['phone_number']."</strong>
+
+Message:
+<strong>".$data['message']."</strong>
+
+";
+
+// Use SMTP to Send the Mail, configure transport
+$config = array('auth' => 'login',
+'username' => "outgoing@mysite.com",
+'password' => "12345",
+'port' => "25");
+$transport = new Zend_Mail_Transport_Smtp("mail.mysite.com", $config);
+
+// Get mail ready, add all params
+$mail = new Zend_Mail();
+$mail->setBodyText($message);
+$mail->setBodyHtml($message); // Not really necessary here, just added so you can see how simple it is to separate plaintext and HTML
+$mail->setFrom('contact@mysite.com', 'Contact - '.$data['name']);
+$mail->setReplyTo($data['email'],$data['name']); // Make things easy on your admin and set reply to to the user's name/email
+$mail->addTo('admin@mysite.com', 'Admin Joe Blow');
+$mail->setSubject('Contact Form Submission');
+$mail->send($transport);
+
+// Let Mr. User know his/her message has been sent
+$msg = "Your message has been sent, we will respond as quickly as possible!";
+$this->info($msg);
+
+}
+}
+
+// Make form available in view
+$this->view->form = $form;
+
+}
+	
+	*/
+			?>
 	</div>
 	<div id="srodek_view">
 		<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.pl/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=bulwar+S%C5%82oneczny,+Wroclaw&amp;aq=0&amp;oq=wroc%C5%82aw+ul.+s%C5%82one&amp;sll=51.104232,17.044162&amp;sspn=0.105847,0.338173&amp;ie=UTF8&amp;hq=&amp;hnear=bulwar+S%C5%82oneczny,+50-257+Wroc%C5%82aw,+Wojew%C3%B3dztwo+dolno%C5%9Bl%C4%85skie&amp;t=m&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe><br /><small><a href="https://maps.google.pl/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=bulwar+S%C5%82oneczny,+Wroclaw&amp;aq=0&amp;oq=wroc%C5%82aw+ul.+s%C5%82one&amp;sll=51.104232,17.044162&amp;sspn=0.105847,0.338173&amp;ie=UTF8&amp;hq=&amp;hnear=bulwar+S%C5%82oneczny,+50-257+Wroc%C5%82aw,+Wojew%C3%B3dztwo+dolno%C5%9Bl%C4%85skie&amp;t=m&amp;z=14&amp;iwloc=A" style="color:#0000FF;text-align:left">View Larger Map</a></small>

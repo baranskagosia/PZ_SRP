@@ -61,8 +61,147 @@ class KlientController extends Zend_Controller_Action
 
     public function daneEditAction()
     {
-        // action body
-    }
+    	$helper= $this->view->getHelper('LoggedInAs');
+        $idKlient=$helper->loggedInAs();
+	
+		if(Zend_Auth::getInstance()->hasIdentity()){
+           // $this->_redirect('index/index');
+        
+        $request =$this ->getRequest();
+        $form =new Application_Form_Edit();
+        
+		 if($request->isPost()){
+            if($form->isValid($this->_request->getPost())){
+                    	
+				$imie = $form->getValue('Imie');
+				$nazwisko = $form->getValue('Nazwisko');
+				$telefon = $form->getValue('Telefon');
+				
+				$db = Zend_Db::factory('Pdo_Mysql', array(
+			    'host'     => 'localhost',
+			    'username' => 'B02',
+			    'password' => 'B02',
+			    'dbname'   => 'pz_srp'
+			));
+			
+				$sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
+				$stmt = $sql->query();
+				$result = $stmt->fetchAll();
+				
+				$data = array(
+					'Imie' => $imie,
+					'Nazwisko'=> $nazwisko,
+					'Telefon'=> $telefon);
+				
+				$sql2 = $db->update('klient', $data, 'idUzytkownik LIKE '.$result[0]['idUzytkownik']);
+					
+					
+			
+			}}        
+         }
+    $this->view->form =$form;
+	}
+	
+	public function daneHasloAction()
+    {
+    	$form =new Application_Form_Haslo();
+         
+		$helper= $this->view->getHelper('LoggedInAs');
+        $idKlient=$helper->loggedInAs();
+		$request =$this ->getRequest();
+        
+		if($this->_request->isPost()){
+			
+			//var_dump($this->getRequest()->getPost());
+			if($form->isValid($this->getRequest()->getPost())){
+        
+		
+			       	//$Haslo_old=$form->getValue('Haslo_old');
+			        $Haslo_new1=$form->getValue('Haslo_new1');
+			        $Haslo_new2=$form->getValue('Haslo_new2');
+			        
+			        //$Pass_old=md5($Haslo_old);
+			        $Pass_new1=md5($Haslo_new1);
+					$Pass_new2=md5($Haslo_new2);
+			  	
+							
+					//echo 'po '.$Pass_old.' '.$Haslo_old.'<br>';
+					//echo 'pn '.$Pass_new1.' '.$Haslo_new1.'<br>';
+					//echo 'pnn '.$Pass_new2.' '.$Haslo_new2.'<br>';
+					
+					$db = Zend_Db::factory('Pdo_Mysql', array(
+					    'host'     => 'localhost',
+					    'username' => 'B02',
+					    'password' => 'B02',
+					    'dbname'   => 'pz_srp'
+					));
+						
+					$sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
+		    		$stmt = $sql->query();
+					$result = $stmt->fetchAll();
+					
+					//echo $result[0]['idUzytkownik'];
+		
+				    $data = array(
+						'Haslo' => $Pass_new2);
+						
+					if($Pass_new1 == $Pass_new2){
+						$sql2 = $db->update('uzytkownik', $data, 'idUzytkownik LIKE '.$result[0]['idUzytkownik']);
+					}
+					else{
+						$this->view->form =$form;
+						echo 'Hasła się nie zgadzają!';
+					}
+ 					//$this->view->form =$form;
+					$this->view->idKlient = $idKlient;
+					
+					echo 'Hasło zostało zmienione';
+					}
+  			}	
+			else{
+ 				//var_dump($this->getRequest()->getPost());
+				$this->view->form =$form;
+				$this->view->idKlient = $idKlient;
+			}
+		}
+
+    public function daneUsunAction()
+    {}
+	
+	public function daneByeAction()
+    {	
+	    $helper= $this->view->getHelper('LoggedInAs');
+        $idKlient=$helper->loggedInAs();
+    
+        $this->view->idKlient=$idKlient;
+	    
+	$db = Zend_Db::factory('Pdo_Mysql', array(
+    'host'     => 'localhost',
+    'username' => 'B02',
+    'password' => 'B02',
+    'dbname'   => 'pz_srp'
+));
+
+	$sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
+	$stmt = $sql->query();
+	$result = $stmt->fetchAll();
+	
+	$data = array(
+		'Aktywny' => 0);
+	
+	$sql2 = $db->update('uzytkownik', $data, 'idUzytkownik LIKE '.$result[0]['idUzytkownik']);
+		
+		
+	Zend_Auth::getInstance()->clearIdentity();
+    $this->_redirect('index/index');   
+		
+}
+	    
+   // }
+	
+	public function daneHaslo(){
+		
+	}
 
 
 }

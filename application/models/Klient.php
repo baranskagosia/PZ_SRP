@@ -17,5 +17,6 @@ class Application_Model_Klient extends Zend_Db_Table_Abstract
         $dane =$this-> getAdapter()-> query($where);
      return $dane;
  }
+ 
 }
 

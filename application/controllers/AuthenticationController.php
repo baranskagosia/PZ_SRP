@@ -33,12 +33,19 @@ class AuthenticationController extends Zend_Controller_Action
                  $auth =Zend_Auth::getInstance();
                  $result= $auth->authenticate($authAdapter);
 
-               if($result->isValid() ){
-                     $identity =$authAdapter ->getResultRowObject();
-                                $authStorage =$auth ->getStorage();
-                                 $authStorage->write($identity);
-                                 $this->_redirect($identity->Role);
-                       }
+               if($result->isValid()){
+               		
+                     $identity = $authAdapter ->getResultRowObject();
+					if($identity->Aktywny=='1'){
+	                 $authStorage =$auth ->getStorage();
+                     $authStorage->write($identity);
+                     $this->_redirect($identity->Role);
+					}
+					else{
+                      $this->view->errorMessage = "Użytkownik nieaktywny.";
+					}
+               	}
+			   
                   else{
                       $this->view->errorMessage = "Niepoprawna nazwa użytkownika lub hasła.";
                   }     
@@ -50,10 +57,8 @@ class AuthenticationController extends Zend_Controller_Action
 
           
          }
-         
-  $this->view->form =$form;
-    
-    }
+    $this->view->form =$form;
+	}
 
     public function logoutAction()
     {
