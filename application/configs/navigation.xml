@@ -23,17 +23,24 @@
          </klientDane>
 
           <umowKlient>
+             <label>Dokonaj Rezerwacji</label>
+             <controller>index</controller>
+             <action>kalendarz</action>
+             <resource>umowKlient</resource>
+         </umowKlient>
+         
+         <umowione>
              <label>Rezerwacje</label>
              <controller>klient</controller>
              <action>rezerwacje</action>
-             <resource>umowKlient</resource>
-         </umowKlient>
+             <resource>umowione</resource>
+         </umowione>
 
 
           <historiaKlient>
              <label>Historia</label>
              <controller>klient</controller>
-             <action>wizyty</action>
+             <action>historia</action>
              <resource>historiaKlient</resource>
          </historiaKlient>
 
@@ -89,12 +96,7 @@
             <resource>addRecepcja</resource>
         </addRecepcja>
 
-         <addKlient>
-            <label>Dodaj Klienta</label>
-            <controller>admin</controller>
-            <action>new-klient</action>
-            <resource>addKlient</resource>
-        </addKlient>
+
 
         <tabelki>
             <label>Tabele</label>

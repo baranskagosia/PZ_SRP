@@ -189,6 +189,11 @@ box-shadow: 2px 2px 5px #000;
 	max-width: 600px;
 	float: right;	
 }
+#srodek_view2{
+	width: 450px;
+	max-width: 600px;
+	float: right;	
+}
 
 #srodek_info_grafik{
 	width: 800px;
@@ -535,7 +540,7 @@ background-image: url('../img/icon/information.png');
 	display:inline-block;
 	color:#777777;
 	font-family:arial;
-	font-size:11px;
+	font-size:14px;
 	font-weight:bold;
 	padding:4px 13px;
 	text-decoration:none;
@@ -582,8 +587,8 @@ label.valid{
 }
 
 .rezerwacja td{
-    padding:5px 10px 20px 5px;
-    margin: 15px ;
+    padding:5px 5px 5px 5px;
+    margin: 5px ;
    /* background-color: rgb(227, 232, 235);*/
     display:inline-block;
 }
@@ -598,10 +603,9 @@ label.valid{
     color: rgb(35, 122, 169) /*rgb(25,46,61)*/;
 }
 td.first_row {
-    padding: 0px 0px 10px 0px;
+    padding: -30px 0px 5px 0px;
     background-color: transparent;
     font-weight: bolder;
-<<<<<<< HEAD
 }
 
 
@@ -661,16 +665,39 @@ td.calendar-day-head {
 	height: 25px; 
 	margin-top:3px;
 	margin-left:5px;
+
 }
+	div.day-number-nieczynne{
+	background-color: #990000;
+	padding:7px; 
+	color:#fff; 
+	font-weight:bold;
+	font-size: 16px; 
+	width:90px;
+	height: 25px; 
+	margin-top:3px;
+	margin-left:5px;
+}
+	div.day-number-nieczynne-stare{
+	background-color:#222222;
+		padding:7px; 
+	color:#fff; 
+	font-weight:bold;
+	font-size: 16px; 
+	width:90px;
+	height: 25px; 
+	margin-top:3px;
+	margin-left:5px;
+}	
 	/*float:center; 
 	text-align:center; }
 /* shared */
 
-td.calendar-day, td.calendar-day-np { width:120px; }
-
-
-    margin:auto;
+td.calendar-day, td.calendar-day-np { 
+	width:120px; 
 }
+
+
 .zajete{
     background-color: #FF3333/*#F5785A*/;
     font-weight: bold;
@@ -682,3 +709,13 @@ td.calendar-day, td.calendar-day-np { width:120px; }
 .zajete_nieWylacznosc{
     background-color: rgb(255, 173, 0);
 }
+
+.czynne{
+	background-color: rgb(35, 122, 169);
+}
+.nieczynne{
+	background-color: #990000;
+}
+.nieczynne-stare{
+	background-color:#222222;
+}	

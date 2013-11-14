@@ -29,12 +29,13 @@ class KlientController extends Zend_Controller_Action
         $this->view->dane = $dane;
 
     }
-    
-    public function newAction() {
+
+    public function newAction()
+    {
         $this->view->registrationForm = new Application_Form_NewKlient();
     }
-    
-        public function createAction()
+
+    public function createAction()
     {
         $usersModel = new Application_Model_Users();
         $klientModel = new Application_Model_Klient();
@@ -72,8 +73,37 @@ class KlientController extends Zend_Controller_Action
         // action body
     }
 
+    public function rezerwacjeAction()
+    {
+        // action body
+    }
+
+    public function historiaAction()
+    {
+        // action body
+    }
+
+    public function odwolajRezerwacjeAction()
+    {
+        $IDRezerwacja = $this->getRequest()->getParam('IDRezerwacja');
+        $this->view->IDRezerwacja=$IDRezerwacja;
+        $table=new Application_Model_Rezerwacja;
+       
+             $where = $table->getAdapter()->quoteInto('idrezerwacja= ?', $IDRezerwacja);
+             $table->delete($where);
+       
+       $this->_redirect('klient/rezerwacje');
+        
+    }
+
 
 }
+
+
+
+
+
+
 
 
 

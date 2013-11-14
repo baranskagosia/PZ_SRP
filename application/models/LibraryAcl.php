@@ -16,8 +16,8 @@ class Application_Model_LibraryAcl extends Zend_Acl
        $this->add(new Zend_Acl_Resource('klientDane'));
 
        $this->add(new Zend_Acl_Resource('umowKlient'));
+       $this->add(new Zend_Acl_Resource('umowione'));
        $this->add(new Zend_Acl_Resource('historiaKlient'));
-
 
          $this->add(new Zend_Acl_Resource('homeRecepcja'));
          $this->add(new Zend_Acl_Resource('recepcja'));
@@ -30,7 +30,6 @@ class Application_Model_LibraryAcl extends Zend_Acl
          $this->add(new Zend_Acl_Resource('homeAdmin'));
          $this->add(new Zend_Acl_Resource('tabelki'));
          $this->add(new Zend_Acl_Resource('addRecepcja'));
-         $this->add(new Zend_Acl_Resource('addKlient'));
 
 
          $this->add(new Zend_Acl_Resource('cennik'),'tabelki');
@@ -58,16 +57,16 @@ class Application_Model_LibraryAcl extends Zend_Acl
         
        // $this->allow(null,'authentication' ,'login');
      
-        $this->allow('klient', array('index','klient', 'rezerwacja', 'homeKlient','klientDane','umowKlient','historiaKlient','logout'));
+        $this->allow('klient', array('index','klient', 'rezerwacja', 'homeKlient','klientDane','umowione','umowKlient','historiaKlient','logout'));
        //  $this->allow('pacjent','wizyta','umow-pacjent');
 //dostę RECEPCJA
         
-        $this->allow('recepcja',array('index','recepcja','rezerwacja','homeRecepcja','daneRecepcja','recepcjaRezerwacje','recepcjaGrafik','klienciWyswietl','logout' ));
+        $this->allow('recepcja',array('index','recepcja','rezerwacja','homeRecepcja','recepcjaRezerwacje','recepcjaGrafik','klienciWyswietl','logout' ));
 //dostęp admin
       
 //  $this->deny ('admin','login');
         
-        $this->allow ('admin', array('index', 'admin', 'tabelki','homeAdmin','addRecepcja','addKlient','logout'));
+        $this->allow ('admin', array('index', 'admin','homeAdmin','addRecepcja','logout'));
       
     }
 
