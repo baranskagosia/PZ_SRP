@@ -40,16 +40,23 @@ for($j=1;$j<=$ilosc_torow;$j++){
     <tbody>
         <tr><td class='first_row'><a href='/PZ_SRP/public/img/b".$j.".jpg' target='_blank'>TOR ".$j."</a></td>";
         
-        //<tr><td class='first_row'>TOR ".$j."</td>";
-       //Pobranie zajętych terminów dla konkretnego toru.
-            $sql_zajete="SELECT Date(DataCzas) AS Data, Time(DataCzas) As Godzina, TorPreferowany, CzyNaWylacznasc
+        
+   //Pobranie zajętych terminów dla konkretnego toru.
+            /*$sql_zajete="SELECT Date(DataCzas) AS Data, Time(DataCzas) As Godzina, TorPreferowany, CzyNaWylacznasc
                 FROM rezerwacja 
                         WHERE Date(DataCzas) LIKE '".$data_format."' AND TorPreferowany = ". $j." 
                         ORDER BY Godzina ASC" ;
+            */
+            $sql_zajete="SELECT Distinct(`DataCzas`) AS unikalne, TIME(DataCzas) AS Godzina, Date(DataCzas) AS Data, 
+               `TorPreferowany` ,  `CzyNaWylacznasc`, count(*) AS ZarezerwowaneMiejsca
+              FROM rezerwacja WHERE DATE(DataCzas) LIKE '".$data_format."' AND
+                    TorPreferowany = ".$j." AND `CzyOdwolana` =0 
+               GROUP BY DataCzas";
+
             $zajete_terminy[$j]=$db->query($sql_zajete)->fetchAll();
            // print_r($zajete_terminy);
 
-                   for($i=1;$i<=$czas;$i++){
+          for($i=1;$i<=$czas;$i++){
             $data_time=$data."/".$akk;
             //sprawdzenie czy dany termin nie jest już zajęty 
             
@@ -59,7 +66,8 @@ for($j=1;$j<=$ilosc_torow;$j++){
               $zajeta_godzina= date("H:i", strtotime($zajete_terminy[$j][$z]['Godzina']));
                 if($akk==$zajeta_godzina){
                     $zajete = true;
-                    if($zajete_terminy[$j][$z]['CzyNaWylacznasc']==1){
+                    if($zajete_terminy[$j][$z]['CzyNaWylacznasc']==1 OR 
+                    $zajete_terminy[$j][$z]['ZarezerwowaneMiejsca']>2){
                         echo "<td class='zajete'>".$akk."</a></td>";
                     }
                     else{
@@ -81,12 +89,6 @@ for($j=1;$j<=$ilosc_torow;$j++){
 $akk=$od;          
 }
         ?>
-
-        <p></p>
-
-
-        <p></p>
-
         <p>Legenda:</p>
         <p><table id="legenda">
             <tbody>
@@ -97,7 +99,7 @@ $akk=$od;
                 </tr>
                 <tr>
                     <td class='zajete'> </td>
-                    <td>Zajęty na wyłączność</td>
+                    <td>Zajęty</td>
                 </tr>
                     <td class='zajete_nieWylacznosc'> </td>
                     <td>Zarezerwowany nie na wyłączność</td> 

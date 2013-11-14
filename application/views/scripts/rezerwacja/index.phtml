@@ -1,94 +1,121 @@
 
 <?php
-$url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
-$tmp = explode('/', $url);
-//print_r($tmp);
-$data=$tmp[7];
-$time=$tmp[8];
-$tor=$tmp[9];
+$data=$this->data;
+$time=$this->time;
+$tor=$this->tor;
 
-
-//Sprawdzenie czy dany termin nie jest zajęty
+//Sprawdzenie czy dany termin nie jest zajęty (wylacznosc 1 lub ilosc rezerwacji>2)
 $data_format=date("Y-m-d", strtotime($data));
 $data_time= $data_format." ".$time.":00";
-$tor;
- $db = Zend_Db_Table::getDefaultAdapter();
- $sql_zajete="SELECT Date(DataCzas) AS Data, Time(DataCzas) As Godzina, TorPreferowany, CzyNaWylacznasc
-     FROM rezerwacja 
-     WHERE DataCzas LIKE '".$data_time."' AND
-     TorPreferowany = '".$tor."' ";
 
-        $zajete_terminy=$db->query($sql_zajete)->fetchAll();
-       // print_r($zajete_terminy);
- 
-      if(isset($zajete_terminy[0]['Data']) && ($zajete_terminy[0]['CzyNaWylacznasc']==1 OR sizeof($zajete_terminy)>=3)){
+ $db = Zend_Db_Table::getDefaultAdapter();
+ $sql_zajete="SELECT Distinct(`DataCzas`) AS unikalne, TIME(DataCzas) AS Godzina, Date(DataCzas) AS Data, 
+               `TorPreferowany` ,  `CzyNaWylacznasc`, count(*) AS ZarezerwowaneMiejsca
+              FROM rezerwacja WHERE DataCzas LIKE '".$data_time."' AND
+                    TorPreferowany =".$tor." AND`CzyOdwolana` =0 
+               GROUP BY DataCzas";
+ $zajety_termin=$db->query($sql_zajete)->fetchAll();
+      if(isset($zajety_termin[0]['Data']) && ($zajety_termin[0]['CzyNaWylacznasc']==1 
+              OR $zajety_termin[0]['ZarezerwowaneMiejsca']>2)){
           echo "<div class='error-box'><p><strong>Wybrany termin (".$data_time.") został już zarezerwowany.</strong></p></div>";
       }
-      else{  
-         $poczatek=$time;
-          $next=($poczatek+1).":00:00";
-         //echo "<p>$next</p>";
+ //---------------------------------------------------
+     else{  
+          $poczatek= date("h:i:s", strtotime($time));
+          $next=date("h:i:s", strtotime($time)+3600);
+   
+         
+          //echo $next;
+
              
       
-        
-        //Godziny otwarcia basenu
+//Godziny otwarcia basenu
         $dataZ = new Zend_Date();
         $dataZ->set($data);
         $dzienTygodnia= $dataZ->get(Zend_Date::WEEKDAY_DIGIT);
         $db = Zend_Db_Table::getDefaultAdapter(); 
         $sql="SELECT GodzinaZamkniecia FROM godziny_otwarcia WHERE DzienTygodnia LIKE ".$dzienTygodnia ;
         $otwarty = $db-> query($sql)->fetchAll();
-        //print_r($otwarty);
         $koniec=$otwarty[0]['GodzinaZamkniecia'];
-        //echo "<p>$koniec</p>";
-        //Sprawdzenie następnego zarezerwowanego terminu 
-         $sql_max_czas="SELECT TIME(DataCzas) AS Godzina 
-                        FROM `rezerwacja` 
-                        WHERE Date(`DataCzas`) LIKE '".$data_format."' AND
-                              `TorPreferowany`=".$tor." AND 
-                              `CzyNaWylacznasc`= 1 AND
-                              Time(DataCzas) BETWEEN '".$next."' AND '".$koniec."' 
-                        ORDER BY Godzina ASC";
-           $max_czas=$db->query($sql_max_czas)->fetchAll();
+        //---------------------------------------------------
+      
+ //Sprawdzenie następnego zarezerwowanego terminu
+      
+         $sql_unikalne="SELECT Distinct(`DataCzas`) AS unikalne, TIME(DataCzas) AS Godzina, Date(DataCzas) AS Data, 
+               `TorPreferowany` ,  `CzyNaWylacznasc`, count(*) AS ZarezerwowaneMiejsca
+              FROM rezerwacja WHERE DATE(DataCzas) LIKE '".$data_format."' AND
+                    TorPreferowany =".$tor." AND`CzyOdwolana` =0 AND
+                    Time(DataCzas) BETWEEN '".$next."' AND '".$koniec."'
+               GROUP BY DataCzas";
+       
+           $unikalne_godziny=$db->query($sql_unikalne)->fetchAll();
+           $znalezione=false;
            
-          if(isset($max_czas[0]['Godzina'])) {
-          $dlugosc_czasu=$max_czas[0]['Godzina']-$poczatek.":00";}
-          else{
-              $dlugosc_czasu=$koniec-$poczatek;
-          }
+         //print_r($unikalne_godziny);
            
-          //print_r($max_czas);
-         // print_r($dlugosc_czasu);
-          
-          $czasTrwania=array();
-           for($a=0;$a<$dlugosc_czasu;$a++){
-           $czasTrwania[$a]=$a+1;
-           }
-          // print_r($czasTrwania);
+           
+         for($t=0;$t<sizeof($unikalne_godziny);$t++){           //dla wszystkich uniklanych godzin rezerwacji
+             if($poczatek.":00" < $unikalne_godziny[$t]['Godzina'] &&
+                ($unikalne_godziny[$t]['CzyNaWylacznasc']==1  OR
+                 $unikalne_godziny[$t]['ZarezerwowaneMiejsca']>2) AND 
+                    $znalezione == false){
+                 $znalezione=true;
+                 $max_czas=$unikalne_godziny[$t]['Godzina'];
+                 
+             }
+             
+         }  
+         
+   if ($znalezione==true){
+    $dlugosc_czasu=$max_czas-$poczatek.":00";
+   }	
+   
+   else{
+     $dlugosc_czasu=$koniec-$poczatek;
+   }
+       
+     
 
+           
+ //Wyświetlenie formularza rezerwacji          
           echo "<h2> Rezerwacja basenu dla dnia $data</h2>";
 
-
 $form=$this->form;
-
-if(isset($zajete_terminy[0]['CzyNaWylacznasc'])){
-    $ile_osob_jest=sizeof($zajete_terminy);
+if(isset($zajety_termin[0]['CzyNaWylacznasc'])){
+    $ile_osob_jest=$zajety_termin[0]['ZarezerwowaneMiejsca'];
                 echo "<div class='info'><p><strong>Na Torze ".$tor." w wybranym dniu zarezerwowano już ".$ile_osob_jest." miejsce/a. 
                         Zatem nie ma możliwości rezerwacji tego toru na wyłączność</strong></p></div>";
-          $form->Wylacznosc->setAttribs(array('disable' => 'disable'));
+    $form->CzyNaWylacznosc->setAttribs(array('disable' => 'disable'));
                 
 }
-   
+ 
+$czasTrwania=array();
+           for($a=1;$a<=$dlugosc_czasu;$a++){
+           $czasTrwania[$a]=$a;
+           $form->IleRezerwacji->addMultiOption($a,$a);
+           }
+           
+       
+
+   $form->setAction($this->baseUrl('/rezerwacja/rezerwacja-zapis'));
+ 
     $form->Poczatek->setValue($poczatek);
-    //$form->Koniec->setValue($koniec);
-    $form->Tor->setValue($tor);
-    $form->CzasTrwania->setmultiOptions($czasTrwania);
-            
+    $form->TorPreferowany->setValue($tor);
+    $form->IloscOsob->setValue(1);
+    $form->CzyOdwolana->setValue(0);
+    $form->CzasTrwania->setValue(1);
+    
+    //$form->IleRezerwacji->setOptions(array("1"=>"1", "2"=>"2"));
+    
+    
+    $form->uzytkownik_idUzytkownik->setValue($this->IDUzytkownik);
+   //$form->IleRezerwacji->setmultiOptions(array("1"=>"1", "2"=>"2"));
+   $form->DataCzas->setValue($data_time);
+    
       echo $form;
       
+      
       }
-//echo $data." ".$time;
-// $tmp[0] = subdomain
-// $tmp[1] = domain
-// $tmp[2] = com?>
+//------------------------------------      
+?>
