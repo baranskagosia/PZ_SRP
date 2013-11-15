@@ -3,11 +3,16 @@
 
 	<?php    
 		
-	//$month = $_SESSION['month'];
-	//$year = $_SESSION['year'];
-	
+		if(isset($_POST['miesiac'])){
+			$month = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
+			$year = isset($_POST['rok']) ? ($_POST['rok']) :false;
+		}
+		else{
+			$month = date('m',mktime(0,0,0,date("m"),date("d"),date("Y")));
+			$year = date('Y',mktime(0,0,0,date("m"),date("d"),date("Y")));
+		}
 	//echo $month.' '.$year;
-	echo draw_calendar(11,2013);
+	echo draw_calendar($month,$year);
 	
 	function jaki_miesiac($month){
 			$months1 = array('styczeń','luty','marzec','kwiecieć','maj','czerwiec','lipiec','sierpień','wrzesień','październik','listopad','grudzień');
@@ -53,8 +58,8 @@
 	global $month_now;
 	global $year_now;
 	
-	$month = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
-	$year = isset($_POST['rok']) ? ($_POST['rok']) :false;
+	//$month = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
+	//$year = isset($_POST['rok']) ? ($_POST['rok']) :false;
 	
 	//echo 'Kalendarz dla '.$month.' '.$year;
 	echo '<center><h1>'.jaki_miesiac($month).'  '.$year.'</h1></center>';

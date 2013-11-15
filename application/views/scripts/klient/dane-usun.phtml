@@ -1,0 +1,9 @@
+<?php
+	
+	$idKlient= $this->idKlient;
+	//$czy = false;
+	
+	echo 'Czy napewno chcesz usunąć konto?';
+	//echo "<p><a href='/PZ_SRP/public/index.php?idusun=".$idKlient."' class='button'>TAK</a>"; 
+?>
+<form action=<?php echo $this->url(array('controller'=>'klient','action'=>'dane-bye'));?>><input type="submit" value="TAK"/>

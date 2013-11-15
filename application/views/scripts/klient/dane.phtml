@@ -1,18 +1,38 @@
 <?php
 $idKlient= $this->idKlient;
-foreach ($this->dane as $klient):?>
 
-<?php echo
+	$db = Zend_Db::factory('Pdo_Mysql', array(
+    'host'     => 'localhost',
+    'username' => 'B02',
+    'password' => 'B02',
+    'dbname'   => 'pz_srp'
+));
 
-"
-    <h1>Dane klienta</h1>
+             
 
-            <p>Imię:". $klient['Imie']."</p>
-            <p>Nazwisko:". $klient['Nazwisko']."</p>";
-            //<p>Telefon:". $klient['Telefon']."</p>"
-            //<p>Mail:". $klient['Mail']."</p>";
-   
-echo "<p><a href='".$this->url(array( 'action'=>'dane-edit', 'id'=>$idKlient))."' class='button'>Edytuj</a> </p>";
+    //$sql = 'SELECT * FROM klient WHERE idKlient LIKE '.$idKlient.';';
+  	//echo $sql;
+	
+				
+	$sql2 = $db->select()->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
+    //echo $sql2;
+	
+	$stmt = $sql2->query();
+	$result = $stmt->fetchAll();
+	
+	echo "<h2>Profil użytkownika</h2><br><br>";
+	echo "<b>Imię: </b>";
+	echo $result[0]['Imie'];
+	echo "<br><b>Nazwisko: </b>";
+	echo $result[0]['Nazwisko'];
+	echo "<br><b>Numer telefonu: </b>";
+	echo $result[0]['Telefon'];
+	echo "<br><b>Adres e-mail: </b>";
+	echo $result[0]['Mail'];
+	
+	
+	echo "<p><a href='".$this->url(array( 'action'=>'dane-haslo', 'id'=>$idKlient))."' class='button'>Zmien hasło</a> </p>"; 
+	echo "<p><a href='".$this->url(array( 'action'=>'dane-edit', 'id'=>$idKlient))."' class='button'>Edytuj dane</a> </p>";
+	echo "<p><a href='".$this->url(array( 'action'=>'dane-usun', 'id'=>$idKlient))."' class='button'>Usuń konto</a> </p>";
 ?>
-<?php endforeach;
-  ?>
+
