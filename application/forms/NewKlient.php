@@ -5,7 +5,7 @@ class Application_Form_NewKlient extends Zend_Form
 
     public function init()
     {
-        $this->setAction('create')->setMethod('post');
+        $this->setAction('rejestracja')->setMethod('post');
         
         $filterTrim = new Zend_Filter_StringTrim();
         $validatorNotEmpty = new Zend_Validate_NotEmpty();
