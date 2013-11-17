@@ -66,6 +66,40 @@ class IndexController extends Zend_Controller_Action
         // action body
     }
 
+    public function rejestracjaAction()     {
+        $usersModel = new Application_Model_Users();
+        $klientModel = new Application_Model_Klient();
+        $registrationForm = new Application_Form_NewKlient();
+        $this->view->registrationForm = null;
+        
+        if($this->getRequest()->isPost()) {
+            if($registrationForm->isValid($_POST)) {
+                $values = $registrationForm->getValues();
+                
+                $db = Zend_Db_Table::getDefaultAdapter();
+                try {
+                    //$db->beginTransaction();
+                    
+                    $user = $usersModel->addNewUser($values['Mail'], md5($values['Haslo']), 'klient');
+                    
+                    $klientId = $klientModel->add($values['Imie'], $values['Nazwisko'], 0);
+                    
+                    //$db->commit();
+                } catch(Zend_Db_Statement_Exception $e) {
+                    //$db->rollback();
+                    throw $e;
+                    //TODO: sprawdzenie warunków, przy których może wystąpić
+                    // "wyścig"
+                }
+                
+                $this->view->idUzytkownik = $klientId;
+            }
+            
+        }
+        else {
+                $this->view->registrationForm = $registrationForm;
+        }
+    }
 
 }
 

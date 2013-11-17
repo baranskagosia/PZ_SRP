@@ -1,0 +1,10 @@
+<br /><br />
+<div id="view-content">
+    <b>Controller</b> => index, <b>Action</b> => rejestracja
+</div>
+<?php 
+if(isset($this->registrationForm)) { echo $this->registrationForm; }
+else { echo "brak formularza"; }
+
+if(isset($this->idUzytkownik)) { echo $this->idUzytkownik; }
+?>

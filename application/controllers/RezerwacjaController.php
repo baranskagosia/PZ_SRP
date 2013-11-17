@@ -83,6 +83,14 @@ class RezerwacjaController extends Zend_Controller_Action
         $this->view->message =$message;
     }
 
+    public function wyswietlAction() {
+        $helper= $this->view->getHelper('LoggedInAs');
+        $IDUzytkownik=$helper->loggedInAs();
+        
+        $rezerwacjaModel = new Application_Model_Rezerwacja();
+        
+        $this->view->rezerwacje = $rezerwacjaModel->Przyszle($IDUzytkownik);
+    }
 
 }
 
