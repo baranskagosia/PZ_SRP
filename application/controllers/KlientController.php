@@ -2,7 +2,8 @@
 
 class KlientController extends Zend_Controller_Action
 {
-
+	
+	
     public function init()
     {
         /* Initialize action controller here */
@@ -62,6 +63,7 @@ class KlientController extends Zend_Controller_Action
 
     public function daneEditAction()
     {
+    	
     	$helper= $this->view->getHelper('LoggedInAs');
         $idKlient=$helper->loggedInAs();
 	
@@ -69,11 +71,31 @@ class KlientController extends Zend_Controller_Action
            // $this->_redirect('index/index');
         
         $request =$this ->getRequest();
-        $form =new Application_Form_Edit();
         
+		//
+        $db = Zend_Db::factory('Pdo_Mysql', array(
+			    'host'     => 'localhost',
+			    'username' => 'B02',
+			    'password' => 'B02',
+			    'dbname'   => 'pz_srp'
+			));
+			
+		$sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
+		$stmt = $sql->query();
+		$result = $stmt->fetchAll();
+		
+		$i = $result[0]['Imie'];
+		$n = $result[0]['Nazwisko'];
+		$t = $result[0]['Telefon'];
+		$dane = array('Imie'=>$i, 'Nazwisko'=>$n,'Telefon'=>$t);
+			
+		//var_dump($i);
+        $form =new Application_Form_Edit();
+        $form->populate($dane);
+		
 		 if($request->isPost()){
             if($form->isValid($this->_request->getPost())){
-                    	
+                
 				$imie = $form->getValue('Imie');
 				$nazwisko = $form->getValue('Nazwisko');
 				$telefon = $form->getValue('Telefon');
@@ -95,12 +117,12 @@ class KlientController extends Zend_Controller_Action
 					'Telefon'=> $telefon);
 				
 				$sql2 = $db->update('klient', $data, 'idUzytkownik LIKE '.$result[0]['idUzytkownik']);
-					
-					
-			
+				echo '<font color="red">Edycja danych się powiodła</font>';
+		
 			}}        
          }
     $this->view->form =$form;
+					
 	}
 	
 	public function daneHasloAction()
@@ -145,25 +167,32 @@ class KlientController extends Zend_Controller_Action
 		
 				    $data = array(
 						'Haslo' => $Pass_new2);
-						
+					
+					$sql2 = $db->update('uzytkownik', $data, 'idUzytkownik LIKE '.$result[0]['idUzytkownik']);
+					
+					/*
 					if($Pass_new1 == $Pass_new2){
 						$sql2 = $db->update('uzytkownik', $data, 'idUzytkownik LIKE '.$result[0]['idUzytkownik']);
 					}
 					else{
 						$this->view->form =$form;
 						echo 'Hasła się nie zgadzają!';
-					}
+					}*/
+					
  					//$this->view->form =$form;
 					$this->view->idKlient = $idKlient;
 					
 					echo 'Hasło zostało zmienione';
+					echo "<p><a href='".$this->url(array( 'action'=>'dane', 'id'=>$idKlient))."' class='button'>Powrót</a> </p>"; 
 					}
-  			}	
+  			/*}	
 			else{
  				//var_dump($this->getRequest()->getPost());
-				$this->view->form =$form;
-				$this->view->idKlient = $idKlient;
+			}*/
 			}
+			$this->view->form =$form;
+			$this->view->idKlient = $idKlient;
+			
 		}
 
     public function daneUsunAction()

@@ -10,11 +10,12 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-         
+         	/*
             $db=Zend_Db_Table_Abstract::getDefaultAdapter();
             $sql="SELECT * FROM aktualnosci WHERE czyAktualne LIKE 1";
             $wynik=$db-> query($sql)->fetchAll();
             $this->view->wynik=$wynik;
+			*/
     }
 
     public function onasAction()
