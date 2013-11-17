@@ -219,7 +219,12 @@ class KlientController extends Zend_Controller_Action
 
     public function historiaAction()
     {
-        // action body
+        $helper= $this->view->getHelper('LoggedInAs');
+        $IDUzytkownik=$helper->loggedInAs();
+        
+        $rezerwacjaModel = new Application_Model_Rezerwacja();
+        
+        $this->view->rezerwacje = $rezerwacjaModel->Historia($IDUzytkownik);
     }
 
     public function odwolajRezerwacjeAction()

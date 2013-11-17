@@ -77,22 +77,21 @@ class IndexController extends Zend_Controller_Action
                 
                 $db = Zend_Db_Table::getDefaultAdapter();
                 try {
-                    $db->beginTransaction();
+                    //$db->beginTransaction();
                     
-                    $usersModel->addNewUser($values['Mail'], md5($values['Haslo']), 'klient');
+                    $user = $usersModel->addNewUser($values['Mail'], md5($values['Haslo']), 'klient');
                     
-                    $klientModel->add($values['Imie'], $values['Nazwisko'], 0);
+                    $klientId = $klientModel->add($values['Imie'], $values['Nazwisko'], 0);
                     
-                    $db->commit();
+                    //$db->commit();
                 } catch(Zend_Db_Statement_Exception $e) {
-                    $db->rollback();
+                    //$db->rollback();
                     throw $e;
                     //TODO: sprawdzenie warunków, przy których może wystąpić
                     // "wyścig"
                 }
                 
-                $idUzytkownik = $usersModel->getAdapter()->lastInsertId();
-                $this->view->idUzytkownik = $idUzytkownik;
+                $this->view->idUzytkownik = $klientId;
             }
             
         }
