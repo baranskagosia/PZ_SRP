@@ -1,7 +1,10 @@
 <br /><br />
+<div id="view-content">
+    <b>Controller</b> => index, <b>Action</b> => rejestracja
+</div>
 <?php 
 if(isset($this->registrationForm)) { echo $this->registrationForm; }
-else { echo "<div>Rejestracja przebiegła poprawnie! Możesz teraz zalogować się do systemu."; }
+else { echo "brak formularza"; }
 
-// if(isset($this->idUzytkownik)) { echo $this->idUzytkownik; }
+if(isset($this->idUzytkownik)) { echo $this->idUzytkownik; }
 ?>

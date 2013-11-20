@@ -22,7 +22,6 @@ class Application_Model_Klient extends Zend_Db_Table_Abstract {
 
     public function add($imie, $nazwisko, $idUzytkownik) {
         $idKlienta = null;
-        
         if (!(empty($imie) || empty($nazwisko) || empty($idUzytkownik))) {
             $newKlient = array(
                 'Imie' => $imie,
@@ -34,15 +33,6 @@ class Application_Model_Klient extends Zend_Db_Table_Abstract {
         }
 
         return $idKlienta;
-    }
-    
-    public function getNextAutoIncrementValue() {
-        $db = $this->getAdapter();
-        $sql = "SHOW TABLE STATUS LIKE 'klient'";
-        
-        $klientTableStatus = $db->query($sql)->fetch();
-        
-        return $klientTableStatus['Auto_increment'];
     }
 
  }
