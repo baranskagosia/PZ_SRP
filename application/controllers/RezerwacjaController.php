@@ -42,7 +42,7 @@ class RezerwacjaController extends Zend_Controller_Action
     $ID=$db->query($idUSER)->fetchAll();
     
    $IDUzytkownik=$ID[0]['idUzytkownik'];
-    print_r($IDUzytkownik);
+    //print_r($IDUzytkownik);
       $request =$this ->getRequest();
      
       $DbTable= new Application_Model_Rezerwacja;

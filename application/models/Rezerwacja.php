@@ -57,5 +57,22 @@ public function Historia($idUzytkownik) {
     
     return $result;
 }
+
+public function Zaplanowane($idUzytkownik) {
+    $result = null;
+    $db = $this->getAdapter();
+    
+    if(!empty($idUzytkownik)) {
+        $query = $db->select()
+                ->from('rezerwacja')
+                ->where('uzytkownik_idUzytkownik = ?', $idUzytkownik)
+                 ->where('CzyOdwolana' ==0)
+                ->where('DataCzas > ?', new Zend_Db_Expr('NOW()'))
+                ->order('DataCzas');
+        $result = $db->query($query)->fetchAll();
+    }
+    
+    return $result;
+}
 }
 

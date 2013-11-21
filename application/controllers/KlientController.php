@@ -125,7 +125,7 @@ class KlientController extends Zend_Controller_Action
 					'Telefon'=> $telefon);
 				
 				$sql2 = $db->update('klient', $data, 'idUzytkownik LIKE '.$result[0]['idUzytkownik']);
-				echo '<font color="red">Edycja danych się powiodła</font>';
+				echo '<font color="green">Edycja danych się powiodła</font>';
 		
 			}}        
          }
@@ -243,14 +243,29 @@ class KlientController extends Zend_Controller_Action
 
     public function rezerwacjeAction()
     {
-        // action body
+         $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+        $helper= $this->view->getHelper('LoggedInAs');
+        $IDKlient=$helper->loggedInAs();
+        $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+        $ID=$db->query($idUSER)->fetchAll();
+        $IDUzytkownik=$ID[0]['idUzytkownik'];
+        
+     
+        $rezerwacjaModel = new Application_Model_Rezerwacja();
+        
+        $this->view->rezerwacje = $rezerwacjaModel->Zaplanowane($IDUzytkownik);
     }
 
     public function historiaAction()
     {
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
         $helper= $this->view->getHelper('LoggedInAs');
-        $IDUzytkownik=$helper->loggedInAs();
+        $IDKlient=$helper->loggedInAs();
+        $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+        $ID=$db->query($idUSER)->fetchAll();
+        $IDUzytkownik=$ID[0]['idUzytkownik'];
         
+     
         $rezerwacjaModel = new Application_Model_Rezerwacja();
         
         $this->view->rezerwacje = $rezerwacjaModel->Historia($IDUzytkownik);
@@ -258,6 +273,7 @@ class KlientController extends Zend_Controller_Action
 
     public function odwolajRezerwacjeAction()
     {
+
         $IDRezerwacja = $this->getRequest()->getParam('IDRezerwacja');
         $this->view->IDRezerwacja=$IDRezerwacja;
         $table=new Application_Model_Rezerwacja;
