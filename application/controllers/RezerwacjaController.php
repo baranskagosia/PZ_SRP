@@ -10,8 +10,13 @@ class RezerwacjaController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
         $helper= $this->view->getHelper('LoggedInAs');
-        $IDUzytkownik=$helper->loggedInAs();
+        $IDKlient=$helper->loggedInAs();
+        $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+        $ID=$db->query($idUSER)->fetchAll();
+    
+        $IDUzytkownik=$ID[0]['idUzytkownik'];
         $this->view->IDUzytkownik=$IDUzytkownik;
        
         $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];

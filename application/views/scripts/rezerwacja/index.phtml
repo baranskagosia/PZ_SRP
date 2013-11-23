@@ -4,10 +4,16 @@
 $data=$this->data;
 $time=$this->time;
 $tor=$this->tor;
+$IDUzytkownik=$this->IDUzytkownik;
+$data_format=date("Y-m-d", strtotime($data));
+
+$data_time=$data_format." ".$time.":00";
+$rezerwacja=czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor);
+        if(sizeof($rezerwacja)>0){
+            echo "<p class='info'>Dokonałeś już rezerwacji w wybranym terminie. </p>";
+        }
 
 //Sprawdzenie czy dany termin nie jest zajęty (wylacznosc 1 lub ilosc rezerwacji>2)
-$data_format=date("Y-m-d", strtotime($data));
-$data_time= $data_format." ".$time.":00";
 
  $db = Zend_Db_Table::getDefaultAdapter();
  $sql_zajete="SELECT Distinct(`DataCzas`) AS unikalne, TIME(DataCzas) AS Godzina, Date(DataCzas) AS Data, 
@@ -113,9 +119,75 @@ if(isset($zajety_termin[0]['CzyNaWylacznasc'])){
    //$form->IleRezerwacji->setmultiOptions(array("1"=>"1", "2"=>"2"));
    $form->DataCzas->setValue($data_time);
     
-      echo $form;
+     echo "<div id='form'>";
+   echo $form;
+     echo "</div>";
+     } 
+ $rezerwacjeDzis=czyMaszTerminDzis($IDUzytkownik,$data_format);
+     if(sizeof($rezerwacjeDzis)>0){
+      echo "<div id='srodek_view2' >
+			<p><b>Twoje rezerwacje w dniu dzisiejszym:</b></p>
+			<table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Godzina</th>
+                                    <th>Tor</th>
+                                    <th>Ilość osób</th>
+                                    <th>Czas trwania</th>
+                                    <th>Na wyłączność?</th>
+                                </tr>
+                             </thead>
+                            <tbody>";
+                            for($p=0;$p<sizeof($rezerwacjeDzis);$p++){
+                               echo " <tr>
+                                    <td>".$rezerwacjeDzis[$p]['Data']."</td>
+                                    <td>".$rezerwacjeDzis[$p]['Godzina']."</td>
+                                    <td>".$rezerwacjeDzis[$p]['TorPreferowany']."</td>
+                                    <td>".$rezerwacjeDzis[$p]['IloscOsob']."</td>
+                                    <td>".$rezerwacjeDzis[$p]['CzasTrwania']."</td>";
+                                        if($rezerwacjeDzis[$p]['CzyNaWylacznasc']==1){
+                                            echo "<td>Tak</td></tr>";
+                                        }
+                                        else {
+                                            echo "<td>Nie</td></tr>";
+                                        }
+                            }
+                 echo "</tbody>
+                        </table>
+			</div>";
       
-      
-      }
-//------------------------------------      
-?>
+     }
+//------------------------------------    
+     
+      function czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor){
+            if($IDUzytkownik){
+                $sql="SELECT * FROM rezerwacja where uzytkownik_idUzytkownik LIKE $IDUzytkownik AND 
+                   DataCzas LIKE '".$data_time."' AND TorPreferowany LIKE ".$tor.""  ;
+                    $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+                    $rezerwacja=$db->query($sql)->fetchAll();
+                   return $rezerwacja;
+                }
+                else{
+                    $rezerwacja=null;
+                return $rezerwacja;
+                }
+        }
+        
+            function czyMaszTerminDzis($IDUzytkownik,$data){
+            if($IDUzytkownik){
+                $sql="SELECT Date(DataCzas) AS Data, TIME(DataCzas) AS Godzina, TorPreferowany, IloscOsob,CzasTrwania, CzyNaWylacznasc
+                        FROM rezerwacja 
+                        where uzytkownik_idUzytkownik LIKE $IDUzytkownik AND 
+                                Date(DataCzas) LIKE '".$data."' 
+                        ORDER BY Godzina"  ;
+                    $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+                    $rezerwacjeDzis=$db->query($sql)->fetchAll();
+                   return $rezerwacjeDzis;
+                }
+                else{
+                    $rezerwacjeDzis=null;
+                return $rezerwacjeDzis;
+                }
+        }  
+     ?>

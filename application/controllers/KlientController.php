@@ -12,8 +12,18 @@ class KlientController extends Zend_Controller_Action
     public function indexAction()
     {
          $helper= $this->view->getHelper('LoggedInAs');
-         $idKlient=$helper->loggedInAs();
+        $IDKlient= $idKlient=$helper->loggedInAs();
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+              if(isset($IDKlient)){
+             $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+             $ID=$db->query($idUSER)->fetchAll();
     
+             $IDUzytkownik=$ID[0]['idUzytkownik'];
+        }
+       else{
+           $IDUzytkownik=null;  
+       }
+     $this->view->IDUzytkownik=$IDUzytkownik;
         $this->view->idKlient=$idKlient;
 // action body
     }

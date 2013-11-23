@@ -49,6 +49,20 @@ class IndexController extends Zend_Controller_Action
 
     public function grafikAction()
     {
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+        $helper= $this->view->getHelper('LoggedInAs');
+        $IDKlient=$helper->loggedInAs();
+        if(isset($IDKlient)){
+             $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+             $ID=$db->query($idUSER)->fetchAll();
+    
+             $IDUzytkownik=$ID[0]['idUzytkownik'];
+        }
+       else{
+           $IDUzytkownik=null;  
+       }
+     $this->view->IDUzytkownik=$IDUzytkownik;
+    
         $DbTable = new Application_Model_Info();
         $iloscTorow = $DbTable->IloscTorow();
         $this->view->iloscTorow = $iloscTorow;
@@ -63,7 +77,19 @@ class IndexController extends Zend_Controller_Action
 
     public function kalendarzAction()
     {
-        // action body
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+        $helper= $this->view->getHelper('LoggedInAs');
+        $IDKlient=$helper->loggedInAs();
+        if(isset($IDKlient)){
+             $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+             $ID=$db->query($idUSER)->fetchAll();
+    
+             $IDUzytkownik=$ID[0]['idUzytkownik'];
+        }
+       else{
+           $IDUzytkownik=null;  
+       }
+     $this->view->IDUzytkownik=$IDUzytkownik;
     }
 
     public function rejestracjaAction()     {
