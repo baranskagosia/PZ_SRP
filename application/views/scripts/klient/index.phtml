@@ -1,6 +1,33 @@
 <h2>Witaj w systemie!</h2>
         <p>Jesteś zalogowany jako <strong>Klient</strong></p>.
 <?php 
-          $this->idKlient;
+  
+         $ZendDate= new Zend_Date();
+         $data= $ZendDate->get(Zend_Date::DATETIME_MEDIUM);
 
-          ?>
+         $data_format=date("Y-m-d H:i:s", strtotime($data));
+         $IDUzytkownik=$this->IDUzytkownik;
+         
+       $najblizsze=NajblizszeRezerwacje($IDUzytkownik,$data_format);
+       
+     if(sizeof($najblizsze)>0){
+         echo "<p class='info'> Twoja najbliższa zaplanowana wizyta jest na <strong>".$najblizsze[0]['DataCzas']."</strong></p>";
+     }
+     else{
+         echo "<p class='info'> Nie masz żadnych zaplanowanych wizyt.</p>";
+     }
+         
+function NajblizszeRezerwacje($IDUzytkownik,$data_format){
+            if($IDUzytkownik){
+                $sql="SELECT * FROM rezerwacja where uzytkownik_idUzytkownik LIKE $IDUzytkownik AND 
+                   DataCzas >='".$data_format."' AND CzyOdwolana LIKE 0 ORDER BY DataCzas";
+                    $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+                    $rezerwacja=$db->query($sql)->fetchAll();
+                   return $rezerwacja;
+                }
+                else{
+                    $rezerwacja=null;
+                return $rezerwacja;
+                }
+        }
+?>

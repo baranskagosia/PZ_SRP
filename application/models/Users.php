@@ -27,5 +27,13 @@ public function addNewCustomer($Login, $Haslo, $Rola) {
      return $ilosc;
  }
  
+  public function getNextAutoIncrementValue() {
+        $db = $this->getAdapter();
+        $sql = "SHOW TABLE STATUS LIKE 'uzytkownik'";
+        
+        $uzytkownikTableStatus = $db->query($sql)->fetch();
+        
+        return $uzytkownikTableStatus['Auto_increment'];
+    }
 }
 

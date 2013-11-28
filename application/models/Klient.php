@@ -32,7 +32,16 @@ class Application_Model_Klient extends Zend_Db_Table_Abstract {
             $idKlienta = $this->insert($newKlient);
         }
 
+        
         return $idKlienta;
+    }
+ public function getNextAutoIncrementValue() {
+        $db = $this->getAdapter();
+        $sql = "SHOW TABLE STATUS LIKE 'klient'";
+        
+        $klientTableStatus = $db->query($sql)->fetch();
+        
+        return $klientTableStatus['Auto_increment'];
     }
 
  }

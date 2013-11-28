@@ -3,6 +3,7 @@
 
 	<?php    
 		
+        
 		if(isset($_POST['miesiac'])){
 			$month = isset($_POST['miesiac']) ? ($_POST['miesiac']) :false;
 			$year = isset($_POST['rok']) ? ($_POST['rok']) :false;
@@ -11,9 +12,28 @@
 			$month = date('m',mktime(0,0,0,date("m"),date("d"),date("Y")));
 			$year = date('Y',mktime(0,0,0,date("m"),date("d"),date("Y")));
 		}
+                
+                $IDUzytkownik=$this->IDUzytkownik;
 	//echo $month.' '.$year;
-	echo draw_calendar($month,$year);
+	echo draw_calendar($month,$year,$IDUzytkownik);
 	
+        czyZajete(2,'2013-11-25');
+        function czyZajete($IDUzytkownik,$data){
+            if($IDUzytkownik){
+                  // $sql="SELECT COUNT(*) AS ilosc FROM rezerwacja where `uzytkownik_idUzytkownik' LIKE ".$IDUzytkownik." 
+                  //      and DATE(`DataCzas`) LIKE '".$data."'";
+                $sql="SELECT COUNT(*) AS ilosc FROM rezerwacja where uzytkownik_idUzytkownik LIKE $IDUzytkownik AND CzyOdwolana LIKE 0 AND
+                    DATE(DataCzas) LIKE '".$data."'";
+                    $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+                    $rezerwacja=$db->query($sql)->fetchAll();
+                    $czyRezewacja=$rezerwacja[0]['ilosc'];
+                    
+                }
+                else{
+                    $czyRezerwacja=null;
+                }
+           return $czyRezewacja;
+        }
 	function jaki_miesiac($month){
 			$months1 = array('styczeń','luty','marzec','kwiecieć','maj','czerwiec','lipiec','sierpień','wrzesień','październik','listopad','grudzień');
 		
@@ -50,8 +70,9 @@
 	$day_now = date('d',mktime(0,0,0,date("m"),date("d"),date("Y")));
 	$month_now = date('m',mktime(0,0,0,date("m"),date("d"),date("Y")));
 	$year_now = date('Y',mktime(0,0,0,date("m"),date("d"),date("Y")));
+        $IDUzytkownik=$this->IDUzytkownik;
 	
-	function draw_calendar($month,$year){
+	function draw_calendar($month,$year,$IDUzytkownik){
 		
 	global $today;
 	global $day_now;
@@ -102,7 +123,9 @@
 			$licznik++;
 			
 			$date = $list_day.'.'.$month.'.'.$year;
+                        $data=$year.'-'.$month.'-'.$list_day;
 			
+                        
 			$calendar.= '<td class="calendar-day">';
 			
 				/* add in the day number */
@@ -120,8 +143,15 @@
 									$calendar.='<div class="day-number-nieczynne-stare">'.$list_day.'</div>';		
 								}
 								else {
-									$calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
-								}
+                                 
+                                                                    if(czyZajete($IDUzytkownik,$data)!=0){
+									$calendar.= '<div class="day-number-masz-rezerwacje"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+                                                                    }
+                                                                    else{
+                                                                        $calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+                                                                    }
+                                                                        
+                                                                 }
 							}
 							else{
 								$calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
@@ -272,7 +302,11 @@
                 <tr>
                     <td class='nieczynne-stare'> </td>
                     <td>Nieczynne (przeszłe dni)</td>
-                </tr>    
+                </tr>   
+                <tr>
+                    <td class='masz-rezerwacje'> </td>
+                    <td>Masz rezerwacje w tym terminie</td>
+                </tr> 
             </tbody>
             </tbody>
         </table></p>	           

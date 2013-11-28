@@ -22,16 +22,20 @@ class Application_Form_Edit extends Zend_Form
 {
 	   $Imie = new Zend_Form_Element_Text('Imie');
        $Imie-> setLabel('Podaj imie: ')
-	   ->setRequired('true')->addValidator( 'NotEmpty',true,array('messages'=>'Hasło nie może być puste'))
+	   ->setRequired('true')->addValidator( 'NotEmpty',true,array('messages'=>'Imię nie może być puste'))
 	   ->addValidator('Alnum')
 	   ;	   
 			   
        $Nazwisko = new Zend_Form_Element_Text('Nazwisko');
-       $Nazwisko-> setLabel('Podaj nazwisko: ')->setRequired('true')->addValidator( 'NotEmpty',true,array('messages'=>'Hasło nie może być puste'))
+       $Nazwisko-> setLabel('Podaj nazwisko: ')->setRequired('true')->addValidator( 'NotEmpty',true,array('messages'=>'Nazwisko nie może być puste'))
 	   ;
 	   
 	   $Telefon = new Zend_Form_Element_Text('Telefon');
+<<<<<<< HEAD
        $Telefon-> setLabel('Podaj telefon: ')->addValidator( 'NotEmpty',true,array('messages'=>'Hasło nie może być puste'))
+=======
+       $Telefon-> setLabel('Podaj telefon: ')->setRequired('true')
+>>>>>>> dff5e73f07a5f46c62971741dcda1c2b31a6b36c
 	   ->addValidator('Digits',true,array('messages'=>'Telefon musi składać się z cyfr'))
 	   ->addValidator('StringLength',true,array(0,9,'messages'=>'Telefon nie może mieć więcej niż 9 cyfr'))
 			   

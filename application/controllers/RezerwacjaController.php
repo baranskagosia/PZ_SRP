@@ -10,8 +10,13 @@ class RezerwacjaController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
         $helper= $this->view->getHelper('LoggedInAs');
-        $IDUzytkownik=$helper->loggedInAs();
+        $IDKlient=$helper->loggedInAs();
+        $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+        $ID=$db->query($idUSER)->fetchAll();
+    
+        $IDUzytkownik=$ID[0]['idUzytkownik'];
         $this->view->IDUzytkownik=$IDUzytkownik;
        
         $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
@@ -35,20 +40,25 @@ class RezerwacjaController extends Zend_Controller_Action
 
     public function rezerwacjaZapisAction()
     {
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
     $helper= $this->view->getHelper('LoggedInAs');
-    $IDUzytkownik=$helper->loggedInAs();
+    $IDKlient=$helper->loggedInAs();
+    $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+    $ID=$db->query($idUSER)->fetchAll();
     
+   $IDUzytkownik=$ID[0]['idUzytkownik'];
+    //print_r($IDUzytkownik);
       $request =$this ->getRequest();
-      $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+     
       $DbTable= new Application_Model_Rezerwacja;
       $form=new Application_Form_Rezerwacja;
       //$form->populate($result->toArray());
         if($request->isPost()){
             if($form->isValid($request->getPost())){
                $data=$form->getValues();
-                $sql_cena="SELECT idCennik FROM `cennik` WHERE OsobaTyp='".$data['OsobaTyp']."' AND CzyWylacznosc=".$data['CzyNaWylacznosc']."";
-       
+                $sql_cena="SELECT idCennik FROM `cennik` WHERE OsobaTyp='".$data['Osoba']."' AND CzyWylacznosc=".$data['CzyNaWylacznosc']."";
                 $cena=$db->query($sql_cena)->fetchAll();
+              
                 $data['cena_idcennik']=$cena[0]['idCennik'];
                //print_r($data);
                      $DataCzas=$data['DataCzas'];
@@ -57,7 +67,7 @@ class RezerwacjaController extends Zend_Controller_Action
                      $CzyNaWylacznosc=$data['CzyNaWylacznosc'];
                      $CzyOdwolana=$data['CzyOdwolana'];
                      $CzasTrwania=$data['CzasTrwania'];
-                     $IDUzytkownik=$data['uzytkownik_idUzytkownik'];
+             
                      $Cena=$data['cena_idcennik'];
                      
                     

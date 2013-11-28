@@ -10,12 +10,12 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-         	/*
+         	
             $db=Zend_Db_Table_Abstract::getDefaultAdapter();
             $sql="SELECT * FROM aktualnosci WHERE czyAktualne LIKE 1";
             $wynik=$db-> query($sql)->fetchAll();
             $this->view->wynik=$wynik;
-			*/
+			
     }
 
     public function onasAction()
@@ -49,6 +49,20 @@ class IndexController extends Zend_Controller_Action
 
     public function grafikAction()
     {
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+        $helper= $this->view->getHelper('LoggedInAs');
+        $IDKlient=$helper->loggedInAs();
+        if(isset($IDKlient)){
+             $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+             $ID=$db->query($idUSER)->fetchAll();
+    
+             $IDUzytkownik=$ID[0]['idUzytkownik'];
+        }
+       else{
+           $IDUzytkownik=null;  
+       }
+     $this->view->IDUzytkownik=$IDUzytkownik;
+    
         $DbTable = new Application_Model_Info();
         $iloscTorow = $DbTable->IloscTorow();
         $this->view->iloscTorow = $iloscTorow;
@@ -63,7 +77,19 @@ class IndexController extends Zend_Controller_Action
 
     public function kalendarzAction()
     {
-        // action body
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+        $helper= $this->view->getHelper('LoggedInAs');
+        $IDKlient=$helper->loggedInAs();
+        if(isset($IDKlient)){
+             $idUSER="SELECT idUzytkownik FROM klient WHERE idKlient=$IDKlient";
+             $ID=$db->query($idUSER)->fetchAll();
+    
+             $IDUzytkownik=$ID[0]['idUzytkownik'];
+        }
+       else{
+           $IDUzytkownik=null;  
+       }
+     $this->view->IDUzytkownik=$IDUzytkownik;
     }
 
     public function rejestracjaAction()     {
@@ -78,23 +104,26 @@ class IndexController extends Zend_Controller_Action
                 
                 $db = Zend_Db_Table::getDefaultAdapter();
                 try {
-                    //$db->beginTransaction();
+                    $db->beginTransaction();
                     
+                    $userId = $usersModel->getNextAutoIncrementValue();
                     $user = $usersModel->addNewUser($values['Mail'], md5($values['Haslo']), 'klient');
                     
-                    $klientId = $klientModel->add($values['Imie'], $values['Nazwisko'], 0);
+                    $klientId = $klientModel->add($values['Imie'], $values['Nazwisko'], $userId);
                     
-                    //$db->commit();
+                    $db->commit();
                 } catch(Zend_Db_Statement_Exception $e) {
-                    //$db->rollback();
+                    $db->rollback();
                     throw $e;
                     //TODO: sprawdzenie warunków, przy których może wystąpić
                     // "wyścig"
                 }
                 
-                $this->view->idUzytkownik = $klientId;
+                $this->view->idUzytkownik = $usersModel->getNextAutoIncrementValue();
             }
-            
+            else {
+                $this->view->registrationForm = $registrationForm;
+            }
         }
         else {
                 $this->view->registrationForm = $registrationForm;
@@ -102,6 +131,7 @@ class IndexController extends Zend_Controller_Action
     }
 
 }
+
 
 
 

@@ -1,5 +1,6 @@
 <div id="srodek_info" style=" margin-left: -40px; width:630px;">
         <?php 
+        $IDUzytkownik=$this->IDUzytkownik;
         $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
     $tmp = explode('/', $url);
@@ -42,11 +43,6 @@ for($j=1;$j<=$ilosc_torow;$j++){
         
         
    //Pobranie zajętych terminów dla konkretnego toru.
-            /*$sql_zajete="SELECT Date(DataCzas) AS Data, Time(DataCzas) As Godzina, TorPreferowany, CzyNaWylacznasc
-                FROM rezerwacja 
-                        WHERE Date(DataCzas) LIKE '".$data_format."' AND TorPreferowany = ". $j." 
-                        ORDER BY Godzina ASC" ;
-            */
             $sql_zajete="SELECT Distinct(`DataCzas`) AS unikalne, TIME(DataCzas) AS Godzina, Date(DataCzas) AS Data, 
                `TorPreferowany` ,  `CzyNaWylacznasc`, count(*) AS ZarezerwowaneMiejsca
               FROM rezerwacja WHERE DATE(DataCzas) LIKE '".$data_format."' AND
@@ -66,14 +62,20 @@ for($j=1;$j<=$ilosc_torow;$j++){
               $zajeta_godzina= date("H:i", strtotime($zajete_terminy[$j][$z]['Godzina']));
                 if($akk==$zajeta_godzina){
                     $zajete = true;
-                    if($zajete_terminy[$j][$z]['CzyNaWylacznasc']==1 OR 
-                    $zajete_terminy[$j][$z]['ZarezerwowaneMiejsca']>2){
-                        echo "<td class='zajete'>".$akk."</a></td>";
+                    $czas_zajete=$data_format." ".$akk.":00";
+                    if(czyZajeteGodzina($IDUzytkownik,$czas_zajete,$j)>0){
+                         echo "<td class='masz-rezerwacje'><a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a></td>";
                     }
                     else{
-                        echo "<td class='zajete_nieWylacznosc'>
-                                    <a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a>
-                             </td>";
+                        if($zajete_terminy[$j][$z]['CzyNaWylacznasc']==1 OR 
+                        $zajete_terminy[$j][$z]['ZarezerwowaneMiejsca']>2){
+                            echo "<td class='zajete'>".$akk."</a></td>";
+                        }
+                        else{
+                            echo "<td class='zajete_nieWylacznosc'>
+                                        <a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a>
+                                 </td>";
+                        }
                     }
                     break;
                 }
@@ -101,13 +103,18 @@ $akk=$od;
                     <td class='zajete'> </td>
                     <td>Zajęty</td>
                 </tr>
+                <tr>
                     <td class='zajete_nieWylacznosc'> </td>
                     <td>Zarezerwowany nie na wyłączność</td> 
                     
                 </tr>
+                <tr>
+                    <td class='masz-rezerwacje'> </td>
+                    <td>Masz rezerwacje w tym terminie</td> 
                     
+                </tr>    
                    
-                </tr>
+               
             </tbody>
             </tbody>
         </table></p>
@@ -118,3 +125,20 @@ $akk=$od;
 			<br><b>PLAN BASENU:</b><br>
 			<img src="/PZ_SRP/public/img/ball.jpg" width="450" height="300">
 			</div>
+<?php
+
+function czyZajeteGodzina($IDUzytkownik,$data_time,$tor){
+            if($IDUzytkownik){
+                $sql="SELECT COUNT(*) AS ilosc FROM rezerwacja where uzytkownik_idUzytkownik LIKE $IDUzytkownik AND 
+                   DataCzas LIKE '".$data_time."' AND CzyOdwolana LIKE 0 AND TorPreferowany LIKE ".$tor.""  ;
+                    $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+                    $rezerwacja=$db->query($sql)->fetchAll();
+                    $czyRezewacjGodzina=$rezerwacja[0]['ilosc'];
+                   return $czyRezewacjGodzina;
+                }
+                else{
+                    $czyRezerwacjaGodzina=null;
+                return $czyRezerwacjaGodzina;
+                }
+        }
+    ?>

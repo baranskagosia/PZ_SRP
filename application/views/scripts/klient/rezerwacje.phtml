@@ -1,16 +1,51 @@
-<?php 
-$IDRezerwacja=9;?>
 
+
+
+<?php 
+
+
+    $rowCount = count($this->rezerwacje);
+   
+    if($rowCount == 0) {
+        echo "<p class='info'>Nie masz obecnie rezerwacji. </br>
+            W celu dokonania rezerwacji przejdź do <a href=".$this->baseUrl('index/kalendarz').">widoku rezerwacji </p>";
+    }
+    else {
+        echo "<table>";
+        echo "<thead><tr><th>Data</th><th>Godzina</th><th>Tor</th><th>Ilość osób</th>";
+        echo "<th>Czas trwania</th><th>Na wyłączność?</th><th>Odwołaj</th></tr></thead>";
+        echo "";
+        echo "";
+        echo "";
+        echo "";
+        
+        foreach($this->rezerwacje as $row) {
+            $dataCzas = Zend_Locale_Format::getDate($row['DataCzas'], 
+                array('date_format' => 'yyyy-MM-dd HH:mm:ss'));
+           $IDRezerwacja=$row['idRezerwacja'];
+
+            echo "<tr>";
+            echo "<td>" . $dataCzas['day'] ."." . $dataCzas['month'] . "." . $dataCzas['year'] . "</td>";
+            echo "<td>" . $dataCzas['hour'] . ":" . $dataCzas['minute'] . "</td>";
+            echo "<td>" . $row['TorPreferowany'] . "</td>";
+            echo "<td>" . $row['IloscOsob'] . "</td>";
+            echo "<td>" . $row['CzasTrwania'] . "</td>";
+            echo "<td>" . ($row['CzyNaWylacznasc'] == 1 ? "<b>TAK</b>" : "nie") . "</td>";
+            echo "<td><a href=".$this->baseUrl('klient/odwolaj-rezerwacje/IDRezerwacja/'."$IDRezerwacja".'')."><button onclick='myFunction()'>Odwołaj</button></a></td>";
+            echo "</tr>";
+            //echo print_r($row, true);
+        }
+    }
+    echo "<p id='informacje'></p>";
+?>
 <script>
 function myFunction()
 {
 var x;
-var id="<?php echo $IDRezerwacja; ?>";
 var r=confirm("Czy jesteś pewny, że chcesz odwołać rezerwację?");
 if (r==true)
   {
   x="<p class='confirm-box'>Dokonano usunięcia rezerwacji</p>";
-     window.location.href="<?php echo $this->baseUrl('klient/odwolaj-rezerwacje/IDRezerwacja/')?>" +id;
   }
 else
   {
@@ -19,10 +54,3 @@ else
 document.getElementById("informacje").innerHTML=x;
 }
 </script>
-<?php 
-
-echo " <button onclick='myFunction()'>Odwołaj</button>";
-echo "<p id='informacje'></p>";
-
-
-?>

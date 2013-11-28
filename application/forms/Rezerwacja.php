@@ -71,7 +71,7 @@ class Application_Form_Rezerwacja extends Zend_Form
        
 	   	
         $cena=new Zend_Form_Element_Text('Cena');
-        $cena ->setAttribs(array('disable' => 'disable'))
+        $cena ->setAttribs(array('readonly' => 'true'))
         ->setLabel('Cena: ')
 		->setValue($kwota);
       
