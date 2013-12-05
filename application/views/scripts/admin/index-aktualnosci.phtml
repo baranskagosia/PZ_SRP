@@ -1,0 +1,17 @@
+<?php
+echo print_r($this->aktualnosci);
+
+echo "<table>";
+echo "<thead>";
+echo "<tr><th>Indeks</th><th>Nagłówek</th><th>Treść</th></thead>";
+
+foreach($this->aktualnosci as $row) {
+    echo "<tr>";
+    echo '<td><a href="' . 'sth' . '">' . $row['idAktualnosci'] . '</a></td>';
+    echo "<td>" . $row['naglowek'] . "</td>";
+    echo "<td>" . $row['tresc'] . "</td>";
+    echo "</tr>";
+}
+
+echo "</table>";
+?>

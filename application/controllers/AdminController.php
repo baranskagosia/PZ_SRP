@@ -73,9 +73,67 @@ class AdminController extends Zend_Controller_Action
             if($editLanesForm->isValid($_POST)) {
                 $this->view->editLanesForm = null;
                 
-                // TODO: zapis do bazy
             }
         }
+    }
+    
+    public function indexAktualnosciAction()
+    {
+        $aktualnosciModel = new Application_Model_Aktualnosci();
+        $this->view->aktualnosci = $aktualnosciModel->wszystkieAktualnosci();
+    }
+    
+    public function newAktualnoscAction()
+    {
+        $newAktualnoscForm = new Application_Form_Admin_NewAktualnosc();
+        $this->view->newAktualnoscForm = $newAktualnoscForm;
+        
+        if($this->getRequest()->isPost()) {
+            if($newAktualnoscForm->isValid($_POST)) {
+                $values = $newAktualnoscForm->getValues();
+                $this->view->newAktualnoscForm = null;
+                
+                $aktualnosciModel = new Application_Model_Aktualnosci();
+                $aktualnosciModel->dodajAktualnosc($values['naglowek'], $values['tresc']);
+            }
+        }
+    }
+    
+    public function editAktualnoscAction()
+    {
+        $aktualnoscModel = new Application_Model_Aktualnosci();
+        $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+        $tmp = explode('/', $url);
+        $id=$tmp[7];
+        
+        $this->view->id = $id;
+        $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($id);
+        $this->view->aktualnosc = $aktualnosc;
+        
+        $newAktualnoscForm = new Application_Form_Admin_NewAktualnosc();
+        $newAktualnoscForm->getElement("naglowek")->setValue($aktualnosc['naglowek']);
+        $newAktualnoscForm->getElement("tresc")->setValue($aktualnosc['tresc']);
+        
+        $this->view->editAktualnoscForm = $newAktualnoscForm;
+    }
+    
+    public function updateAktualnoscAction()
+    {
+        $aktualnoscModel = new Application_Model_Aktualnosci();
+        $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+        $tmp = explode('/', $url);
+        $id=$tmp[7];
+        $newAktualnoscForm = new Application_Form_Admin_NewAktualnosc();
+        if($this->getRequest()->isPost()) {
+            if($newAktualnoscForm->isValid($_POST)) {
+                $values = $newAktualnoscForm->getValues();
+                
+                $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($id, $values['naglowek'], $values['tresc']);
+            }
+        }
+        
     }
 
 
