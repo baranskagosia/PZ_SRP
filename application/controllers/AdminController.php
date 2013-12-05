@@ -63,6 +63,20 @@ class AdminController extends Zend_Controller_Action
     {
         // action body
     }
+    
+    public function editTorAction()
+    {
+        $editLanesForm = new Application_Form_Admin_EditLanes();
+        $this->view->editLanesForm = $editLanesForm;
+        
+        if($this->getRequest()->isPost()) {
+            if($editLanesForm->isValid($_POST)) {
+                $this->view->editLanesForm = null;
+                
+                // TODO: zapis do bazy
+            }
+        }
+    }
 
 
 }
