@@ -53,6 +53,8 @@ h1, h2, h3{
 	color:#000010;
 } 
 
+
+
 #h_p{
 	margin: 50px auto 10px auto;
 	min-width: 600px;
@@ -335,6 +337,10 @@ border-color: #000000;
 text-align: center;
 border: 0;
 }
+
+table.rezerwacja_r{
+	text-align: left;
+}
 td
 {
 padding: 5px;
@@ -359,6 +365,10 @@ background-color: #F6F7FE;
 
 }
 
+tbody.rezerwacja_r{
+background-color: #FFFFFF;
+}
+
 form dt {
     color:black;
     padding:3px;
@@ -373,6 +383,12 @@ form label{
 
 .zajete{
     background-color: #FF3333/*#F5785A*/;
+}
+.normal{
+	background-color:#F6F7FE;
+}
+.osoba{
+	background-color: #FFFFFF;
 }
 .wolny{
     background-color: greenyellow/*#F5785A*/;
@@ -593,6 +609,7 @@ label.valid{
     display:inline-block;
 }
 
+
 .rezerwacja a{
     text-decoration: none;
     font-weight: bold;
@@ -606,9 +623,31 @@ td.first_row {
     padding: -30px 0px 5px 0px;
     background-color: transparent;
     font-weight: bolder;
+    width: 40px;
 }
 
 
+/* rezerwacja grafik */
+.rezerwacja_r td{
+	padding: 5px 5px 5px 5px;
+    margin: 5px ;
+   /* background-color: rgb(227, 232, 235);*/
+    display:inline-block;
+    max-height: 150px;
+    text-align: left;
+}
+.rezerwacja_r a{
+    text-decoration: none;
+    font-weight: bold;
+    
+}
+
+.rezerwacja_r a :hover{
+}
+td.first_row_r {
+    padding: -30px 0px 5px 0px;
+    font-weight: bolder;
+}
 
 /* calendar */
 table.calendar{
@@ -723,6 +762,13 @@ td.calendar-day, td.calendar-day-np {
 	background:hotpink;
         font-weight: bold;
 }
+.nieobecny{
+	background-color: #FF3333;
+}
+.obecny{
+	background-color: #00CC66;
+}
+
 div.day-number-masz-rezerwacje{ 
 	background:hotpink;
 	padding:7px; 
@@ -743,3 +789,19 @@ width: 500px;}
 #form{
     position:absolute;
 }
+
+#wylacznosc_tak{
+	color:#006600;
+}
+
+input[class="button_d"]
+{
+background:#00CC66;
+color:#000000;
+} 
+
+input[class="button_e"]
+{
+background:#FF3333;
+color:#000000;
+} 

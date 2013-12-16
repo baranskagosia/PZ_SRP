@@ -71,8 +71,14 @@
                 <action>grafik</action>
                 <resource>recepcjaGrafik</resource>
         </recepcjaGrafik>
+        
+        <recepcjaReputacja>
+                 <label>Reputacja użytkowników</label>
+                 <controller>recepcja</controller>
+                <action>reputacja</action>
+                <resource>recepcjaReputacja</resource>
+        </recepcjaReputacja>
       
-
         <klienciWyswietl>
                  <label>Klienci</label>
                  <controller>recepcja</controller>
