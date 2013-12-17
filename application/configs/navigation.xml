@@ -101,6 +101,41 @@
             <action>new-recepcja</action>
             <resource>addRecepcja</resource>
         </addRecepcja>
+        
+        <newAktualnosc>
+            <label>Dodaj aktualność</label>
+            <controller>admin</controller>
+            <action>new-aktualnosc</action>
+            <resource>newAktualnosc</resource>
+        </newAktualnosc>
+        
+        <indexAktualnosci>
+            <label>Edycja aktualności</label>
+            <controller>admin</controller>
+            <action>index-aktualnosci</action>
+            <resource>indexAktualnosci</resource>
+        </indexAktualnosci>
+        
+        <editCennik>
+            <label>Edycja cennika</label>
+            <controller>admin</controller>
+            <action>edit-cennik</action>
+            <resource>editCennik</resource>
+        </editCennik>
+        
+        <editGodzinyOtwarcia>
+            <label>Edycja godzin otwarcia</label>
+            <controller>admin</controller>
+            <action>index-godziny-otwarcia</action>
+            <resource>indexGodzinyOtwarcia</resource>
+        </editGodzinyOtwarcia>
+        
+        <editTor>
+            <label>Edycja liczby torów</label>
+            <controller>admin</controller>
+            <action>edit-tor</action>
+            <resource>editTor</resource>
+        </editTor>
 
 
 

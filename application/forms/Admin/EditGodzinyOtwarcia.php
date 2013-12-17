@@ -12,17 +12,18 @@ class Application_Form_Admin_EditGodzinyOtwarcia extends Zend_Form
         
         $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         $tmp = explode('/', $url);
+        if(count($tmp) > 7) {
         $id=$tmp[7];
         
-        $this->setAction("update-godziny-otwarcia/" . $id)->setMethod('post');
-               
-        
-        
-            
         $db = Zend_Db_Table::getDefaultAdapter();
         $sqlstr = "SELECT * FROM godziny_otwarcia WHERE idGodzinyOtwarcia = ?";
         $dzienTygodnia = $db->query($sqlstr, $id)->fetch();
         
+        if(!is_null($dzienTygodnia['GodzinaOtwarcia'])) {
+        
+        
+        $this->setAction("update-godziny-otwarcia/" . $id)->setMethod('post');
+               
         $godzinaOtwarcia = new Zend_Form_Element_Select("GodzinaOtwarcia");
         $godzinaOtwarcia->setLabel("Godzina otwarcia: ")
                 ->setMultiOptions($optionsArray)
@@ -36,6 +37,9 @@ class Application_Form_Admin_EditGodzinyOtwarcia extends Zend_Form
         $this->addElement($godzinaZamkniecia);
         
         $this->addElement('submit', 'confirm', array('label' => 'Zatwierdź zmiany'));
+        }} else {
+            
+        }
     }
 
 

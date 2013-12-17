@@ -114,6 +114,13 @@ class AdminController extends Zend_Controller_Action
         }
     }
     
+    public function indexGodzinyOtwarciaAction()
+    {
+        $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+        $sqlstr = "SELECT * FROM godziny_otwarcia";
+        $this->view->godzinyOtwarcia = $db->query($sqlstr)->fetchAll();
+    }
+    
     public function editGodzinyOtwarciaAction()
     {
         $editGodzinyOtwarciaForm = new Application_Form_Admin_EditGodzinyOtwarcia();
