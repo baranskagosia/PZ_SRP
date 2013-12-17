@@ -4,11 +4,13 @@ class Application_Form_Admin_EditLanes extends Zend_Form
 {
     public function init()
     {
-        
         $optionsArray = array();
-        for($i=1; $i<=20; $i++)
+        for($i=1; $i<=30; $i++)
             $optionsArray["$i"] = "$i";
-        $this->setAction('rejestracja')->setMethod('post');
+        
+        $this->setAction("update-tor")->setMethod('post');
+        
+        
         
         $db = Zend_Db_Table::getDefaultAdapter();
         $query_string = "SELECT COUNT(*) AS lanesCount FROM tor";

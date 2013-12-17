@@ -68,13 +68,56 @@ class AdminController extends Zend_Controller_Action
     {
         $editLanesForm = new Application_Form_Admin_EditLanes();
         $this->view->editLanesForm = $editLanesForm;
-        
+    }
+    
+    public function updateTorAction()
+    {
+        $editLanesForm = new Application_Form_Admin_EditLanes();
         if($this->getRequest()->isPost()) {
             if($editLanesForm->isValid($_POST)) {
-                $this->view->editLanesForm = null;
+                $values = $editLanesForm->getValues();
+                $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+                $sqlstr = "DELETE FROM tor";
+                $query = $db->query($sqlstr);
                 
+                for($i=1; $i<=$values["LiczbaTorow"]; $i++) {
+                        $sqlstr = "INSERT INTO tor VALUES (?, ?)";
+                        $query = $db->query($sqlstr, array($i, $i));
+                }
+            } else {
+                $this->view->editLanesForm = $editLanesForm;
             }
         }
+    }
+    
+    public function editCennikAction()
+    {
+        $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+        $sqlstr = "SELECT * FROM cennik";
+        $editCennikForm = new Application_Form_Admin_EditCennik();
+        
+        $this->view->cennik = $db->query($sqlstr)->fetchAll();
+        $this->view->editCennikForm = $editCennikForm;
+    }
+    
+    public function updateCennikAction()
+    {
+        $editCennikForm = new Application_Form_Admin_EditCennik();
+        if($this->getRequest()->isPost()) {
+            if($editCennikForm->isValid($_POST)) {
+                $values = $editCennikForm->getValues();
+                $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+
+            } else {
+                $this->view->editCennikForm = $editCennikForm;
+            }
+        }
+    }
+    
+    public function editGodzinyOtwarciaAction()
+    {
+        $editGodzinyOtwarciaForm = new Application_Form_Admin_EditGodzinyOtwarcia();
+        $this->view->editGodzinyOtwarciaForm = $editGodzinyOtwarciaForm;
     }
     
     public function indexAktualnosciAction()
@@ -131,6 +174,13 @@ class AdminController extends Zend_Controller_Action
                 $values = $newAktualnoscForm->getValues();
                 
                 $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($id, $values['naglowek'], $values['tresc']);
+            }
+            else {
+                $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($id);
+                
+                $newAktualnoscForm->getElement("naglowek")->setValue($aktualnosc['naglowek']);
+                $newAktualnoscForm->getElement("tresc")->setValue($aktualnosc['tresc']);
+                $this->view->editAktualnoscForm = $newAktualnoscForm;
             }
         }
         
