@@ -17,7 +17,7 @@
 	//echo $month.' '.$year;
 	echo draw_calendar($month,$year,$IDUzytkownik);
 	
-        czyZajete(2,'2013-11-25');
+        //czyZajete(2,'2013-11-25');
         function czyZajete($IDUzytkownik,$data){
             if($IDUzytkownik){
                   // $sql="SELECT COUNT(*) AS ilosc FROM rezerwacja where `uzytkownik_idUzytkownik' LIKE ".$IDUzytkownik." 
@@ -27,12 +27,11 @@
                     $db=Zend_Db_Table_Abstract::getDefaultAdapter();
                     $rezerwacja=$db->query($sql)->fetchAll();
                     $czyRezewacja=$rezerwacja[0]['ilosc'];
-                    
-                }
-                else{
-                    $czyRezerwacja=null;
-                }
-           return $czyRezewacja;
+                    return $czyRezewacja;
+            }
+          
+                
+           
         }
 	function jaki_miesiac($month){
 			$months1 = array('styczeń','luty','marzec','kwiecieć','maj','czerwiec','lipiec','sierpień','wrzesień','październik','listopad','grudzień');
