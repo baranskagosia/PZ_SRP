@@ -89,10 +89,21 @@ $rezerwacja=czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor);
 
 $form=$this->form;
 if(isset($zajety_termin[0]['CzyNaWylacznasc'])){
+	
     $ile_osob_jest=$zajety_termin[0]['ZarezerwowaneMiejsca'];
                 echo "<div class='info'><p><strong>Na Torze ".$tor." w wybranym dniu zarezerwowano już ".$ile_osob_jest." miejsce/a. 
                         Zatem nie ma możliwości rezerwacji tego toru na wyłączność</strong></p></div>";
     $form->CzyNaWylacznosc->setAttribs(array('disable' => 'disable'));
+	//var_dump($form->CzyNaWylacznosc);
+	
+	?>
+		<script type="text/javascript">
+		window.onload = function(){ 
+   			document.getElementById("CzyNaWylacznosc-label").style["color"] = "#cdcdcd";
+   		}
+    	</script>
+    	<?php
+	}
                 
 }
  
@@ -122,7 +133,7 @@ if(isset($zajety_termin[0]['CzyNaWylacznasc'])){
      echo "<div id='form'>";
    echo $form;
      echo "</div>";
-     } 
+     
  $rezerwacjeDzis=czyMaszTerminDzis($IDUzytkownik,$data_format);
      if(sizeof($rezerwacjeDzis)>0){
       echo "<div id='srodek_view2' >

@@ -1,37 +1,4 @@
 <?php
-/**
-	$idKlient= $this->idKlient;
-
-	$db = Zend_Db::factory('Pdo_Mysql', array(
-    'host'     => 'localhost',
-    'username' => 'B02',
-    'password' => 'B02',
-    'dbname'   => 'pz_srp'
-	));
-	
-	$sql2 = $db->select()->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
-    
-	$stmt = $sql2->query();
-	$result = $stmt->fetchAll();
-	
-	$haslo = $result[0]['Haslo'];
-	
-	$haslo_stare;
-	$haslo_nowe;
-	
-	echo "<h2>Zmiana hasła</h2>
-			<form id='haslo_form' method='POST'>
-			<br><b>Stare hasło: </b><br>
-			<input type='text' value='".$haslo_stare."'></input>
-			<br><b>Nowe hasło: </b><br>
-			<input type='text' value='".$haslo_nowe."'></input>
-			<br><b>Powtórz nowe hasło: </b><br>
-			<input type='text' value='".$haslo_nowe."'></input>
-			<br>
-			<input type='submit' value='Zmien hasło'>
-	</form><br>"; 
-	echo "<p><a href='".$this->url(array( 'action'=>'dane', 'id'=>$idKlient))."' class='button'>Powrót</a> </p>";
-**/
 
 echo "<h2>Zmiana hasła</h2>";
 echo "<p class='message'>".$this->errorMessage."</p>";

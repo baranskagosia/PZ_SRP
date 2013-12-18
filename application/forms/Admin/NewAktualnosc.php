@@ -7,12 +7,14 @@ class Application_Form_Admin_NewAktualnosc extends Zend_Form
     {
         $current_action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
         $target_action = "new-aktualnosc";
-        if($current_action == "edit-aktualnosc") {
+        $submit_label = "Dodaj Aktualność!";
+        if($current_action == "edit-aktualnosc" || $current_action == "update-aktualnosc") {
             $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
             $tmp = explode('/', $url);
             $id=$tmp[7];
             $target_action = "../update-aktualnosc/$id";
+            $submit_label = "Edytuj aktualność";
         }
         
         $this->setAction($target_action)->setMethod('post');
@@ -38,7 +40,7 @@ class Application_Form_Admin_NewAktualnosc extends Zend_Form
         $this->addElement($tresc);
         
  
-        $this->addElement('submit', 'register', array('label' => 'Dodaj Aktualność!'));
+        $this->addElement('submit', 'register', array('label' => $submit_label));
     }
 
 

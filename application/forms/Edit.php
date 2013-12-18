@@ -31,7 +31,11 @@ class Application_Form_Edit extends Zend_Form
 	   ;
 	   
 	   $Telefon = new Zend_Form_Element_Text('Telefon');
+<<<<<<< HEAD
+       $Telefon-> setLabel('Podaj telefon: ')->addValidator( 'NotEmpty',true,array('messages'=>'Hasło nie może być puste'))
+=======
        $Telefon-> setLabel('Podaj telefon: ')->setRequired('true')
+>>>>>>> dff5e73f07a5f46c62971741dcda1c2b31a6b36c
 	   ->addValidator('Digits',true,array('messages'=>'Telefon musi składać się z cyfr'))
 	   ->addValidator('StringLength',true,array(0,9,'messages'=>'Telefon nie może mieć więcej niż 9 cyfr'))
 			   

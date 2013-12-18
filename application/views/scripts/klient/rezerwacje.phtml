@@ -31,21 +31,23 @@
             echo "<td>" . $row['IloscOsob'] . "</td>";
             echo "<td>" . $row['CzasTrwania'] . "</td>";
             echo "<td>" . ($row['CzyNaWylacznasc'] == 1 ? "<b>TAK</b>" : "nie") . "</td>";
-            echo "<td><a href=".$this->baseUrl('klient/odwolaj-rezerwacje/IDRezerwacja/'."$IDRezerwacja".'')."><button onclick='myFunction()'>Odwołaj</button></a></td>";
-            echo "</tr>";
+            //echo "<td><a href=".$this->baseUrl('klient/odwolaj-rezerwacje/IDRezerwacja/'."$IDRezerwacja".'')."><button onclick='myFunction()'>Odwołaj</button></a></td>";
+            echo "<td><form><input type='button' onclick='myFunction(".$IDRezerwacja.")' value='Odwolaj'></form></td>";
+           	echo "</tr>";
             //echo print_r($row, true);
         }
     }
     echo "<p id='informacje'></p>";
 ?>
 <script>
-function myFunction()
+function myFunction(id_rez)
 {
 var x;
 var r=confirm("Czy jesteś pewny, że chcesz odwołać rezerwację?");
 if (r==true)
   {
-  x="<p class='confirm-box'>Dokonano usunięcia rezerwacji</p>";
+   window.location = "odwolaj-rezerwacje/IDRezerwacja/"+id_rez;
+   x="<p class='confirm-box'>Dokonano usunięcia rezerwacji</p>";
   }
 else
   {
