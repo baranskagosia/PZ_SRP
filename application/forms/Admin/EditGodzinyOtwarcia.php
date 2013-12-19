@@ -22,7 +22,7 @@ class Application_Form_Admin_EditGodzinyOtwarcia extends Zend_Form
         if(!is_null($dzienTygodnia['GodzinaOtwarcia'])) {
         
         
-        $this->setAction("update-godziny-otwarcia/" . $id)->setMethod('post');
+        $this->setAction("../update-godziny-otwarcia/" . $id)->setMethod('post');
                
         $godzinaOtwarcia = new Zend_Form_Element_Select("GodzinaOtwarcia");
         $godzinaOtwarcia->setLabel("Godzina otwarcia: ")

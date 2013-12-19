@@ -2,6 +2,9 @@
 if(isset($this->editGodzinyOtwarciaForm)) {
     echo $this->editGodzinyOtwarciaForm;
 }
+else if(isset($this->error)) {
+    echo $this->error;
+}
 else {
     echo "Messedż";
 }

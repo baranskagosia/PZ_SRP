@@ -107,7 +107,14 @@ class AdminController extends Zend_Controller_Action
             if($editCennikForm->isValid($_POST)) {
                 $values = $editCennikForm->getValues();
                 $db = Zend_Db_Table_Abstract::getDefaultAdapter();
-
+                $sqlstr = "SELECT idCennik FROM cennik";
+                $cennikId = $db->query($sqlstr)->fetchAll();
+                
+                foreach($cennikId as $entry) {
+                    $sqlstr = "UPDATE cennik SET cena = ? WHERE idCennik = ?";
+                    $db->query($sqlstr, 
+                            array($values[$entry['idCennik']], $entry['idCennik']));
+                }
             } else {
                 $this->view->editCennikForm = $editCennikForm;
             }
@@ -125,6 +132,42 @@ class AdminController extends Zend_Controller_Action
     {
         $editGodzinyOtwarciaForm = new Application_Form_Admin_EditGodzinyOtwarcia();
         $this->view->editGodzinyOtwarciaForm = $editGodzinyOtwarciaForm;
+    }
+    
+    public function updateGodzinyOtwarciaAction()
+    {
+        $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        $tmp = explode('/', $url);
+        
+        if(count($tmp) > 7) {
+            $id=$tmp[7];
+            
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $sqlstr = "SELECT * FROM godziny_otwarcia WHERE idGodzinyOtwarcia = ?";
+            $dzienTygodnia = $db->query($sqlstr, $id)->fetch();
+        
+            if(!is_null($dzienTygodnia['GodzinaOtwarcia'])) {
+                $editGodzinyOtwarciaForm = new Application_Form_Admin_EditGodzinyOtwarcia();
+                if($this->getRequest()->isPost() && 
+                        $editGodzinyOtwarciaForm->isValid($_POST)) {
+                    $values = $editGodzinyOtwarciaForm->getValues();
+                    
+                    $sqlstr  = "UPDATE godziny_otwarcia ";
+                    $sqlstr .= "SET GodzinaOtwarcia = ?, GodzinaZamkniecia = ? ";
+                    $sqlstr .= "WHERE idGodzinyOtwarcia = ?";
+
+                    $db->query($sqlstr, array(
+                            $values['GodzinaOtwarcia'],
+                            $values['GodzinaZamkniecia'],
+                            $id
+                        ));
+                } else {
+                    $this->view->error = "Nie POST albo nieprawidłowe dane";
+                }
+            } else {
+                $this->view->error = "NIe ma takiego dnia!";
+            }
+        }
     }
     
     public function indexAktualnosciAction()
