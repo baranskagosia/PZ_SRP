@@ -1,11 +1,10 @@
 <div id="srodek_info" style=" margin-left: -40px; width:630px;">
         <?php 
         $IDUzytkownik=$this->IDUzytkownik;
-        $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+     
+isset($_POST['data']) ? $data = $_POST['data'] : $data = $_GET['data'];
 
-    $tmp = explode('/', $url);
-    //print_r($tmp);
-    $data=$tmp[7];
+   
     $tory= $this->iloscTorow;
     $ilosc_torow=$tory[0]['Ilosc_Torow'];
 
@@ -39,7 +38,7 @@ for($j=1;$j<=$ilosc_torow;$j++){
  echo 
  "<table class='rezerwacja'>
     <tbody>
-        <tr><td class='first_row'><a href='/PZ_SRP/public/img/b".$j.".jpg' target='_blank'>TOR ".$j."</a></td>";
+        <tr><td class='first_row'><a href=".$this->baseUrl('img/b'.$j.'.jpg')." target='_blank'>TOR ".$j."</a></td>";
         
         
    //Pobranie zajętych terminów dla konkretnego toru.
@@ -64,7 +63,7 @@ for($j=1;$j<=$ilosc_torow;$j++){
                     $zajete = true;
                     $czas_zajete=$data_format." ".$akk.":00";
                     if(czyZajeteGodzina($IDUzytkownik,$czas_zajete,$j)>0){
-                         echo "<td class='masz-rezerwacje'><a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a></td>";
+                         echo "<td class='masz-rezerwacje'><a href='".$this->baseUrl('/rezerwacja/index/?data='.$data.'?'.$akk.'?'.$j)."'>".$akk."</a></td>";
                     }
                     else{
                         if($zajete_terminy[$j][$z]['CzyNaWylacznasc']==1 OR 
@@ -73,15 +72,14 @@ for($j=1;$j<=$ilosc_torow;$j++){
                         }
                         else{
                             echo "<td class='zajete_nieWylacznosc'>
-                                        <a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a>
-                                 </td>";
+                                        <a href='".$this->baseUrl('/rezerwacja/index/?data='.$data.'?'.$akk.'?'.$j)."'>".$akk."</a></td>";
                         }
                     }
                     break;
                 }
             }
        if (!$zajete) {
-          echo "<td class='wolny'><a href='".$this->baseUrl('/rezerwacja/index/'.$data_time)."/".$j."'>".$akk."</a></td>";
+          echo "<td class='wolny'><a href='".$this->baseUrl('/rezerwacja/index/?data='.$data.'?'.$akk.'?'.$j)."'>".$akk."</a></td>";
         }
               $akk = date('H:i', strtotime($akk . ' + 1 hours')); 
     }
@@ -123,7 +121,7 @@ $akk=$od;
 
 <div id="srodek_view2" style="{position: relative; width: 450px;}">
 			<br><b>PLAN BASENU:</b><br>
-			<img src="/PZ_SRP/public/img/ball.jpg" width="450" height="300">
+			<img src='<?php echo $this->baseUrl('img/ball.jpg')?>' width="450" height="300">
 			</div>
 <?php
 

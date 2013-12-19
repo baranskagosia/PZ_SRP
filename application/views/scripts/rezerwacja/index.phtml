@@ -21,12 +21,49 @@ $rezerwacja=czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor);
               FROM rezerwacja WHERE DataCzas LIKE '".$data_time."' AND
                     TorPreferowany =".$tor." AND`CzyOdwolana` =0 
                GROUP BY DataCzas";
- $zajety_termin=$db->query($sql_zajete)->fetchAll();
+$zajety_termin=$db->query($sql_zajete)->fetchAll();
+
+ $rezerwacjeDzis=czyMaszTerminDzis($IDUzytkownik,$data_format);
+     if(sizeof($rezerwacjeDzis)>0){
+      echo "<div id='srodek_view2' >
+			<p><b>Twoje rezerwacje w dniu dzisiejszym:</b></p>
+			<table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Godzina</th>
+                                    <th>Tor</th>
+                                    <th>Ilość osób</th>
+                                    <th>Czas trwania</th>
+                                    <th>Na wyłączność?</th>
+                                </tr>
+                             </thead>
+                            <tbody>";
+                            for($p=0;$p<sizeof($rezerwacjeDzis);$p++){
+                               echo " <tr>
+                                    <td>".$rezerwacjeDzis[$p]['Data']."</td>
+                                    <td>".$rezerwacjeDzis[$p]['Godzina']."</td>
+                                    <td>".$rezerwacjeDzis[$p]['TorPreferowany']."</td>
+                                    <td>".$rezerwacjeDzis[$p]['IloscOsob']."</td>
+                                    <td>".$rezerwacjeDzis[$p]['CzasTrwania']."</td>";
+                                        if($rezerwacjeDzis[$p]['CzyNaWylacznasc']==1){
+                                            echo "<td>Tak</td></tr>";
+                                        }
+                                        else {
+                                            echo "<td>Nie</td></tr>";
+                                        }
+                            }
+                 echo "</tbody>
+                        </table>
+			</div>";
+      
+     }
+     //Wyświetlanie informacji że wszyzstkie miejsca zostały już zarezerwowane
       if(isset($zajety_termin[0]['Data']) && ($zajety_termin[0]['CzyNaWylacznasc']==1 
               OR $zajety_termin[0]['ZarezerwowaneMiejsca']>2)){
           echo "<div class='error-box'><p><strong>Wybrany termin (".$data_time.") został już zarezerwowany.</strong></p></div>";
-      }
- //---------------------------------------------------
+         }
+ //----------------------     Jeżeli są jeszcze miejsca na basenie                    -----------------------------
      else{  
           $poczatek= date("h:i:s", strtotime($time));
           $next=date("h:i:s", strtotime($time)+3600);
@@ -35,7 +72,7 @@ $rezerwacja=czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor);
           //echo $next;
 
              
-      
+
 //Godziny otwarcia basenu
         $dataZ = new Zend_Date();
         $dataZ->set($data);
@@ -105,7 +142,7 @@ if(isset($zajety_termin[0]['CzyNaWylacznasc'])){
     	<?php
 	}
                 
-}
+
  
 /*$czasTrwania=array();
            for($a=1;$a<=$dlugosc_czasu;$a++){
@@ -134,41 +171,8 @@ if(isset($zajety_termin[0]['CzyNaWylacznasc'])){
    echo $form;
      echo "</div>";
      
- $rezerwacjeDzis=czyMaszTerminDzis($IDUzytkownik,$data_format);
-     if(sizeof($rezerwacjeDzis)>0){
-      echo "<div id='srodek_view2' >
-			<p><b>Twoje rezerwacje w dniu dzisiejszym:</b></p>
-			<table>
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Godzina</th>
-                                    <th>Tor</th>
-                                    <th>Ilość osób</th>
-                                    <th>Czas trwania</th>
-                                    <th>Na wyłączność?</th>
-                                </tr>
-                             </thead>
-                            <tbody>";
-                            for($p=0;$p<sizeof($rezerwacjeDzis);$p++){
-                               echo " <tr>
-                                    <td>".$rezerwacjeDzis[$p]['Data']."</td>
-                                    <td>".$rezerwacjeDzis[$p]['Godzina']."</td>
-                                    <td>".$rezerwacjeDzis[$p]['TorPreferowany']."</td>
-                                    <td>".$rezerwacjeDzis[$p]['IloscOsob']."</td>
-                                    <td>".$rezerwacjeDzis[$p]['CzasTrwania']."</td>";
-                                        if($rezerwacjeDzis[$p]['CzyNaWylacznasc']==1){
-                                            echo "<td>Tak</td></tr>";
-                                        }
-                                        else {
-                                            echo "<td>Nie</td></tr>";
-                                        }
-                            }
-                 echo "</tbody>
-                        </table>
-			</div>";
-      
-     }
+
+  }
 //------------------------------------    
      
       function czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor){
