@@ -8,6 +8,7 @@ class AdminController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
+
     public function indexAction()
     {
         // action body
@@ -136,7 +137,9 @@ class AdminController extends Zend_Controller_Action
         
     }
 
-
+	public function statsAction(){
+		$this->view;
+	}
 }
 
 

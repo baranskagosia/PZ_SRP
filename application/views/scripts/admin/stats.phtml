@@ -1,0 +1,665 @@
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<?php
+	$db = Zend_Db::factory('Pdo_Mysql', array(
+	'host'     => 'localhost',
+	'username' => 'B02',
+	
+	'password' => 'B02',
+	'dbname'   => 'pz_srp'
+	));
+
+	//rezeracje wszytskie -> wytkres kolowy 
+		
+	$sql_rno_all="SELECT idRezerwacja, DataCzas, CzyOdwolana, count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '0'";
+	$sql_ro_all="SELECT idRezerwacja, DataCzas, CzyOdwolana, count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '1'";
+			
+	$rno_all= $db->query($sql_rno_all)->fetchAll();	
+	$ro_all= $db->query($sql_ro_all)->fetchAll();	
+	
+	$rno_ile = $rno_all[0]['ile'];
+	$ro_ile = $ro_all[0]['ile'];
+	$r_ile = $rno_ile + $ro_ile;
+	
+	echo "
+			<script type='text/javascript'>
+		    google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Rezerwacje', 'Liczba'],
+		          ['Nieodwołane', ".$rno_ile."],
+		          ['Odwołane', ".$ro_ile."],
+		        ]);
+		
+		        var options = {
+		          title: 'Ogólna liczba rezerwacji'
+		        };
+		
+		        var chart = new google.visualization.PieChart(document.getElementById('wykres_ogolny_kolowy'));
+		        chart.draw(data, options);
+		      }
+		</script>";
+		
+		//ogólem -> wykres miesieczny
+		
+		
+		$tab_no;
+	$tab_o;
+	
+	for($i=1; $i<13; $i++){
+		$sql_rm="SELECT idRezerwacja, Month(DataCzas), CzyOdwolana, count(idRezerwacja) 
+		AS ile FROM rezerwacja WHERE Month(DataCzas) LIKE ".$i." AND CzyOdwolana = '0'";
+		$rm= $db->query($sql_rm)->fetchAll();	
+		
+		$sql_rmo="SELECT idRezerwacja, Month(DataCzas), CzyOdwolana, count(idRezerwacja) 
+		AS ile FROM rezerwacja WHERE Month(DataCzas) LIKE ".$i." AND CzyOdwolana = '1'";
+		$rmo= $db->query($sql_rmo)->fetchAll();	
+		
+		if($rm[0]['ile'] > 0 && $rmo[0]['ile'] > 0){
+			//echo '<br>';
+			//echo 'miesiac '.$i.' : '.$rm[0]['ile'].' '.$rmo[0]['ile'];
+		}
+		
+		$tab_no[$i]=$rm[0]['ile'];
+		$tab_o[$i]=$rmo[0]['ile'];
+		}
+			echo "<script type='text/javascript'>
+		      google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Miesiąc', 'Nieodwołane', 'Odwołane'],
+		          ['1', ".$tab_no[1].", ".$tab_o[1]."],
+		          ['2', ".$tab_no[2].", ".$tab_o[2]."],
+		          ['3', ".$tab_no[3].", ".$tab_o[3]."],
+		          ['4', ".$tab_no[4].", ".$tab_o[4]."],
+		          ['5', ".$tab_no[5].", ".$tab_o[5]."],
+		          ['6', ".$tab_no[6].", ".$tab_o[6]."],
+		          ['7', ".$tab_no[7].", ".$tab_o[7]."],
+		          ['8', ".$tab_no[8].", ".$tab_o[8]."],
+		          ['9', ".$tab_no[9].", ".$tab_o[9]."],
+		          ['10', ".$tab_no[10].", ".$tab_o[10]."],
+		          ['11', ".$tab_no[11].", ".$tab_o[11]."],
+		          ['12', ".$tab_no[12].", ".$tab_o[12]."],
+		        ]);
+		
+		        var options = {
+		          title: 'Ilość rezerwacji pod względem miesięcy',
+		          hAxis: {title: 'Miesiąc', titleTextStyle: {color: 'red'}},
+		          vAxis: {format: '.'},
+		          legend: {position: 'top'}
+				};
+				
+		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_miesieczny'));
+		        chart.draw(data, options);
+      }
+    </script>";
+		//ogolnem -> tory
+		
+		//wykres tor miesiac
+		
+		$sql_tor_d="SELECT TorPreferowany, 
+		count(idRezerwacja) AS ile 
+		FROM rezerwacja 
+		GROUP BY TorPreferowany";
+		$tor_d= $db->query($sql_tor_d)->fetchAll();	
+		
+		//var_dump($tor_d);
+		
+		for($j=1; $j<=6; $j++){
+			$tab_tor_d[$j] = 0;
+		}
+		
+		for($i=0; $i<sizeof($tor_d); $i++){
+			$tab_tor_d[$tor_d[$i]['TorPreferowany']] = $tor_d[$i]['ile']; 
+		}
+		
+		//var_dump($tab_tor_d);
+		
+		echo "<script type='text/javascript'>
+      	google.load('visualization', '1', {packages:['corechart']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Tor', 'Rezerwacje'],
+          ['1', ".$tab_tor_d[1]."],
+          ['2', ".$tab_tor_d[2]."],
+          ['3', ".$tab_tor_d[3]."],
+          ['4', ".$tab_tor_d[4]."],
+          ['5', ".$tab_tor_d[5]."],
+          ['6', ".$tab_tor_d[6]."]
+        ]);
+
+        var options = {
+          title: 'Liczba rezerwacji ze wzgledu na tor',
+          pieHole: 0.35,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('wykres_tor'));
+        chart.draw(data, options);
+      }
+    </script>";
+				
+				
+		//ogolem -> wykres godzinny;
+		
+		
+		$sql_godz_no="SELECT idRezerwacja, Month(DataCzas), Hour(DataCzas), CzyOdwolana, count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '0' GROUP BY Time(DataCzas)";
+		$rgodz_no= $db->query($sql_godz_no)->fetchAll();	
+		
+		$sql_godz_o="SELECT idRezerwacja, Month(DataCzas), Hour(DataCzas), CzyOdwolana, count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '1' GROUP BY Time(DataCzas)";
+		$rgodz_o= $db->query($sql_godz_o)->fetchAll();	
+		
+		for($j=8; $j<=18; $j++){
+			$tab_godz_no[$j] = 0;
+			$tab_godz_o[$j] = 0;
+		}
+		
+		for($j=8; $j<=18; $j++){
+			for($i=0; $i<sizeof($rgodz_no); $i++){
+				$tab_godz_no[$rgodz_no[$i]['Hour(DataCzas)']] = $rgodz_no[$i]['ile'];
+			}
+			for($i=0; $i<sizeof($rgodz_o); $i++){
+				$tab_godz_o[$rgodz_o[$i]['Hour(DataCzas)']] = $rgodz_o[$i]['ile'];
+			}
+		}
+		
+		echo "<script type='text/javascript'>
+		      google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Godzina', 'Nieodwołane', 'Odwołane'],
+		          ['8:00', ".$tab_godz_no[8].", ".$tab_godz_o[8]."],
+		          ['9:00', ".$tab_godz_no[9].", ".$tab_godz_o[9]."],
+		          ['10:00', ".$tab_godz_no[10].", ".$tab_godz_o[10]."],
+		          ['11:00', ".$tab_godz_no[11].", ".$tab_godz_o[11]."],
+		          ['12:00', ".$tab_godz_no[12].", ".$tab_godz_o[12]."],
+		          ['13:00', ".$tab_godz_no[13].", ".$tab_godz_o[13]."],
+		          ['14:00', ".$tab_godz_no[14].", ".$tab_godz_o[14]."],
+		          ['15:00', ".$tab_godz_no[15].", ".$tab_godz_o[15]."],
+		          ['16:00', ".$tab_godz_no[16].", ".$tab_godz_o[16]."],
+		          ['17:00', ".$tab_godz_no[17].", ".$tab_godz_o[17]."],
+		          ['18:00', ".$tab_godz_no[18].", ".$tab_godz_o[18]."]
+		          ]);
+		
+		        var options = {
+		          title: 'Rezerwacje dla danej godziny (cały okres czasu)',
+		          hAxis: {title: 'Godzina', titleTextStyle: {color: 'red'}},
+		          legend: {position: 'top'}
+				};
+				
+		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_godzinny'));
+		        chart.draw(data, options);
+      }
+		</script>
+		";
+		
+		$today_d = date('d', time());
+		$today_m = date('m', time());
+	
+		//rezerwacje miesieczne - >>>
+		
+		$sql_rno_all_m="SELECT idRezerwacja, DataCzas, CzyOdwolana, count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '0' AND Month(DataCzas) = ".$today_m."";
+	$sql_ro_all_m="SELECT idRezerwacja, DataCzas, CzyOdwolana, count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '1' AND Month(DataCzas) = ".$today_m."";
+			
+	$rno_all_m= $db->query($sql_rno_all_m)->fetchAll();	
+	$ro_all_m= $db->query($sql_ro_all_m)->fetchAll();	
+	
+	$rno_ile_m = $rno_all_m[0]['ile'];
+	$ro_ile_m = $ro_all_m[0]['ile'];
+	$r_ile_m = $rno_ile_m + $ro_ile_m;
+	
+	echo "
+			<script type='text/javascript'>
+		    google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Rezerwacje', 'Liczba'],
+		          ['Nieodwołane', ".$rno_ile_m."],
+		          ['Odwołane', ".$ro_ile_m."],
+		        ]);
+		
+		        var options = {
+		          title: 'Ogólna liczba rezerwacji dla bieżącego miesiąca'
+		        };
+		
+		        var chart = new google.visualization.PieChart(document.getElementById('wykres_ogolny_kolowy_miesiac'));
+		        chart.draw(data, options);
+		      }
+		</script>";
+		
+		//miesieczny -> wykres dzienny
+		
+		
+	$tab_no_m;
+	$tab_o_m;
+	
+	for($i=1; $i<=31; $i++){
+		$sql_rm_m="SELECT idRezerwacja, Month(DataCzas), CzyOdwolana, count(idRezerwacja) 
+		AS ile FROM rezerwacja WHERE Day(DataCzas) LIKE ".$i." AND CzyOdwolana = '0' AND Month(DataCzas) = ".$today_m."";
+		$rm_m= $db->query($sql_rm_m)->fetchAll();	
+		
+		$sql_rmo_m="SELECT idRezerwacja, Month(DataCzas), CzyOdwolana, count(idRezerwacja) 
+		AS ile FROM rezerwacja WHERE Month(DataCzas) LIKE ".$i." AND CzyOdwolana = '1' AND Month(DataCzas) = ".$today_m."";
+		$rmo_m= $db->query($sql_rmo_m)->fetchAll();	
+		
+		if($rm_m[0]['ile'] > 0 && $rmo_m[0]['ile'] > 0){
+			//echo '<br>';
+			//echo 'miesiac '.$i.' : '.$rm[0]['ile'].' '.$rmo[0]['ile'];
+		}
+		
+		$tab_no_m[$i]=$rm_m[0]['ile'];
+		$tab_o_m[$i]=$rmo_m[0]['ile'];
+		}
+			echo "<script type='text/javascript'>
+		      google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Dzień', 'Nieodwołane', 'Odwołane'],
+		          ['1', ".$tab_no_m[1].", ".$tab_o_m[1]."],
+		          ['2', ".$tab_no_m[2].", ".$tab_o_m[2]."],
+		          ['3', ".$tab_no_m[3].", ".$tab_o_m[3]."],
+		          ['4', ".$tab_no_m[4].", ".$tab_o_m[4]."],
+		          ['5', ".$tab_no_m[5].", ".$tab_o_m[5]."],
+		          ['6', ".$tab_no_m[6].", ".$tab_o_m[6]."],
+		          ['7', ".$tab_no_m[7].", ".$tab_o_m[7]."],
+		          ['8', ".$tab_no_m[8].", ".$tab_o_m[8]."],
+		          ['9', ".$tab_no_m[9].", ".$tab_o_m[9]."],
+		          ['10', ".$tab_no_m[10].", ".$tab_o_m[10]."],
+		          ['11', ".$tab_no_m[11].", ".$tab_o_m[11]."],
+		          ['12', ".$tab_no_m[12].", ".$tab_o_m[12]."],
+				  ['13', ".$tab_no_m[13].", ".$tab_o_m[13]."],
+		          ['14', ".$tab_no_m[14].", ".$tab_o_m[14]."],
+		          ['15', ".$tab_no_m[15].", ".$tab_o_m[15]."],
+		          ['16', ".$tab_no_m[16].", ".$tab_o_m[16]."],
+		          ['17', ".$tab_no_m[17].", ".$tab_o_m[17]."],
+		          ['18', ".$tab_no_m[18].", ".$tab_o_m[18]."],
+		          ['19', ".$tab_no_m[19].", ".$tab_o_m[19]."],
+		          ['20', ".$tab_no_m[20].", ".$tab_o_m[20]."],
+		          ['21', ".$tab_no_m[21].", ".$tab_o_m[21]."],
+		          ['22', ".$tab_no_m[22].", ".$tab_o_m[22]."],
+		          ['23', ".$tab_no_m[23].", ".$tab_o_m[23]."],
+		          ['24', ".$tab_no_m[24].", ".$tab_o_m[24]."],
+		          ['25', ".$tab_no_m[25].", ".$tab_o_m[25]."],
+		          ['26', ".$tab_no_m[26].", ".$tab_o_m[26]."],
+		          ['27', ".$tab_no_m[27].", ".$tab_o_m[27]."],
+		          ['28', ".$tab_no_m[28].", ".$tab_o_m[28]."],
+		          ['29', ".$tab_no_m[29].", ".$tab_o_m[29]."],
+		          ['30', ".$tab_no_m[30].", ".$tab_o_m[30]."],
+		          ['31', ".$tab_no_m[31].", ".$tab_o_m[31]."],
+		        ]);
+		
+		        var options = {
+		          title: 'Ilość rezerwacji pod względem dni dla bieżacego miesiąca',
+		          hAxis: {title: 'Dzień', titleTextStyle: {color: 'red'}},
+		          vAxis: {format: '.'},
+		          legend: {position: 'top'}
+				};
+				
+		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_dzienny_miesiac'));
+		        chart.draw(data, options);
+      }
+    </script>";
+	
+		//miesiac -> wykres godzinny;
+		
+		$sql_godz_no_m="SELECT idRezerwacja, Month(DataCzas), Hour(DataCzas), CzyOdwolana, 
+		count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '0' AND Month(DataCzas) = ".$today_m." GROUP BY Time(DataCzas)";
+		$rgodz_no_m= $db->query($sql_godz_no_m)->fetchAll();	
+		
+		$sql_godz_o_m="SELECT idRezerwacja, Month(DataCzas), Hour(DataCzas), CzyOdwolana, 
+		count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '1' AND Month(DataCzas) = ".$today_m." GROUP BY Time(DataCzas)";
+		$rgodz_o_m= $db->query($sql_godz_o_m)->fetchAll();	
+		
+		for($j=8; $j<=18; $j++){
+			$tab_godz_no_m[$j] = 0;
+			$tab_godz_o_m[$j] = 0;
+		}
+		
+		for($j=8; $j<=18; $j++){
+			for($i=0; $i<sizeof($rgodz_no_m); $i++){
+				$tab_godz_no_m[$rgodz_no_m[$i]['Hour(DataCzas)']] = $rgodz_no_m[$i]['ile'];
+			}
+			for($i=0; $i<sizeof($rgodz_o_m); $i++){
+				$tab_godz_o_m[$rgodz_o_m[$i]['Hour(DataCzas)']] = $rgodz_o_m[$i]['ile'];
+			}
+		}
+		
+		echo "<script type='text/javascript'>
+		      google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Godzina', 'Nieodwołane', 'Odwołane'],
+		          ['8:00', ".$tab_godz_no_m[8].", ".$tab_godz_o_m[8]."],
+		          ['9:00', ".$tab_godz_no_m[9].", ".$tab_godz_o_m[9]."],
+		          ['10:00', ".$tab_godz_no_m[10].", ".$tab_godz_o_m[10]."],
+		          ['11:00', ".$tab_godz_no_m[11].", ".$tab_godz_o_m[11]."],
+		          ['12:00', ".$tab_godz_no_m[12].", ".$tab_godz_o_m[12]."],
+		          ['13:00', ".$tab_godz_no_m[13].", ".$tab_godz_o_m[13]."],
+		          ['14:00', ".$tab_godz_no_m[14].", ".$tab_godz_o_m[14]."],
+		          ['15:00', ".$tab_godz_no_m[15].", ".$tab_godz_o_m[15]."],
+		          ['16:00', ".$tab_godz_no_m[16].", ".$tab_godz_o_m[16]."],
+		          ['17:00', ".$tab_godz_no_m[17].", ".$tab_godz_o_m[17]."],
+		          ['18:00', ".$tab_godz_no_m[18].", ".$tab_godz_o_m[18]."]
+		          ]);
+		
+		        var options = {
+		          title: 'Rezerwacje dla danej godziny dla bieżącego miesiąca',
+		          hAxis: {title: 'Godzina', titleTextStyle: {color: 'red'}},
+		          legend: {position: 'top'}
+				};
+				
+		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_godzinny_miesiac'));
+		        chart.draw(data, options);
+      }
+		</script>
+		";
+		
+		
+	// dzisiaj 
+	
+	$sql_godz_no_m="SELECT idRezerwacja, Month(DataCzas), Hour(DataCzas), CzyOdwolana, 
+		count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '0' AND Month(DataCzas) = ".$today_m." GROUP BY Time(DataCzas)";
+		$rgodz_no_m= $db->query($sql_godz_no_m)->fetchAll();	
+		
+		$sql_godz_o_m="SELECT idRezerwacja, Month(DataCzas), Hour(DataCzas), CzyOdwolana, 
+		count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '1' AND Month(DataCzas) = ".$today_m." GROUP BY Time(DataCzas)";
+		$rgodz_o_m= $db->query($sql_godz_o_m)->fetchAll();	
+		
+		for($j=8; $j<=18; $j++){
+			$tab_godz_no_m[$j] = 0;
+			$tab_godz_o_m[$j] = 0;
+		}
+		
+		for($j=8; $j<=18; $j++){
+			for($i=0; $i<sizeof($rgodz_no_m); $i++){
+				$tab_godz_no_m[$rgodz_no_m[$i]['Hour(DataCzas)']] = $rgodz_no_m[$i]['ile'];
+			}
+			for($i=0; $i<sizeof($rgodz_o_m); $i++){
+				$tab_godz_o_m[$rgodz_o_m[$i]['Hour(DataCzas)']] = $rgodz_o_m[$i]['ile'];
+			}
+		}
+		
+		echo "<script type='text/javascript'>
+		      google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Godzina', 'Nieodwołane', 'Odwołane'],
+		          ['8:00', ".$tab_godz_no_m[8].", ".$tab_godz_o_m[8]."],
+		          ['9:00', ".$tab_godz_no_m[9].", ".$tab_godz_o_m[9]."],
+		          ['10:00', ".$tab_godz_no_m[10].", ".$tab_godz_o_m[10]."],
+		          ['11:00', ".$tab_godz_no_m[11].", ".$tab_godz_o_m[11]."],
+		          ['12:00', ".$tab_godz_no_m[12].", ".$tab_godz_o_m[12]."],
+		          ['13:00', ".$tab_godz_no_m[13].", ".$tab_godz_o_m[13]."],
+		          ['14:00', ".$tab_godz_no_m[14].", ".$tab_godz_o_m[14]."],
+		          ['15:00', ".$tab_godz_no_m[15].", ".$tab_godz_o_m[15]."],
+		          ['16:00', ".$tab_godz_no_m[16].", ".$tab_godz_o_m[16]."],
+		          ['17:00', ".$tab_godz_no_m[17].", ".$tab_godz_o_m[17]."],
+		          ['18:00', ".$tab_godz_no_m[18].", ".$tab_godz_o_m[18]."]
+		          ]);
+		
+		        var options = {
+		          title: 'Rezerwacje dla danej godziny dla bieżącego miesiąca',
+		          hAxis: {title: 'Godzina', titleTextStyle: {color: 'red'}},
+		          legend: {position: 'top'}
+				};
+				
+		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_godzinny_miesiac'));
+		        chart.draw(data, options);
+      }
+		</script>
+		";
+		
+		//wykres tor miesiac
+		
+		$sql_tor_d="SELECT TorPreferowany, 
+		count(idRezerwacja) AS ile 
+		FROM rezerwacja 
+		WHERE Month(DataCzas) = ".$today_m." GROUP BY TorPreferowany";
+		$tor_d= $db->query($sql_tor_d)->fetchAll();	
+		
+		//var_dump($tor_d);
+		
+		for($j=1; $j<=6; $j++){
+			$tab_tor_d[$j] = 0;
+		}
+		
+		for($i=0; $i<sizeof($tor_d); $i++){
+			$tab_tor_d[$tor_d[$i]['TorPreferowany']] = $tor_d[$i]['ile']; 
+		}
+		
+		//var_dump($tab_tor_d);
+		
+		echo "<script type='text/javascript'>
+      	google.load('visualization', '1', {packages:['corechart']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Tor', 'Rezerwacje'],
+          ['1', ".$tab_tor_d[1]."],
+          ['2', ".$tab_tor_d[2]."],
+          ['3', ".$tab_tor_d[3]."],
+          ['4', ".$tab_tor_d[4]."],
+          ['5', ".$tab_tor_d[5]."],
+          ['6', ".$tab_tor_d[6]."]
+        ]);
+
+        var options = {
+          title: 'Liczba rezerwacji ze wzgledu na tor',
+          pieHole: 0.35,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('wykres_tor_miesiac'));
+        chart.draw(data, options);
+      }
+    </script>";
+				
+		//dzisiaj
+		
+		$sql_godz_no_d="SELECT idRezerwacja, Month(DataCzas), Hour(DataCzas), CzyOdwolana, 
+		count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '0' AND Day(DataCzas) = ".$today_d." GROUP BY Time(DataCzas)";
+		$rgodz_no_d= $db->query($sql_godz_no_d)->fetchAll();	
+		
+		$sql_godz_o_d="SELECT idRezerwacja, Month(DataCzas), Hour(DataCzas), CzyOdwolana, 
+		count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '1' AND Day(DataCzas) = ".$today_d." GROUP BY Time(DataCzas)";
+		$rgodz_o_d= $db->query($sql_godz_o_d)->fetchAll();	
+		
+		for($j=8; $j<=18; $j++){
+			$tab_godz_no_d[$j] = 0;
+			$tab_godz_o_d[$j] = 0;
+		}
+		
+		for($j=8; $j<=18; $j++){
+			for($i=0; $i<sizeof($rgodz_no_d); $i++){
+				$tab_godz_no_d[$rgodz_no_d[$i]['Hour(DataCzas)']] = $rgodz_no_d[$i]['ile'];
+			}
+			for($i=0; $i<sizeof($rgodz_o_d); $i++){
+				$tab_godz_o_d[$rgodz_o_d[$i]['Hour(DataCzas)']] = $rgodz_o_d[$i]['ile'];
+			}
+		}
+		
+		echo "<script type='text/javascript'>
+		      google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Godzina', 'Nieodwołane', 'Odwołane'],
+		          ['8:00', ".$tab_godz_no_d[8].", ".$tab_godz_o_d[8]."],
+		          ['9:00', ".$tab_godz_no_d[9].", ".$tab_godz_o_d[9]."],
+		          ['10:00', ".$tab_godz_no_d[10].", ".$tab_godz_o_d[10]."],
+		          ['11:00', ".$tab_godz_no_d[11].", ".$tab_godz_o_d[11]."],
+		          ['12:00', ".$tab_godz_no_d[12].", ".$tab_godz_o_d[12]."],
+		          ['13:00', ".$tab_godz_no_d[13].", ".$tab_godz_o_d[13]."],
+		          ['14:00', ".$tab_godz_no_d[14].", ".$tab_godz_o_d[14]."],
+		          ['15:00', ".$tab_godz_no_d[15].", ".$tab_godz_o_d[15]."],
+		          ['16:00', ".$tab_godz_no_d[16].", ".$tab_godz_o_d[16]."],
+		          ['17:00', ".$tab_godz_no_d[17].", ".$tab_godz_o_d[17]."],
+		          ['18:00', ".$tab_godz_no_d[18].", ".$tab_godz_o_d[18]."]
+		          ]);
+		
+		        var options = {
+		          title: 'Rezerwacje dla danej godziny dla dnia dzisiejszego',
+		          hAxis: {title: 'Godzina', titleTextStyle: {color: 'red'}},
+		          legend: {position: 'top'}
+				};
+				
+		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_godzinny_dzisiaj'));
+		        chart.draw(data, options);
+      }
+		</script>
+		";
+		
+		
+			$sql_rno_all_d="SELECT idRezerwacja, DataCzas, CzyOdwolana, count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '0' AND Day(DataCzas) = ".$today_d."";
+	$sql_ro_all_d="SELECT idRezerwacja, DataCzas, CzyOdwolana, count(idRezerwacja) AS ile FROM rezerwacja WHERE CzyOdwolana = '1' AND Day(DataCzas) = ".$today_d."";
+			
+	$rno_all_d= $db->query($sql_rno_all_d)->fetchAll();	
+	$ro_all_d= $db->query($sql_ro_all_d)->fetchAll();	
+	
+	$rno_ile_d = $rno_all_d[0]['ile'];
+	$ro_ile_d = $ro_all_d[0]['ile'];
+	$r_ile_d = $rno_ile_d + $ro_ile_d;
+	
+	echo "
+			<script type='text/javascript'>
+		    google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Rezerwacje', 'Liczba'],
+		          ['Nieodwołane', ".$rno_ile_d."],
+		          ['Odwołane', ".$ro_ile_d."],
+		        ]);
+		
+		        var options = {
+		          title: 'Ogólna liczba rezerwacji na dzień dzisiejszy'
+		        };
+		
+		        var chart = new google.visualization.PieChart(document.getElementById('wykres_ogolny_kolowy_dzisiaj'));
+		        chart.draw(data, options);
+		      }
+		</script>";
+		
+		//wykres tor dzisiaj
+		
+		$sql_tor_d="SELECT TorPreferowany, 
+		count(idRezerwacja) AS ile 
+		FROM rezerwacja 
+		WHERE Day(DataCzas) = ".$today_d." GROUP BY TorPreferowany";
+		$tor_d= $db->query($sql_tor_d)->fetchAll();	
+		
+		//var_dump($tor_d);
+		
+		for($j=1; $j<=6; $j++){
+			$tab_tor_d[$j] = 0;
+		}
+		
+		for($i=0; $i<sizeof($tor_d); $i++){
+			$tab_tor_d[$tor_d[$i]['TorPreferowany']] = $tor_d[$i]['ile']; 
+		}
+		
+		//var_dump($tab_tor_d);
+		
+		echo "<script type='text/javascript'>
+      	google.load('visualization', '1', {packages:['corechart']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Tor', 'Rezerwacje'],
+          ['1', ".$tab_tor_d[1]."],
+          ['2', ".$tab_tor_d[2]."],
+          ['3', ".$tab_tor_d[3]."],
+          ['4', ".$tab_tor_d[4]."],
+          ['5', ".$tab_tor_d[5]."],
+          ['6', ".$tab_tor_d[6]."]
+        ]);
+
+        var options = {
+          title: 'Liczba rezerwacji ze wzgledu na tor',
+          pieHole: 0.35,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('wykres_tor_dzisiaj'));
+        chart.draw(data, options);
+      }
+    </script>";
+
+//zysk
+
+//ogolem kolowy
+
+	$sql_zysk="SELECT count(idCennik), SUM(Cena) as kwota, OsobaTyp, DataCzas
+	FROM rezerwacja
+	JOIN cennik 
+	ON rezerwacja.cennik_idCennik = cennik.idCennik
+	GROUP BY OsobaTyp";
+			
+	$zysk= $db->query($sql_zysk)->fetchAll();	
+	
+	$tab_zysk[0] = $zysk[0]['kwota']; 
+	$tab_zysk[1] = $zysk[1]['kwota'];
+	$tab_zysk[2] = $zysk[2]['kwota'];
+	
+	
+	echo "
+			<script type='text/javascript'>
+		    google.load('visualization', '1', {packages:['corechart']});
+		      google.setOnLoadCallback(drawChart);
+		      function drawChart() {
+		        var data = google.visualization.arrayToDataTable([
+		          ['Osoba', 'Zysk'],
+		          ['Dorosły', ".$tab_zysk[0]."],
+		          ['Dziecko', ".$tab_zysk[1]."],
+		          ['Student', ".$tab_zysk[2]."],
+		          
+		        ]);
+		
+		        var options = {
+		          title: 'ZYSK OGÓLNY'
+		        };
+		
+		        var chart = new google.visualization.PieChart(document.getElementById('wykres_zysk'));
+		        chart.draw(data, options);
+		      }
+		</script>";
+		?>
+		
+Statystyki: <a href='#p1' style='color: #333333; text-decoration: none'>
+Dzisiaj</a> <a href='#p2' style='color: #333333; text-decoration: none'>Bieżący miesiąc</a> 
+<a href='#p3' style='color: #333333; text-decoration: none'>Ogółem</a><br>
+<a href='#p6' style='color: #333333; text-decoration: none'>ZYSK Ogółem</a>
+
+
+<p id='p1' >Dzisiaj<a href='#' style='color: #376585; text-decoration: none'> [Do góry]</a></p>
+<div id="wykres_ogolny_kolowy_dzisiaj" style="width: 500px; height: 300px"></div><br>
+<div id="wykres_godzinny_dzisiaj" style="width:900; height:400; "></div><br>
+<div id="wykres_tor_dzisiaj" style="width:900; height:400; "></div><br>
+<br><br>
+
+<p id='p2'>Bieżący miesiąc<a href='#' style='color: #376585; text-decoration: none'> [Do góry]</a></p>
+<div id="wykres_ogolny_kolowy_miesiac" style="width: 500px; height: 300px"></div><br>
+<div id="wykres_dzienny_miesiac" style="width:900; height:400; "></div><br>
+<div id="wykres_godzinny_miesiac" style="width:900; height:400; "></div><br>
+<div id="wykres_tor_miesiac" style="width:900; height:400; "></div><br>
+<br><br>
+
+<p id='p3'>Ogółem<a href='#' style='color: #376585; text-decoration: none'> [Do góry]</a></p>
+<div id="wykres_ogolny_kolowy" style="width: 500px; height: 300px"></div><br>
+<div id="wykres_miesieczny" style="width:900; height:400; "></div><br>
+<div id="wykres_godzinny" style="width:900; height:400; "></div><br>
+<div id="wykres_tor" style="width:900; height:400; "></div><br>
+
+<p id='p6'>ZYSK - Ogółem<a href='#' style='color: #376585; text-decoration: none'> [Do góry]</a></p>
+<div id="wykres_zysk" style="width: 500px; height: 300px"></div><br>
+

@@ -102,7 +102,12 @@
             <resource>addRecepcja</resource>
         </addRecepcja>
 
-
+		<stats>
+			<label>Statystyki</label>
+			<controller>admin</controller>
+			<action>stats</action>
+			<resource>stats</resource>
+		</stats>
 
         <tabelki>
             <label>Tabele</label>

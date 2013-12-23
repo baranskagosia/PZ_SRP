@@ -31,6 +31,7 @@ class Application_Model_LibraryAcl extends Zend_Acl
          $this->add(new Zend_Acl_Resource('homeAdmin'));
          $this->add(new Zend_Acl_Resource('tabelki'));
          $this->add(new Zend_Acl_Resource('addRecepcja'));
+		 $this->add(new Zend_Acl_Resource('stats'));
 
 
          $this->add(new Zend_Acl_Resource('cennik'),'tabelki');
@@ -67,7 +68,7 @@ class Application_Model_LibraryAcl extends Zend_Acl
       
 //  $this->deny ('admin','login');
         
-        $this->allow ('admin', array('index', 'admin','homeAdmin','addRecepcja','logout'));
+        $this->allow ('admin', array('index', 'admin','homeAdmin','addRecepcja','stats','logout'));
       
     }
 
