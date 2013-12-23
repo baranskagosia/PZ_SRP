@@ -92,11 +92,11 @@ class KlientController extends Zend_Controller_Action
         
 		//
         $db = Zend_Db::factory('Pdo_Mysql', array(
-			    'host'     => 'localhost',
-			    'username' => 'B02',
-			    'password' => 'B02',
-			    'dbname'   => 'pz_srp'
-			));
+        'host'     => 'serwer1326625.home.pl',
+        'username' => '13829293_0000001',
+        'password' => 'x0Sq9uHJ,9.l',
+        'dbname'   => '13829293_0000001'
+    ));
 			
 		$sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
 		$stmt = $sql->query();
@@ -118,12 +118,12 @@ class KlientController extends Zend_Controller_Action
 				$nazwisko = $form->getValue('Nazwisko');
 				$telefon = $form->getValue('Telefon');
 				
-				$db = Zend_Db::factory('Pdo_Mysql', array(
-			    'host'     => 'localhost',
-			    'username' => 'B02',
-			    'password' => 'B02',
-			    'dbname'   => 'pz_srp'
-			));
+                        $db = Zend_Db::factory('Pdo_Mysql', array(
+                                'host'     => 'serwer1326625.home.pl',
+                                'username' => '13829293_0000001',
+                                'password' => 'x0Sq9uHJ,9.l',
+                                'dbname'   => '13829293_0000001'
+                            ));
 			
 				$sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
 				$stmt = $sql->query();
@@ -172,12 +172,12 @@ class KlientController extends Zend_Controller_Action
                         
 						//var_dump($this->getRequest()->getPost());
 						
-						$db = Zend_Db::factory('Pdo_Mysql', array(
-                                         'host' => 'localhost',
-                                         'username' => 'B02',
-                                         'password' => 'B02',
-                                         'dbname' => 'pz_srp'
-                                        ));
+                            $db = Zend_Db::factory('Pdo_Mysql', array(
+                            'host'     => 'serwer1326625.home.pl',
+                            'username' => '13829293_0000001',
+                            'password' => 'x0Sq9uHJ,9.l',
+                            'dbname'   => '13829293_0000001'
+                        ));
                                                 
                         $sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
                  		$stmt = $sql->query();
@@ -214,12 +214,12 @@ class KlientController extends Zend_Controller_Action
     
         $this->view->idKlient=$idKlient;
 	    
-	$db = Zend_Db::factory('Pdo_Mysql', array(
-    'host'     => 'localhost',
-    'username' => 'B02',
-    'password' => 'B02',
-    'dbname'   => 'pz_srp'
-));
+                    $db = Zend_Db::factory('Pdo_Mysql', array(
+                            'host'     => 'serwer1326625.home.pl',
+                            'username' => '13829293_0000001',
+                            'password' => 'x0Sq9uHJ,9.l',
+                            'dbname'   => '13829293_0000001'
+                        ));
 
 	$sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
 	$stmt = $sql->query();
@@ -278,9 +278,15 @@ class KlientController extends Zend_Controller_Action
         $IDRezerwacja = $this->getRequest()->getParam('IDRezerwacja');
         $this->view->IDRezerwacja=$IDRezerwacja;
         $table=new Application_Model_Rezerwacja;
+        $sql="SELECT * FROM rezerwacja where idRezerwacja LIKE $IDRezerwacja";
+                    $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+                    $dane=$db->query($sql)->fetchAll();;
+        $dane[0]['CzyOdwolana']=1;
+                    print_r($dane);
+        
        
-             $where = $table->getAdapter()->quoteInto('idrezerwacja= ?', $IDRezerwacja);
-             $table->delete($where);
+           // $where = $table->getAdapter()->quoteInto('idrezerwacja= ?', $IDRezerwacja);
+           $table->update($dane[0], "idRezerwacja=".$IDRezerwacja);
        
        $this->_redirect('klient/rezerwacje');
         

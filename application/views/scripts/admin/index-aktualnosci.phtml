@@ -1,5 +1,5 @@
 <?php
-echo print_r($this->aktualnosci);
+// echo print_r($this->aktualnosci);
 
 echo "<table>";
 echo "<thead>";
@@ -7,9 +7,9 @@ echo "<tr><th>Indeks</th><th>Nagłówek</th><th>Treść</th></thead>";
 
 foreach($this->aktualnosci as $row) {
     echo "<tr>";
-    echo '<td><a href="' . 'sth' . '">' . $row['idAktualnosci'] . '</a></td>';
-    echo "<td>" . $row['naglowek'] . "</td>";
-    echo "<td>" . $row['tresc'] . "</td>";
+    echo '<td><a href="' . $this->baseUrl('admin/edit-aktualnosc/') . $row['idAktualnosci'] . '">' . $row['idAktualnosci'] . '</a></td>';
+    echo "<td>" . (strlen($row['naglowek']) > 40 ? substr($row['naglowek'], 0, 40) . "..." : $row['naglowek']) . "</td>";
+    echo "<td>" . (strlen($row['tresc']) > 80 ? substr($row['tresc'], 0, 80) . "..." : $row['tresc']) . "</td>";
     echo "</tr>";
 }
 

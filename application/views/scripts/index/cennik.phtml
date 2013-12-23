@@ -4,7 +4,7 @@ $cennik=0;
 $l=0;
 
 $db = Zend_Db_Table::getDefaultAdapter(); 
-$sql='SELECT * FROM Cennik';
+$sql='SELECT * FROM cennik';
 $cennik = $db-> query($sql)->fetchAll();
 
 
@@ -12,7 +12,8 @@ echo "<p>Cennik basenu</p>";
   echo "<table>
         <thead>
           <tr>
-            <th>Rodzaj biletu</th>
+            <th>Rodzaj biletu i wyłączność</th>
+            
             <th>Cena</th>
             </tr></thead><tbody>";
             foreach ($cennik as $cen){

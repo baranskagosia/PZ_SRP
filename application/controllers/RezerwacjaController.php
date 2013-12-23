@@ -19,13 +19,15 @@ class RezerwacjaController extends Zend_Controller_Action
         $IDUzytkownik=$ID[0]['idUzytkownik'];
         $this->view->IDUzytkownik=$IDUzytkownik;
        
-        $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        isset($_POST['data']) ? $inf= $_POST['data'] : $inf = $_GET['data'];
+       
 
-        $tmp = explode('/', $url);
-        $data=$tmp[7];
-        $time=$tmp[8];
-        $tor=$tmp[9];
+      $tmp = explode('?', $inf);
+        $data=$tmp[0];
+        $time=$tmp[1];
+        $tor=$tmp[2];
         
+      
         $this->view->data=$data;
         $this->view->time=$time;
         $this->view->tor=$tor;

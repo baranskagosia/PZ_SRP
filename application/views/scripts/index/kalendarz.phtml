@@ -14,10 +14,11 @@
 		}
                 
                 $IDUzytkownik=$this->IDUzytkownik;
+                $adres=$this->baseUrl('index/grafik/');
 	//echo $month.' '.$year;
-	echo draw_calendar($month,$year,$IDUzytkownik);
+	echo draw_calendar($month,$year,$IDUzytkownik,$adres);
 	
-        czyZajete(2,'2013-11-25');
+        //czyZajete(2,'2013-11-25');
         function czyZajete($IDUzytkownik,$data){
             if($IDUzytkownik){
                   // $sql="SELECT COUNT(*) AS ilosc FROM rezerwacja where `uzytkownik_idUzytkownik' LIKE ".$IDUzytkownik." 
@@ -27,12 +28,11 @@
                     $db=Zend_Db_Table_Abstract::getDefaultAdapter();
                     $rezerwacja=$db->query($sql)->fetchAll();
                     $czyRezewacja=$rezerwacja[0]['ilosc'];
-                    
-                }
-                else{
-                    $czyRezerwacja=null;
-                }
-           return $czyRezewacja;
+                    return $czyRezewacja;
+            }
+          
+                
+           
         }
 	function jaki_miesiac($month){
 			$months1 = array('styczeń','luty','marzec','kwiecieć','maj','czerwiec','lipiec','sierpień','wrzesień','październik','listopad','grudzień');
@@ -72,7 +72,7 @@
 	$year_now = date('Y',mktime(0,0,0,date("m"),date("d"),date("Y")));
         $IDUzytkownik=$this->IDUzytkownik;
 	
-	function draw_calendar($month,$year,$IDUzytkownik){
+	function draw_calendar($month,$year,$IDUzytkownik,$adres){
 		
 	global $today;
 	global $day_now;
@@ -145,21 +145,25 @@
 								else {
                                  
                                                                     if(czyZajete($IDUzytkownik,$data)!=0){
-									$calendar.= '<div class="day-number-masz-rezerwacje"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+									$calendar.= '<div class="day-number-masz-rezerwacje"><a href='.$adres.'?data='.$date.'>'.$list_day.'</a></div>';
+                                                                   
+                                                                        
                                                                     }
                                                                     else{
-                                                                        $calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+                                                                        $calendar.= '<div class="day-number"><a href='.$adres.'?data='.$date.'>'.$list_day.'</a></div>';
+                                                                  
+                                                                        
                                                                     }
                                                                         
                                                                  }
 							}
 							else{
-								$calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+								$calendar.= '<div class="day-number"><a href='.$adres.'?data='.$date.'">'.$list_day.'</a></div>';
 							}
 						}
 					}
 					else{
-							$calendar.= '<div class="day-number"><a href="/PZ_SRP/public/index/grafik/'.$date.'">'.$list_day.'</a></div>';
+							$calendar.= $calendar.= '<div class="day-number"><a href='.$adres.'?data='.$date.'>'.$list_day.'</a></div>';
 					}
 				}
 	/*			$calendar.= '<div class="day-number">'.$list_day.'</div>'; */
@@ -274,8 +278,8 @@
   		<option value="08">Sierpień</option>
 		<option value="09">Wrzesień</option>
 	 	<option value="10">Październik</option>
-		<option value="11" selected>Listopad</option>
-  		<option value="12">Grudzień</option>
+		<option value="11">Listopad</option>
+  		<option value="12" selected>Grudzień</option>
 	</select>
 	
 	<select name='rok'>

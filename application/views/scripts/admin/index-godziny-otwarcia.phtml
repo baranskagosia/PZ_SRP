@@ -1,0 +1,6 @@
+<?php
+foreach($this->godzinyOtwarcia as $entry) {
+    $href = $this->baseUrl('admin/edit-godziny-otwarcia/' . $entry['idGodzinyOtwarcia']);
+    echo '<a href="'. $href . '">' . $entry['idGodzinyOtwarcia'] . "</a> | ";
+}
+?>

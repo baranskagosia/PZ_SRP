@@ -69,11 +69,104 @@ class AdminController extends Zend_Controller_Action
     {
         $editLanesForm = new Application_Form_Admin_EditLanes();
         $this->view->editLanesForm = $editLanesForm;
-        
+    }
+    
+    public function updateTorAction()
+    {
+        $editLanesForm = new Application_Form_Admin_EditLanes();
         if($this->getRequest()->isPost()) {
             if($editLanesForm->isValid($_POST)) {
-                $this->view->editLanesForm = null;
+                $values = $editLanesForm->getValues();
+                $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+                $sqlstr = "DELETE FROM tor";
+                $query = $db->query($sqlstr);
                 
+                for($i=1; $i<=$values["LiczbaTorow"]; $i++) {
+                        $sqlstr = "INSERT INTO tor VALUES (?, ?)";
+                        $query = $db->query($sqlstr, array($i, $i));
+                }
+            } else {
+                $this->view->editLanesForm = $editLanesForm;
+            }
+        }
+    }
+    
+    public function editCennikAction()
+    {
+        $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+        $sqlstr = "SELECT * FROM cennik";
+        $editCennikForm = new Application_Form_Admin_EditCennik();
+        
+        $this->view->cennik = $db->query($sqlstr)->fetchAll();
+        $this->view->editCennikForm = $editCennikForm;
+    }
+    
+    public function updateCennikAction()
+    {
+        $editCennikForm = new Application_Form_Admin_EditCennik();
+        if($this->getRequest()->isPost()) {
+            if($editCennikForm->isValid($_POST)) {
+                $values = $editCennikForm->getValues();
+                $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+                $sqlstr = "SELECT idCennik FROM cennik";
+                $cennikId = $db->query($sqlstr)->fetchAll();
+                
+                foreach($cennikId as $entry) {
+                    $sqlstr = "UPDATE cennik SET cena = ? WHERE idCennik = ?";
+                    $db->query($sqlstr, 
+                            array($values[$entry['idCennik']], $entry['idCennik']));
+                }
+            } else {
+                $this->view->editCennikForm = $editCennikForm;
+            }
+        }
+    }
+    
+    public function indexGodzinyOtwarciaAction()
+    {
+        $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+        $sqlstr = "SELECT * FROM godziny_otwarcia";
+        $this->view->godzinyOtwarcia = $db->query($sqlstr)->fetchAll();
+    }
+    
+    public function editGodzinyOtwarciaAction()
+    {
+        $editGodzinyOtwarciaForm = new Application_Form_Admin_EditGodzinyOtwarcia();
+        $this->view->editGodzinyOtwarciaForm = $editGodzinyOtwarciaForm;
+    }
+    
+    public function updateGodzinyOtwarciaAction()
+    {
+        $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        $tmp = explode('/', $url);
+        
+        if(count($tmp) > 7) {
+            $id=$tmp[7];
+            
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $sqlstr = "SELECT * FROM godziny_otwarcia WHERE idGodzinyOtwarcia = ?";
+            $dzienTygodnia = $db->query($sqlstr, $id)->fetch();
+        
+            if(!is_null($dzienTygodnia['GodzinaOtwarcia'])) {
+                $editGodzinyOtwarciaForm = new Application_Form_Admin_EditGodzinyOtwarcia();
+                if($this->getRequest()->isPost() && 
+                        $editGodzinyOtwarciaForm->isValid($_POST)) {
+                    $values = $editGodzinyOtwarciaForm->getValues();
+                    
+                    $sqlstr  = "UPDATE godziny_otwarcia ";
+                    $sqlstr .= "SET GodzinaOtwarcia = ?, GodzinaZamkniecia = ? ";
+                    $sqlstr .= "WHERE idGodzinyOtwarcia = ?";
+
+                    $db->query($sqlstr, array(
+                            $values['GodzinaOtwarcia'],
+                            $values['GodzinaZamkniecia'],
+                            $id
+                        ));
+                } else {
+                    $this->view->error = "Nie POST albo nieprawidłowe dane";
+                }
+            } else {
+                $this->view->error = "NIe ma takiego dnia!";
             }
         }
     }
@@ -132,6 +225,13 @@ class AdminController extends Zend_Controller_Action
                 $values = $newAktualnoscForm->getValues();
                 
                 $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($id, $values['naglowek'], $values['tresc']);
+            }
+            else {
+                $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($id);
+                
+                $newAktualnoscForm->getElement("naglowek")->setValue($aktualnosc['naglowek']);
+                $newAktualnoscForm->getElement("tresc")->setValue($aktualnosc['tresc']);
+                $this->view->editAktualnoscForm = $newAktualnoscForm;
             }
         }
         

@@ -8,19 +8,27 @@
          $data_format=date("Y-m-d H:i:s", strtotime($data));
          $IDUzytkownik=$this->IDUzytkownik;
          
-       $najblizsze=NajblizszeRezerwacje($IDUzytkownik,$data_format);
+       $najblizsze_zaplanowane=NajblizszeRezerwacje($IDUzytkownik,$data_format,0);
+       $najblizsze_odwolane=NajblizszeRezerwacje($IDUzytkownik,$data_format,1);
        
-     if(sizeof($najblizsze)>0){
-         echo "<p class='info'> Twoja najbliższa zaplanowana wizyta jest na <strong>".$najblizsze[0]['DataCzas']."</strong></p>";
+       //Wyświetlanie najbliższych zaplanowanych wizyt
+     if(sizeof($najblizsze_zaplanowane)>0){
+         echo "<p class='info'> Twoja najbliższa zaplanowana wizyta jest na <strong>".$najblizsze_zaplanowane[0]['DataCzas']."</strong></p>";
      }
      else{
          echo "<p class='info'> Nie masz żadnych zaplanowanych wizyt.</p>";
      }
-         
-function NajblizszeRezerwacje($IDUzytkownik,$data_format){
+
+     //wyświetlanie najbliższych odwołanych wizyt
+     if(sizeof($najblizsze_odwolane)>0){
+         echo "<p class='error-box'> Twoja najbliższa odwołana wizyta była zaplanowana na <strong>".$najblizsze_odwolane[0]['DataCzas']."</strong>.</p>";
+     }
+     
+     
+function NajblizszeRezerwacje($IDUzytkownik,$data_format,$odwolane){
             if($IDUzytkownik){
                 $sql="SELECT * FROM rezerwacja where uzytkownik_idUzytkownik LIKE $IDUzytkownik AND 
-                   DataCzas >='".$data_format."' AND CzyOdwolana LIKE 0 ORDER BY DataCzas";
+                   DataCzas >='".$data_format."' AND CzyOdwolana LIKE '".$odwolane."' ORDER BY DataCzas";
                     $db=Zend_Db_Table_Abstract::getDefaultAdapter();
                     $rezerwacja=$db->query($sql)->fetchAll();
                    return $rezerwacja;
@@ -30,4 +38,5 @@ function NajblizszeRezerwacje($IDUzytkownik,$data_format){
                 return $rezerwacja;
                 }
         }
+ 
 ?>

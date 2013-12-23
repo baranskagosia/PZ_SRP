@@ -9,7 +9,7 @@ class Application_Model_Info extends Zend_Db_Table_Abstract
 }
 
     public function IloscTorow() {
-        $sql='SELECT MAX(NumerToru) AS Ilosc_Torow FROM Tor';
+        $sql='SELECT MAX(NumerToru) AS Ilosc_Torow FROM tor';
         $ileTorow = $this->getAdapter()-> query($sql)->fetchAll();
      return $ileTorow;
 }
