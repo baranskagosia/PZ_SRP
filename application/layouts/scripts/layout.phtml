@@ -18,6 +18,13 @@
             <?php echo $this->headLink() 
                 ->prependStylesheet($this->baseUrl('css/styleIE.css'));?>
         <![endif]-->
+        <?php if($this->layout()->enable_jQuery) echo $this->jQuery(); ?>
+        <?php if($this->layout()->enable_jQuery_tablesorter) { ?>
+            <?php echo $this->headLink() 
+                ->prependStylesheet($this->baseUrl('css/tablesorter/style.css')); ?>
+            <script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.tablesorter.js'); ?>"></script>
+            <script type="text/javascript" src="<?php echo $this->baseUrl('js/klientRankingTablesorter.js'); ?>"></script>
+        <?php } ?>
 
 	<title>DELFINEK</title>
   </head>

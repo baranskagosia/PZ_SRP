@@ -1,0 +1,21 @@
+<?php
+if (!empty($this->klient_ranking)) {
+    echo '<table id="klientRankingTable" class="tablesorter">';
+    echo "<thead><tr><th>ID</th><th>Nazwisko</th><th>Imie</th></tr></thead>";
+    echo "";
+    echo "";
+    echo "";
+    echo "";
+
+    foreach ($this->klient_ranking as $row) {
+
+        echo "<tr>";
+        echo "<td>" . $row['idKlient'] . "</td>";
+        echo "<td>" . $row['Nazwisko'] . "</td>";
+        echo "<td>" . $row['Imie'] . "</td>";
+        echo "</tr>";
+        //echo print_r($row, true);
+    }
+    echo "</table>";
+}
+?>

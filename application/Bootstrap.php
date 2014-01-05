@@ -31,10 +31,11 @@ $view->addHelperPath(APPLICATION_PATH .'/view/helpers/LoggedInAs', 'Zend_View_He
 
   
      $view->jQuery()->enable()
-          ->setLocalPath('/../dent/public/js/jquery-ui-1.9.1.custom/jquery-ui-1.9.1.custom/js/jquery-1.8.2.js')
+             ->setVersion("1.9.1")
+          //->setLocalPath('/../PZ_SRP/public/js/jquery/jquery-1.9.1.js')
           //   ->setUiVersion('1.8')
           //   ->addStylesheet('\..\public\jquery\jquery-ui-1.9.1.custom\jquery-ui-1.9.1.custom\css\sunnyjquery-ui-1.9.1.custom.min.css')//add the css
-	    ->uiEnable();
+	    ;
 
    
   $navContainerConfig =new Zend_Config_Xml(APPLICATION_PATH . '/configs/navigation.xml','nav'); 

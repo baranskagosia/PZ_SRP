@@ -1,0 +1,56 @@
+<?php
+if(!empty($this->error)) {
+    echo "<p>".$this->error."</p>";
+} elseif (!empty($this->rezerwacje_list)) {
+    echo "<table>";
+    echo "<thead><tr><th>Data</th><th>Godzina</th><th>Tor</th><th>Klient</th><th>Ilość osób</th>";
+    echo "<th>Czas trwania</th><th>Na wyłączność?</th><th>Odwołaj</th></tr></thead>";
+    echo "";
+    echo "";
+    echo "";
+    echo "";
+
+    foreach ($this->rezerwacje_list as $row) {
+        $dataCzas = Zend_Locale_Format::getDate($row['DataCzas'], array('date_format' => 'yyyy-MM-dd HH:mm:ss'));
+        $IDRezerwacja = $row['idRezerwacja'];
+
+        echo "<tr>";
+        echo "<td>" . $dataCzas['day'] . "." . $dataCzas['month'] . "." . $dataCzas['year'] . "</td>";
+        echo "<td>" . $dataCzas['hour'] . ":" . $dataCzas['minute'] . "</td>";
+        echo "<td>" . $row['TorPreferowany'] . "</td>";
+        echo "<td>" . $row['Nazwisko'] . ", ".$row['Imie']."</td>";
+        echo "<td>" . $row['IloscOsob'] . "</td>";
+        echo "<td>" . $row['CzasTrwania'] . "</td>";
+        echo "<td>" . ($row['CzyNaWylacznasc'] == 1 ? "<b>TAK</b>" : "nie") . "</td>";
+        //echo "<td><a href=".$this->baseUrl('klient/odwolaj-rezerwacje/IDRezerwacja/'."$IDRezerwacja".'')."><button onclick='myFunction()'>Odwołaj</button></a></td>";
+        echo "<td><form><input type='button' onclick='myFunction(" . $IDRezerwacja . ")' value='Odwolaj'></form></td>";
+        echo "</tr>";
+        //echo print_r($row, true);
+    }
+} else {
+    $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    $tmp = explode('/', $url);
+    $date = $tmp[sizeof($tmp)-1];
+    
+    $data_format=date("Y-m-d", strtotime($date));
+    echo $data_format;
+}
+?>
+
+<script>
+function myFunction(id_rez)
+{
+var x;
+var r=confirm("Czy jesteś pewny, że chcesz odwołać rezerwację?");
+if (r==true)
+  {
+   window.location = "../delete-rezerwacja/IDRezerwacja/"+id_rez;
+   x="<p class='confirm-box'>Dokonano usunięcia rezerwacji</p>";
+  }
+else
+  {
+  x="<p class='info'>Anulowano usuwanie rezerwacji</p>";
+  }
+document.getElementById("informacje").innerHTML=x;
+}
+</script>
