@@ -89,8 +89,15 @@ class RecepcjaController extends Zend_Controller_Action
         Zend_Layout::getMvcInstance()->assign('enable_jQuery_tablesorter', TRUE);
         
         $db = Zend_Db_Table::getDefaultAdapter();
-        $sqlstr  = "SELECT * ";
-        $sqlstr .= "FROM klient";
+        $sqlstr  = "SELECT *";
+        $sqlstr .= "FROM klient LEFT JOIN (SELECT r1.uzytkownik_idUzytkownik AS id1, COUNT(*) AS liczbaRezerwacji";
+        $sqlstr .= "        FROM rezerwacja r1 GROUP BY r1.uzytkownik_idUzytkownik) AS liczbyRezerwacji";
+        $sqlstr .= "    ON id1 = klient.idKlient";
+        $sqlstr .= "    LEFT JOIN (SELECT r2.uzytkownik_idUzytkownik AS id2, COUNT(*) AS liczbaOdwolanychRezerwacji";
+        $sqlstr .= "        FROM rezerwacja r2";
+        $sqlstr .= "        WHERE CzyOdwolana = 1 GROUP BY r2.uzytkownik_idUzytkownik) AS liczbyOdwolanychRezerwacji";
+        $sqlstr .= "    ON id2 = klient.idKlient";
+        
         $this->view->klient_ranking = $db->query($sqlstr)->fetchAll();
     }
 }

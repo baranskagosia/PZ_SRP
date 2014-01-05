@@ -1,18 +1,21 @@
 <?php
 if (!empty($this->klient_ranking)) {
     echo '<table id="klientRankingTable" class="tablesorter">';
-    echo "<thead><tr><th>ID</th><th>Nazwisko</th><th>Imie</th></tr></thead>";
-    echo "";
-    echo "";
+    echo "<thead><tr><th>ID</th><th>Nazwisko</th>";
+    echo "<th>Rezerwacje</th><th>Zrealizowane</th><th>Odwołane</th>";
+    echo "</tr></thead>";
     echo "";
     echo "";
 
     foreach ($this->klient_ranking as $row) {
+        $rezerwacja_realized_cnt = (empty($row['liczbaRezerwacji']) ? 0 : (empty($row['liczbaOdwolanychRezerwacji']) ? $row['liczbaRezerwacji'] : $row['liczbaRezerwacji'] - $row['liczbaOdwolanychRezerwacji']));
 
         echo "<tr>";
         echo "<td>" . $row['idKlient'] . "</td>";
-        echo "<td>" . $row['Nazwisko'] . "</td>";
-        echo "<td>" . $row['Imie'] . "</td>";
+        echo "<td>" . $row['Nazwisko'] . ", ". $row['Imie'] ."</td>";
+        echo "<td>" . (empty($row['liczbaRezerwacji']) ? 0 : $row['liczbaRezerwacji']) . "</td>";
+        echo "<td>" . $rezerwacja_realized_cnt . "</td>";
+        echo "<td>" . (empty($row['liczbaOdwolanychRezerwacji']) ? 0 : $row['liczbaOdwolanychRezerwacji']) . "</td>";
         echo "</tr>";
         //echo print_r($row, true);
     }
