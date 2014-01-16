@@ -104,7 +104,7 @@ class Application_Form_NewKlient extends Zend_Form
         $telefon = new Zend_Form_Element_Text('Telefon');
         $telefon->setLabel('Telefon: ')
                 ->setRequired(false)
-                >addValidator('Digits',true,array('messages'=>'Telefon musi składać się z cyfr'))
+                ->addValidator('Digits',true,array('messages'=>'Telefon musi składać się z cyfr'))
                 ->addValidator('StringLength',true,array(0,9,'messages'=>'Telefon nie może mieć więcej niż 9 cyfr'));
 			   
                
