@@ -196,16 +196,16 @@ class AdminController extends Zend_Controller_Action
     public function editAktualnoscAction()
     {
         $aktualnoscModel = new Application_Model_Aktualnosci();
-        $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-
-        $tmp = explode('/', $url);
-        $id=$tmp[7];
+        $id=$this->getRequest()->getParam('id');
         
         $this->view->id = $id;
         $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($id);
+       
         $this->view->aktualnosc = $aktualnosc;
         
         $newAktualnoscForm = new Application_Form_Admin_NewAktualnosc();
+        $newAktualnoscForm->setAction('update-aktualnosc');
+         $newAktualnoscForm->getElement("id")->setValue($id);
         $newAktualnoscForm->getElement("naglowek")->setValue($aktualnosc['naglowek']);
         $newAktualnoscForm->getElement("tresc")->setValue($aktualnosc['tresc']);
         
@@ -215,19 +215,21 @@ class AdminController extends Zend_Controller_Action
     public function updateAktualnoscAction()
     {
         $aktualnoscModel = new Application_Model_Aktualnosci();
-        $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-
+        /*$url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         $tmp = explode('/', $url);
-        $id=$tmp[7];
+        $id=$tmp[6];*/
+        
+        $id=$this->getRequest()->getParam('id');
         $newAktualnoscForm = new Application_Form_Admin_NewAktualnosc();
+       
         if($this->getRequest()->isPost()) {
             if($newAktualnoscForm->isValid($_POST)) {
                 $values = $newAktualnoscForm->getValues();
                 
-                $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($id, $values['naglowek'], $values['tresc']);
+                $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($values['id'], $values['naglowek'], $values['tresc']);
             }
             else {
-                $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($id);
+                $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($values['id']);
                 
                 $newAktualnoscForm->getElement("naglowek")->setValue($aktualnosc['naglowek']);
                 $newAktualnoscForm->getElement("tresc")->setValue($aktualnosc['tresc']);

@@ -1,6 +1,11 @@
 <?php
-echo "UPDATE";
+
 if(isset($this->editAktualnoscForm)) {
     echo $this->editAktualnoscForm;
+    
+}
+else{
+    echo "<p class='confirm-box'>Edycja aktualności przebiegła poprawnie</p>";
+    echo "<p><a href='".$this->baseUrl('admin/index-aktualnosci')."' class=button>Powrót</a></p>";
 }
 ?>

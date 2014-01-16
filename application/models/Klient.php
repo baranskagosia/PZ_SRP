@@ -27,7 +27,7 @@ class Application_Model_Klient extends Zend_Db_Table_Abstract {
                 'Imie' => $imie,
                 'Nazwisko' => $nazwisko,
                 'Telefon' => $telefon,
-                'Data' => $data,
+                'DataUrodzenia' => $data,
                 'idUzytkownik' => $idUzytkownik
             );
 
