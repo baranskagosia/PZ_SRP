@@ -19,7 +19,7 @@ $rezerwacja=czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor);
  $sql_zajete="SELECT Distinct(`DataCzas`) AS unikalne, TIME(DataCzas) AS Godzina, Date(DataCzas) AS Data, 
                `TorPreferowany` ,  `CzyNaWylacznasc`, count(*) AS ZarezerwowaneMiejsca
               FROM rezerwacja WHERE DataCzas LIKE '".$data_time."' AND
-                    TorPreferowany =".$tor." AND`CzyOdwolana` =0 
+                    TorPreferowany =".$tor." AND CzyOdwolana = 0
                GROUP BY DataCzas";
 $zajety_termin=$db->query($sql_zajete)->fetchAll();
 
@@ -178,7 +178,7 @@ if(isset($zajety_termin[0]['CzyNaWylacznasc'])){
       function czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor){
             if($IDUzytkownik){
                 $sql="SELECT * FROM rezerwacja where uzytkownik_idUzytkownik LIKE $IDUzytkownik AND 
-                   DataCzas LIKE '".$data_time."' AND TorPreferowany LIKE ".$tor.""  ;
+                   DataCzas LIKE '".$data_time."' AND TorPreferowany LIKE ".$tor." AND CzyOdwolana = 0"  ;
                     $db=Zend_Db_Table_Abstract::getDefaultAdapter();
                     $rezerwacja=$db->query($sql)->fetchAll();
                    return $rezerwacja;
@@ -194,6 +194,7 @@ if(isset($zajety_termin[0]['CzyNaWylacznasc'])){
                 $sql="SELECT Date(DataCzas) AS Data, TIME(DataCzas) AS Godzina, TorPreferowany, IloscOsob,CzasTrwania, CzyNaWylacznasc
                         FROM rezerwacja 
                         where uzytkownik_idUzytkownik LIKE $IDUzytkownik AND 
+                                CzyOdwolana= 0 AND
                                 Date(DataCzas) LIKE '".$data."' 
                         ORDER BY Godzina"  ;
                     $db=Zend_Db_Table_Abstract::getDefaultAdapter();

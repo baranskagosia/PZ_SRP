@@ -1,3 +1,10 @@
 <?php
+$model= new Application_Model_Info();
+ $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        $tmp = explode('/', $url);
+        if(count($tmp) > 7) {
+            $day=$tmp[7];}
+        
+echo "<h2>Edycja godzin otwarcia dla dnia: ".$model->DzienTygodnia($day)."</h2>";
 echo $this->editGodzinyOtwarciaForm;
 ?>

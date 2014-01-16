@@ -20,12 +20,14 @@ class Application_Model_Klient extends Zend_Db_Table_Abstract {
         return $dane;
     }
 
-    public function add($imie, $nazwisko, $idUzytkownik) {
+    public function add($imie, $nazwisko, $telefon ,$data, $idUzytkownik) {
         $idKlienta = null;
         if (!(empty($imie) || empty($nazwisko) || empty($idUzytkownik))) {
             $newKlient = array(
                 'Imie' => $imie,
                 'Nazwisko' => $nazwisko,
+                'Telefon' => $telefon,
+                'Data' => $data,
                 'idUzytkownik' => $idUzytkownik
             );
 

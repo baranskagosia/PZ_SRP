@@ -1,7 +1,10 @@
 <br /><br />
 <?php 
-if(isset($this->registrationForm)) { echo $this->registrationForm; }
-else { echo "<div>Rejestracja przebiegła poprawnie! Możesz teraz zalogować się do systemu."; }
+
+if(isset($this->registrationForm)) { 
+    echo "<h2>Formularz rejestracyjny</h2>";
+    echo $this->registrationForm; }
+else { echo "<div><p class='confirm-box'><h2>Gratulujemy!</h2> Rejestracja przebiegła poprawnie! Możesz teraz zalogować się do systemu.</p>"; }
 
 // if(isset($this->idUzytkownik)) { echo $this->idUzytkownik; }
 ?>

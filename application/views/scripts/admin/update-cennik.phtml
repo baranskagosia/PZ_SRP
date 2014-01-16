@@ -3,6 +3,8 @@ if(isset($this->editCennikForm)) {
     echo $this->editCennikForm;
 }
 else {
-    echo "Liczba torów została zaktualizowana!";
+    echo "<p class='confirm-box'>Cena została zaktualizowana</p>
+        <p><a href='".$this->baseUrl('admin/edit-cennik')."' class='button'> Powrót</a></p>";
+    
 }
 ?>

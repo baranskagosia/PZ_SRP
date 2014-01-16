@@ -805,3 +805,31 @@ input[class="button_e"]
 background:#FF3333;
 color:#000000;
 } 
+
+input[type=checkbox]
+{
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+  padding: 10px;
+}
+input[type=radio]
+{
+  -ms-transform: scale(1.2); /* IE */
+  -moz-transform: scale(1.2); /* FF */
+  -webkit-transform: scale(1.2); /* Safari and Chrome */
+  -o-transform: scale(1.2); /* Opera */
+  padding: 15px;
+}
+#urodziny{
+    text-align:center;
+    margin:auto;
+    font-size: larger;
+}
+#small{
+    font-size:medium;
+    margin-right:165px;
+    text-align: right;
+    padding-bottom: 30px;
+}

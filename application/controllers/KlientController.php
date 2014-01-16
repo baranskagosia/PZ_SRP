@@ -19,10 +19,21 @@ class KlientController extends Zend_Controller_Action
              $ID=$db->query($idUSER)->fetchAll();
     
              $IDUzytkownik=$ID[0]['idUzytkownik'];
+             
         }
        else{
            $IDUzytkownik=null;  
        }
+       $month=date('m');
+       $day=date('d');
+      
+       $SQLurodziny="SELECT DataUrodzenia
+                    FROM klient 
+                    WHERE  idKlient=$IDKlient 
+                        AND Month(DataUrodzenia)= ". $month." 
+                        AND Day(DataUrodzenia)=".$day. "";
+        $urodziny=$db->query($SQLurodziny)->fetchAll();
+     $this->view->urodziny=$urodziny;
      $this->view->IDUzytkownik=$IDUzytkownik;
         $this->view->idKlient=$idKlient;
 // action body
@@ -125,7 +136,7 @@ class KlientController extends Zend_Controller_Action
                                 'dbname'   => '13829293_0000001'
                             ));
 			
-				$sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);;
+				$sql = $db->select('idUzytkownik')->from(array('k' => 'klient'))->join(array('u'=>'uzytkownik'), 'k.idUzytkownik = u.idUzytkownik')->where('idKlient LIKE ?', $idKlient);
 				$stmt = $sql->query();
 				$result = $stmt->fetchAll();
 				
@@ -288,7 +299,7 @@ class KlientController extends Zend_Controller_Action
            // $where = $table->getAdapter()->quoteInto('idrezerwacja= ?', $IDRezerwacja);
            $table->update($dane[0], "idRezerwacja=".$IDRezerwacja);
        
-       $this->_redirect('klient/rezerwacje');
+      $this->_redirect('klient/rezerwacje');
         
     }
 

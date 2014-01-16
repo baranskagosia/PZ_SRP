@@ -27,8 +27,8 @@ class Application_Form_NewKlient extends Zend_Form
 
         $validatorMail = new Zend_Validate_EmailAddress(Zend_Validate_Hostname::ALLOW_DNS, false, $validatorHostname);
         $validatorMail->setMessages(array(
-            Zend_Validate_EmailAddress::INVALID => "'%value%' is not a valid email address",
-            Zend_Validate_EmailAddress::INVALID_HOSTNAME => "'%hostname%' is not a valid hostname for email address '%value%'",
+            Zend_Validate_EmailAddress::INVALID => "'%value%' nie jest poprawnym adresem email",
+            Zend_Validate_EmailAddress::INVALID_HOSTNAME => "'%hostname%' nie jest poprawną nazwą hosta dla adresu '%value%'",
             Zend_Validate_EmailAddress::INVALID_MX_RECORD => "'%hostname%' does not appear to have a valid MX record for the email address '%value%'",
             Zend_Validate_EmailAddress::DOT_ATOM => "'%localPart%' not matched against dot-atom format",
             Zend_Validate_EmailAddress::QUOTED_STRING => "'%localPart%' not matched against quoted-string format",
@@ -40,13 +40,13 @@ class Application_Form_NewKlient extends Zend_Form
         $mail->addDecorators(array(
             array('Errors'),
         ));
-        $this->addElement($mail);
+        
         
         $haslo = new Zend_Form_Element_Password('Haslo');
         $validatorHasloStringLength = new Zend_Validate_StringLength(8,20);
         $validatorHasloStringLength->setMessages(array(
-            Zend_Validate_StringLength::TOO_SHORT => 'Imie nie moze byc krotsze niz 8 znaków.',
-            Zend_Validate_StringLength::TOO_LONG  => 'Imie nie moze byc dluzsze niz 20 znaki.'
+            Zend_Validate_StringLength::TOO_SHORT => 'Hasło nie moze byc krotsze niz 8 znaków.',
+            Zend_Validate_StringLength::TOO_LONG  => 'Hasło nie moze byc dluzsze niz 20 znaki.'
         ));
         $haslo->setRequired(true)->setLabel('Hasło: ')
                 ->addValidator($validatorNotEmpty)
@@ -54,7 +54,7 @@ class Application_Form_NewKlient extends Zend_Form
         $haslo->addDecorators(array(
             array('Errors'),
         ));
-        $this->addElement($haslo);
+        
         
         $powtorzHaslo = new Zend_Form_Element_Password('PowtorzHaslo');
         $validatorIdenticalHaslo = new Zend_Validate_Identical('Haslo');
@@ -65,7 +65,7 @@ class Application_Form_NewKlient extends Zend_Form
         $powtorzHaslo->addDecorators(array(
             array('Errors'),
         ));
-        $this->addElement($powtorzHaslo);
+        
         
         $validatorAlnum = new Zend_Validate_Alnum();
         $validatorAlnum->setMessage('Dopuszczalne sa wylacznie znaki alfanumeryczne');
@@ -83,7 +83,7 @@ class Application_Form_NewKlient extends Zend_Form
         $imie->addDecorators(array(
             array('Errors'),
         ));
-        $this->addElement($imie);
+       
 
         $validatorNazwiskoStringLength = new Zend_Validate_StringLength(2,40);
         $validatorNazwiskoStringLength->setMessages(array(
@@ -99,12 +99,31 @@ class Application_Form_NewKlient extends Zend_Form
         $imie->addDecorators(array(
             array('Errors'),
         ));
-        $this->addElement($nazwisko);
         
-        $this->addElement('text', 'telefon', array('label' => 'Nr Telefonu: '));
-        $this->addElement('text', 'data_urodzenia', array('label' => 'Data Urodzenia: '));
         
-        $this->addElement('submit', 'register', array('label' => 'Zarejestruj sie!'));
+        $telefon = new Zend_Form_Element_Text('Telefon');
+        $telefon->setLabel('Telefon: ')
+                ->setRequired(false)
+                >addValidator('Digits',true,array('messages'=>'Telefon musi składać się z cyfr'))
+                ->addValidator('StringLength',true,array(0,9,'messages'=>'Telefon nie może mieć więcej niż 9 cyfr'));
+			   
+               
+                
+        $validatorDate = new Zend_Validate_Date(array('format' => 'yyyy-mm-dd'));
+        $validatorDate->setMessages(array(Zend_Validate_Date::INVALID => "'%value%' niepoprawny format daty. Format wymagany yyyy-mm-dd"));
+        
+        
+        $dataUrodzenia= new Zend_Form_Element_Text('DataUrodzenia');
+        $dataUrodzenia->setLabel('Data Urodzenia: ')
+                ->addValidator($validatorDate);
+        
+        
+        $rejestruj= new Zend_Form_Element_Submit('Rejestruj');
+        $rejestruj->setLabel('Zarejestruj się');
+        
+        
+         $this->addElements(array($mail, $haslo,$powtorzHaslo,$imie, $nazwisko, $telefon,$dataUrodzenia, $rejestruj));
+        
     }
 
 

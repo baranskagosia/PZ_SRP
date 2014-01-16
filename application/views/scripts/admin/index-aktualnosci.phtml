@@ -3,11 +3,12 @@
 
 echo "<table>";
 echo "<thead>";
-echo "<tr><th>Indeks</th><th>Nagłówek</th><th>Treść</th></thead>";
+echo "<tr><th>Edytuj</th><th>Nagłówek</th><th>Treść</th></thead>";
 
 foreach($this->aktualnosci as $row) {
     echo "<tr>";
-    echo '<td><a href="' . $this->baseUrl('admin/edit-aktualnosc/') . $row['idAktualnosci'] . '">' . $row['idAktualnosci'] . '</a></td>';
+    echo '<td><a href="' . $this->baseUrl('admin/edit-aktualnosc/') . $row['idAktualnosci'] . '">' . $row['idAktualnosci'] . '
+        <img src="'.$this->baseUrl('img/icon/edit_32.png').'" /> </a></td>';
     echo "<td>" . (strlen($row['naglowek']) > 40 ? substr($row['naglowek'], 0, 40) . "..." : $row['naglowek']) . "</td>";
     echo "<td>" . (strlen($row['tresc']) > 80 ? substr($row['tresc'], 0, 80) . "..." : $row['tresc']) . "</td>";
     echo "</tr>";

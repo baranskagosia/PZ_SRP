@@ -51,7 +51,7 @@ public function Historia($idUzytkownik) {
                 ->from('rezerwacja')
                 ->where('uzytkownik_idUzytkownik = ?', $idUzytkownik)
                 ->where('DataCzas < ?', new Zend_Db_Expr('NOW()'))
-                ->order('DataCzas');
+                ->order('DataCzas DESC');
         $result = $db->query($query)->fetchAll();
     }
     
@@ -66,7 +66,7 @@ public function Zaplanowane($idUzytkownik) {
         $query = $db->select()
                 ->from('rezerwacja')
                 ->where('uzytkownik_idUzytkownik = ?', $idUzytkownik)
-                 ->where('CzyOdwolana' ==0)
+                 ->where('CzyOdwolana = ?','0')
                 ->where('DataCzas > ?', new Zend_Db_Expr('NOW()'))
                 ->order('DataCzas');
         $result = $db->query($query)->fetchAll();

@@ -3,6 +3,7 @@ if(isset($this->editLanesForm)) {
     echo $this->editLanesForm;
 }
 else {
-    echo "Liczba torów została zaktualizowana!";
+    echo "<p class='confirm-box'>Liczba torów została zaktualizowana.</p>
+        <p><a href='".$this->baseUrl('admin/edit-tor')."' class='button'> Powrót</a></p>";
 }
 ?>

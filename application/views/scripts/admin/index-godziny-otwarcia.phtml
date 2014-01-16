@@ -1,6 +1,10 @@
 <?php
+$model= new Application_Model_Info();
+echo "<h2>Edycja godzin otwarcia<h2>
+    <p>Wybierz dzień tygodnia: ";
 foreach($this->godzinyOtwarcia as $entry) {
     $href = $this->baseUrl('admin/edit-godziny-otwarcia/' . $entry['idGodzinyOtwarcia']);
-    echo '<a href="'. $href . '">' . $entry['idGodzinyOtwarcia'] . "</a> | ";
+    echo '<a href="'. $href . '" class="button">' . $model->DzienTygodnia($entry['idGodzinyOtwarcia']) . "</a>  ";
 }
+echo "</p>";
 ?>

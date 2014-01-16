@@ -109,7 +109,7 @@ class IndexController extends Zend_Controller_Action
                     $userId = $usersModel->getNextAutoIncrementValue();
                     $user = $usersModel->addNewUser($values['Mail'], md5($values['Haslo']), 'klient');
                     
-                    $klientId = $klientModel->add($values['Imie'], $values['Nazwisko'], $userId);
+                    $klientId = $klientModel->add($values['Imie'], $values['Nazwisko'], $values['Telefon'],$value['Data'], $userId);
                     
                     $db->commit();
                 } catch(Zend_Db_Statement_Exception $e) {

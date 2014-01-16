@@ -20,5 +20,38 @@ class Application_Model_Info extends Zend_Db_Table_Abstract
         $otwarty =$this-> getAdapter()-> query($where);
      return $otwarty;
  }
+ 
+ public function DzienTygodnia($DzienTygodnia){
+        switch($DzienTygodnia){
+           case 1: {
+               $dzien='poniedziałek';
+               break;
+           }
+           case 2:{
+               $dzien='wtorek';
+               break;
+           }
+           case 3:{
+               $dzien='sroda';
+               break;
+           }
+           case 4: {
+               $dzien='czwartek';
+               break;
+           }
+           case 5:{
+               $dzien='piatek';
+               break;
+           }
+               
+           case 6:{
+               $dzien='sobota';
+                break;}
+           
+       }
+       return $dzien;
+    }
+
+       
 }
 

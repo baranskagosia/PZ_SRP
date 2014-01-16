@@ -8,8 +8,18 @@
          $data_format=date("Y-m-d H:i:s", strtotime($data));
          $IDUzytkownik=$this->IDUzytkownik;
          
+         $urodziny=$this->urodziny;
+         if(isset($urodziny[0]['DataUrodzenia'])){
+             echo " <div id='urodziny'><p><img src='".$this->baseUrl('img/icon/urodziny.jpg')."' alt='życzenia urodzinowe'/></p>
+                <p >  W związku z Twoimi urodzinami chcieliśmy Ci życzyć wszystkiego dobrego, dużo zdrowia, szczęścia oraz spełnienia marzeń.<p> 
+                 <p id='small'>Zespół pływalni Delfinek</p></div>";
+         }
+         
+         
+         
        $najblizsze_zaplanowane=NajblizszeRezerwacje($IDUzytkownik,$data_format,0);
        $najblizsze_odwolane=NajblizszeRezerwacje($IDUzytkownik,$data_format,1);
+       
        
        //Wyświetlanie najbliższych zaplanowanych wizyt
      if(sizeof($najblizsze_zaplanowane)>0){
