@@ -34,9 +34,12 @@ class Application_Form_NewKlient extends Zend_Form
             Zend_Validate_EmailAddress::QUOTED_STRING => "'%localPart%' not matched against quoted-string format",
             Zend_Validate_EmailAddress::INVALID_LOCAL_PART => "'%localPart%' is not a valid local part for email address '%value%'"
         ));
+        
+        $validatorUniqueMail = new MyValid_UniqueMailValidator();
         $mail->setRequired(true)->setLabel('Mail: ')
                 ->addValidator($validatorNotEmpty)
-                ->addValidator($validatorMail);
+                ->addValidator($validatorMail)
+                ->addValidator($validatorUniqueMail);
         $mail->addDecorators(array(
             array('Errors'),
         ));

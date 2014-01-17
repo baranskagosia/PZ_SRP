@@ -188,7 +188,9 @@ class AdminController extends Zend_Controller_Action
                 $this->view->newAktualnoscForm = null;
                 
                 $aktualnosciModel = new Application_Model_Aktualnosci();
-                $aktualnosciModel->dodajAktualnosc($values['naglowek'], $values['tresc']);
+                $dataArray = explode(".", $values['Data']);
+                $dataUSformat = $dataArray[2] . "-" . $dataArray[1] . "-" . $dataArray[0];
+                $aktualnosciModel->dodajAktualnosc($values['naglowek'], $values['tresc'], $dataUSformat);
             }
         }
     }
@@ -202,11 +204,14 @@ class AdminController extends Zend_Controller_Action
         $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($id);
        
         $this->view->aktualnosc = $aktualnosc;
+        $dataArray = explode("-", $aktualnosc['Data']);
+        $dataPLformat = empty($aktualnosc['Data']) ? "" : $dataArray[2].".".$dataArray[1].".".$dataArray[0];
         
         $newAktualnoscForm = new Application_Form_Admin_NewAktualnosc();
         $newAktualnoscForm->setAction('update-aktualnosc');
          $newAktualnoscForm->getElement("id")->setValue($id);
         $newAktualnoscForm->getElement("naglowek")->setValue($aktualnosc['naglowek']);
+        $newAktualnoscForm->getElement("Data")->setValue($dataPLformat);
         $newAktualnoscForm->getElement("tresc")->setValue($aktualnosc['tresc']);
         
         $this->view->editAktualnoscForm = $newAktualnoscForm;
@@ -225,8 +230,10 @@ class AdminController extends Zend_Controller_Action
         if($this->getRequest()->isPost()) {
             if($newAktualnoscForm->isValid($_POST)) {
                 $values = $newAktualnoscForm->getValues();
+                $dataArray = explode(".", $values['Data']);
+                $dataUSformat = $dataArray[2] . "-" . $dataArray[1] . "-" . $dataArray[0];
                 
-                $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($values['id'], $values['naglowek'], $values['tresc']);
+                $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($values['id'], $values['naglowek'], $values['tresc'], $dataUSformat);
             }
             else {
                 $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($values['id']);

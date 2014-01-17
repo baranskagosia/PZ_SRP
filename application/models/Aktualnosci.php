@@ -20,11 +20,12 @@ class Application_Model_Aktualnosci extends Zend_Db_Table_Abstract
         return $db->query($query)->fetch();
     }
     
-    public function aktualizujAktualnosc($id, $naglowek, $tresc)
+    public function aktualizujAktualnosc($id, $naglowek, $tresc, $data)
     {
         $aktualnosc = array(
             'naglowek'  => $naglowek,
-            'tresc'     => $tresc
+            'tresc'     => $tresc,
+            'Data'      => $data
         );
         
         $where = $this->getAdapter()->quoteInto('idAktualnosci = ?', $id);
@@ -32,7 +33,7 @@ class Application_Model_Aktualnosci extends Zend_Db_Table_Abstract
         return $this->update($aktualnosc, $where);
     }
     
-    public function dodajAktualnosc($naglowek, $tresc)
+    public function dodajAktualnosc($naglowek, $tresc, $data)
     {
         $idAktualnosc = null;
         
@@ -40,6 +41,7 @@ class Application_Model_Aktualnosci extends Zend_Db_Table_Abstract
             $newAktualnosc = array(
                 'naglowek'      => $naglowek,
                 'tresc'         => $tresc,
+                'Data'          => $data,
                 'czyAktualne'   => 1
             );
             

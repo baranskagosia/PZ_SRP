@@ -18,6 +18,7 @@ class Application_Form_Admin_NewAktualnosc extends Zend_Form
         $validatorNotEmpty = new Zend_Validate_NotEmpty();
         $validatorNotEmpty->setMessage('To pole jest wymagane.');
         
+        // Nagłówek aktualności
         $naglowek = new Zend_Form_Element_Text("naglowek");
 
         $naglowek->setRequired(true)->setLabel('Nagłówek: ')
@@ -27,6 +28,22 @@ class Application_Form_Admin_NewAktualnosc extends Zend_Form
         ));
         $this->addElement($naglowek);
         
+        
+        // Data aktualności
+        $data = new Zend_Form_Element_Text("Data");
+        $data->setValue(date('d.m.Y', time()));
+        $dataRegexValidator = new Zend_Validate_Regex("/^(0[1-9]|[12][0-9]|3[01])[\.](0[1-9]|1[012])[\.](19|20)\d\d$/");
+        $dataRegexValidator->setMessage("Nieprawidłowy format daty (poprawny format to dd.mm.YYYY)");
+
+        $data->setRequired(true)->setLabel('Data dodania: ')
+                ->addValidator($validatorNotEmpty)->addValidator($dataRegexValidator);
+        $data->addDecorators(array(
+            array('Errors'),
+        ));
+        $this->addElement($data);
+        
+        
+        // Treść aktualności
         $tresc = new Zend_Form_Element_Textarea('tresc');
         $tresc->setRequired(true)->setLabel('Treść: ')
                 ->addValidator($validatorNotEmpty);

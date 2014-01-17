@@ -16,6 +16,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
    
     }
+    
+    protected function _initValidators () {
+        $autoloader = new Zend_Application_Module_Autoloader (array ('namespace' => '', 'basePath' => APPLICATION_PATH));
+        $autoloader->addResourceType ('Validator', '../library/MyValid', 'MyValid_');
+    }
      
    function _initViewHelpers(){
 
