@@ -3,9 +3,11 @@
         $IDUzytkownik=$this->IDUzytkownik;
         $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
-	    $tmp = explode('/', $url);
-	    //print_r($tmp);
-	    $data=$tmp[7];
+	    $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+            $tmp = explode('/', $url);
+        
+            $data = $tmp[sizeof($tmp)-1];
+            $data_regex = "/^(0[1-9]|[12][0-9]|3[01])[\.](0[1-9]|1[012])[\.](19|20)\d\d$/";
 	    $tory= $this->iloscTorow;
 	    $ilosc_torow=$tory[0]['Ilosc_Torow'];
 

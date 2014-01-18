@@ -61,7 +61,7 @@
         <recepcjaRezerwacje>
                  <label>Rezerwacje</label>
                  <controller>recepcja</controller>
-                <action>rezerwacje</action>
+                <action>index-kalendarz-rezerwacji</action>
                 <resource>recepcjaRezerwacje</resource>
         </recepcjaRezerwacje>
         
@@ -78,6 +78,13 @@
                 <action>reputacja</action>
                 <resource>recepcjaReputacja</resource>
         </recepcjaReputacja>
+        
+        <recepcjaRanking>
+                 <label>Ranking użytkowników</label>
+                 <controller>recepcja</controller>
+                <action>index-ranking</action>
+                <resource>recepcjaRanking</resource>
+        </recepcjaRanking>
       
         <klienciWyswietl>
                  <label>Klienci</label>

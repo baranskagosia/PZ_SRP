@@ -43,6 +43,10 @@ class RecepcjaController extends Zend_Controller_Action
 		$this->_redirect('recepcja/grafik/'.$data);
     }
     
+    public function indexKalendarzRezerwacjiAction() {
+        $this->view;
+    }
+    
     public function indexRezerwacjeAction() {
         $url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         $tmp = explode('/', $url);

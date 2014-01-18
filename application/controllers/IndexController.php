@@ -12,7 +12,7 @@ class IndexController extends Zend_Controller_Action
     {
          	
             $db=Zend_Db_Table_Abstract::getDefaultAdapter();
-            $sql="SELECT * FROM aktualnosci WHERE czyAktualne LIKE 1";
+            $sql="SELECT * FROM aktualnosci WHERE czyAktualne LIKE 1 ORDER BY Data DESC LIMIT 5";
             $wynik=$db-> query($sql)->fetchAll();
             $this->view->wynik=$wynik;
 			

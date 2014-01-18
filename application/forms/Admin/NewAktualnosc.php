@@ -52,8 +52,8 @@ class Application_Form_Admin_NewAktualnosc extends Zend_Form
         ));
         $this->addElement($tresc);
         
-        $id = new Zend_Form_Element_Hidden("id");
-         $this->addElement($id);
+        $idHidden = new Zend_Form_Element_Hidden("id");
+        $this->addElement($idHidden);
                  
         $this->addElement('submit', 'register', array('label' => $submit_label));
     }

@@ -220,25 +220,26 @@ class AdminController extends Zend_Controller_Action
     public function updateAktualnoscAction()
     {
         $aktualnoscModel = new Application_Model_Aktualnosci();
-        /*$url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-        $tmp = explode('/', $url);
-        $id=$tmp[6];*/
         
         $id=$this->getRequest()->getParam('id');
         $newAktualnoscForm = new Application_Form_Admin_NewAktualnosc();
        
         if($this->getRequest()->isPost()) {
+            $values = $newAktualnoscForm->getValues();
+            
             if($newAktualnoscForm->isValid($_POST)) {
-                $values = $newAktualnoscForm->getValues();
                 $dataArray = explode(".", $values['Data']);
                 $dataUSformat = $dataArray[2] . "-" . $dataArray[1] . "-" . $dataArray[0];
                 
-                $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($values['id'], $values['naglowek'], $values['tresc'], $dataUSformat);
+                $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($id, $values['naglowek'], $values['tresc'], $dataUSformat);
             }
             else {
-                $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($values['id']);
+                $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($id);
+                $dataArray = explode("-", $aktualnosc['Data']);
+                $dataEUformat = empty($aktualnosc['Data']) ? "" : $dataArray[2] . "." . $dataArray[1] . "." . $dataArray[0];
                 
                 $newAktualnoscForm->getElement("naglowek")->setValue($aktualnosc['naglowek']);
+                $newAktualnoscForm->getElement("Data")->setValue($dataEUformat);
                 $newAktualnoscForm->getElement("tresc")->setValue($aktualnosc['tresc']);
                 $this->view->editAktualnoscForm = $newAktualnoscForm;
             }

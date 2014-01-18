@@ -16,8 +16,8 @@ class Application_Model_Aktualnosci extends Zend_Db_Table_Abstract
     public function pobierzAktualnoscPoId($id)
     {
         $db = $this->getAdapter();
-        $query = "SELECT * FROM aktualnosci WHERE idAktualnosci =".$id."";
-        return $db->query($query)->fetch();
+        $query = "SELECT * FROM aktualnosci WHERE idAktualnosci = ?";
+        return $db->query($query, $id)->fetch();
     }
     
     public function aktualizujAktualnosc($id, $naglowek, $tresc, $data)
