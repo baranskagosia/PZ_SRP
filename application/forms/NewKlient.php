@@ -21,7 +21,7 @@ class Application_Form_NewKlient extends Zend_Form
             Zend_Validate_Hostname::UNDECIPHERABLE_TLD => "Nie można uzyskać nazwy TLD.",
             Zend_Validate_Hostname::INVALID_HOSTNAME => "Niewłaściwa struktura nazwy DNS.",
             Zend_Validate_Hostname::INVALID_LOCAL_NAME => "Niewłaściwa część lokalna adresu.",
-            Zend_Validate_Hostname::LOCAL_NAME_NOT_ALLOWED => "Nie wiem ocb."
+            Zend_Validate_Hostname::LOCAL_NAME_NOT_ALLOWED => "Niedopuszczalna część lokalna adresu."
                 )
         );
 
@@ -29,13 +29,14 @@ class Application_Form_NewKlient extends Zend_Form
         $validatorMail->setMessages(array(
             Zend_Validate_EmailAddress::INVALID => "'%value%' nie jest poprawnym adresem email",
             Zend_Validate_EmailAddress::INVALID_HOSTNAME => "'%hostname%' nie jest poprawną nazwą hosta dla adresu '%value%'",
-            Zend_Validate_EmailAddress::INVALID_MX_RECORD => "'%hostname%' does not appear to have a valid MX record for the email address '%value%'",
-            Zend_Validate_EmailAddress::DOT_ATOM => "'%localPart%' not matched against dot-atom format",
-            Zend_Validate_EmailAddress::QUOTED_STRING => "'%localPart%' not matched against quoted-string format",
-            Zend_Validate_EmailAddress::INVALID_LOCAL_PART => "'%localPart%' is not a valid local part for email address '%value%'"
+            Zend_Validate_EmailAddress::INVALID_MX_RECORD => "'%hostname%' nie jest właściwą wartością rekordu MS dla '%value%'",
+            Zend_Validate_EmailAddress::DOT_ATOM => "'%localPart%' nie spełnia formatu kropka-atom",
+            Zend_Validate_EmailAddress::QUOTED_STRING => "'%localPart%' nie spełnia formatu łańcucha",
+            Zend_Validate_EmailAddress::INVALID_LOCAL_PART => "'%localPart%' nie jest właściwą częścią lokalną dla '%value%'"
         ));
         
-        $validatorUniqueMail = new MyValid_UniqueMailValidator();
+        $validatorUniqueMail = new Zend_Validate_Db_NoRecordExists('uzytkownik', 'Mail');
+        $validatorUniqueMail->setMessage("użytkownik '%value%' już istnieje w bazie", Zend_Validate_Db_Abstract::ERROR_RECORD_FOUND);
         $mail->setRequired(true)->setLabel('Mail: ')
                 ->addValidator($validatorNotEmpty)
                 ->addValidator($validatorMail)
@@ -112,8 +113,8 @@ class Application_Form_NewKlient extends Zend_Form
 			   
                
                 
-        $validatorDate = new Zend_Validate_Date(array('format' => 'yyyy-mm-dd'));
-        $validatorDate->setMessages(array(Zend_Validate_Date::INVALID => "'%value%' niepoprawny format daty. Format wymagany yyyy-mm-dd"));
+        $validatorDate = new Zend_Validate_Date(array('format' => 'dd.mm.yyyy'));
+        $validatorDate->setMessages(array(Zend_Validate_Date::INVALID => "'%value%' niepoprawny format daty. Format wymagany dd.mm.yyyy"));
         
         
         $dataUrodzenia= new Zend_Form_Element_Text('DataUrodzenia');

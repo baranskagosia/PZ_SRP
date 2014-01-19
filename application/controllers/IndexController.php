@@ -103,13 +103,15 @@ class IndexController extends Zend_Controller_Action
                 $values = $registrationForm->getValues();
                 
                 $db = Zend_Db_Table::getDefaultAdapter();
+                $dataArray = explode(".", $values['DataUrodzenia']);
+                $dataUSformat = empty($values['DataUrodzenia']) ? null : $dataArray[2]."-".$dataArray[1]."-".$dataArray[0];
                 try {
                     $db->beginTransaction();
                     
                     $userId = $usersModel->getNextAutoIncrementValue();
                     $user = $usersModel->addNewUser($values['Mail'], md5($values['Haslo']), 'klient');
                     
-                    $klientId = $klientModel->add($values['Imie'], $values['Nazwisko'], $values['Telefon'],$value['Data'], $userId);
+                    $klientId = $klientModel->add($values['Imie'], $values['Nazwisko'], $values['Telefon'],$dataUSformat, $userId);
                     
                     $db->commit();
                 } catch(Zend_Db_Statement_Exception $e) {

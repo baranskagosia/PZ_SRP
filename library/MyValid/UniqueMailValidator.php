@@ -3,9 +3,17 @@ class MyValid_UniqueMailValidator extends Zend_Validate_Abstract
     {
     const MSG_NOT_UNIQUE = "not_unique"; 
     
+        protected $_db = null;
+        protected $_tableName = "";
         protected $_messageTemplates = array(
             self::MSG_NOT_UNIQUE => "Użytkownik '%value%' już istnieje w bazie danych.",
         );
+        
+        public function __construct($tableName)
+        {
+            $this->_tableName = $tableName;
+            $this->_db = Zend_Db_Table_Abstract::getDefaultAdapter();
+        }
         
         public function setMessage($messageString, $messageKey = null) {
             parent::setMessage($messageString, $messageKey);
@@ -14,19 +22,18 @@ class MyValid_UniqueMailValidator extends Zend_Validate_Abstract
             }
         }
      
-        public function isValid($value)
+        public function isValid($value, $context = null)
         {
-            $this->_setValue($value);
+            $this->_setValue($value);            
             
-            $db = Zend_Db_Table_Abstract::getDefaultAdapter();
             $sqlstr = "SELECT * FROM uzytkownik WHERE Mail = '?'";
-            $result = $db->query($sqlstr, $value)->fetch();
+            $result = $this->_db->query($sqlstr, $value)->fetchAll();
      
-            if (!empty($value)) {
+            if (count($result) > 0) {
                 $this->_error(self::MSG_NOT_UNIQUE);
-                return false;
+                return FALSE;
+            } else {
+                return TRUE;
             }
-     
-            return true;
         }
 }
