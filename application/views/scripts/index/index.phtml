@@ -20,7 +20,7 @@
         
         for($k=0;$k<sizeof($wynik);$k++){
             $dataArray = explode("-", $wynik[$k]['Data']);
-            $dataEUformat = empty($wynik[$k]['Data']) ? "" : $dataArray[2] . "." + $dataArray[1] . "." . $dataArray[0];
+            $dataEUformat = empty($wynik[$k]['Data']) ? "" : $dataArray[2] . "." . $dataArray[1] . "." . $dataArray[0];
         
             echo "<small>".$dataEUformat."</small> <h3>".$wynik[$k]['naglowek']."</h3>";
             echo "<p>".$wynik[$k]['tresc']."</p>";

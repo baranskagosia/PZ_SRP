@@ -42,6 +42,10 @@ class Application_Form_Admin_NewAktualnosc extends Zend_Form
         ));
         $this->addElement($data);
         
+        $czyAktualne = new Zend_Form_Element_Checkbox("czyAktualne");
+        $czyAktualne->setLabel("Czy aktualne?")->setValue(TRUE)
+                ->addDecorator('Errors');
+        $this->addElement($czyAktualne);
         
         // Treść aktualności
         $tresc = new Zend_Form_Element_Textarea('tresc');

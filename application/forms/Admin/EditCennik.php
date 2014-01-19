@@ -18,10 +18,12 @@ class Application_Form_Admin_EditCennik extends Zend_Form
         
         foreach ($cennik as $row) {
             $curr = new Zend_Form_Element_Text($row['idCennik']);
-            $curr->setLabel($row['Taryfa']);
-            $curr->addValidator($validatorNotEmpty);
-            $curr->addValidator($validatorBetween);
-            $curr->setValue($row['Cena']);
+            $curr->setLabel($row['Taryfa'])->setRequired(true)
+                ->addValidator($validatorNotEmpty)->addValidator($validatorBetween)
+                ->setValue($row['Cena'])
+                ->addDecorators(array(
+                    array('Errors'),
+                ));
             
             $this->addElement($curr);
         }

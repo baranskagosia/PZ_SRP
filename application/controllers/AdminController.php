@@ -105,19 +105,27 @@ class AdminController extends Zend_Controller_Action
     {
         $editCennikForm = new Application_Form_Admin_EditCennik();
         if($this->getRequest()->isPost()) {
+            $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+            $sqlstr = "SELECT idCennik, Cena FROM cennik";
+            $cennikResults = $db->query($sqlstr)->fetchAll();
+               
             if($editCennikForm->isValid($_POST)) {
                 $values = $editCennikForm->getValues();
-                $db = Zend_Db_Table_Abstract::getDefaultAdapter();
-                $sqlstr = "SELECT idCennik FROM cennik";
-                $cennikId = $db->query($sqlstr)->fetchAll();
                 
-                foreach($cennikId as $entry) {
-                    $sqlstr = "UPDATE cennik SET cena = ? WHERE idCennik = ?";
-                    $db->query($sqlstr, 
+                foreach($cennikResults as $entry) {
+                    if($entry['Cena'] != $values[$entry['idCennik']]) {
+                        $sqlstr = "UPDATE cennik SET cena = ? WHERE idCennik = ?";
+                        $db->query($sqlstr, 
                             array($values[$entry['idCennik']], $entry['idCennik']));
+                    }
                 }
             } else {
                 $this->view->editCennikForm = $editCennikForm;
+                
+                foreach($cennikResults as $entry) {
+                    $editCennikForm->getElement($entry['idCennik'])
+                            ->setValue($entry['Cena']);
+                }
             }
         }
     }
@@ -190,7 +198,8 @@ class AdminController extends Zend_Controller_Action
                 $aktualnosciModel = new Application_Model_Aktualnosci();
                 $dataArray = explode(".", $values['Data']);
                 $dataUSformat = $dataArray[2] . "-" . $dataArray[1] . "-" . $dataArray[0];
-                $aktualnosciModel->dodajAktualnosc($values['naglowek'], $values['tresc'], $dataUSformat);
+                $czyAktualne = $values['czyAktualne'] ? 1 : 0;
+                $aktualnosciModel->dodajAktualnosc($values['naglowek'], $values['tresc'], $dataUSformat, $czyAktualne);
             }
         }
     }
@@ -206,12 +215,14 @@ class AdminController extends Zend_Controller_Action
         $this->view->aktualnosc = $aktualnosc;
         $dataArray = explode("-", $aktualnosc['Data']);
         $dataPLformat = empty($aktualnosc['Data']) ? "" : $dataArray[2].".".$dataArray[1].".".$dataArray[0];
+        $czyAktualne = $aktualnosc['czyAktualne'] == 0 ? FALSE : TRUE;
         
         $newAktualnoscForm = new Application_Form_Admin_NewAktualnosc();
         $newAktualnoscForm->setAction('update-aktualnosc');
-         $newAktualnoscForm->getElement("id")->setValue($id);
+        $newAktualnoscForm->getElement("id")->setValue($id);
         $newAktualnoscForm->getElement("naglowek")->setValue($aktualnosc['naglowek']);
         $newAktualnoscForm->getElement("Data")->setValue($dataPLformat);
+        $newAktualnoscForm->getElement("czyAktualne")->setValue($czyAktualne);
         $newAktualnoscForm->getElement("tresc")->setValue($aktualnosc['tresc']);
         
         $this->view->editAktualnoscForm = $newAktualnoscForm;
@@ -221,26 +232,30 @@ class AdminController extends Zend_Controller_Action
     {
         $aktualnoscModel = new Application_Model_Aktualnosci();
         
-        $id=$this->getRequest()->getParam('id');
+        $id = $this->getRequest()->getParam('id');
         $newAktualnoscForm = new Application_Form_Admin_NewAktualnosc();
        
         if($this->getRequest()->isPost()) {
-            $values = $newAktualnoscForm->getValues();
             
             if($newAktualnoscForm->isValid($_POST)) {
+                $values = $newAktualnoscForm->getValues();
+                
                 $dataArray = explode(".", $values['Data']);
                 $dataUSformat = $dataArray[2] . "-" . $dataArray[1] . "-" . $dataArray[0];
+                $czyAktualne = $values['czyAktualne'] ? 1 : 0;
                 
-                $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($id, $values['naglowek'], $values['tresc'], $dataUSformat);
-            }
-            else {
+                $aktualnosc = $aktualnoscModel->aktualizujAktualnosc($id, $values['naglowek'], $values['tresc'], $dataUSformat, $czyAktualne);
+            } else {
                 $aktualnosc = $aktualnoscModel->pobierzAktualnoscPoId($id);
                 $dataArray = explode("-", $aktualnosc['Data']);
                 $dataEUformat = empty($aktualnosc['Data']) ? "" : $dataArray[2] . "." . $dataArray[1] . "." . $dataArray[0];
+                $czyAktualne = $aktualnosc['czyAktualne'] == 0 ? FALSE : TRUE;
                 
                 $newAktualnoscForm->getElement("naglowek")->setValue($aktualnosc['naglowek']);
                 $newAktualnoscForm->getElement("Data")->setValue($dataEUformat);
                 $newAktualnoscForm->getElement("tresc")->setValue($aktualnosc['tresc']);
+                $newAktualnoscForm->getElement('czyAktualne')->setValue($czyAktualne);
+                
                 $this->view->editAktualnoscForm = $newAktualnoscForm;
             }
         }

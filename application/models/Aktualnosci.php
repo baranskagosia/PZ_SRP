@@ -20,29 +20,34 @@ class Application_Model_Aktualnosci extends Zend_Db_Table_Abstract
         return $db->query($query, $id)->fetch();
     }
     
-    public function aktualizujAktualnosc($id, $naglowek, $tresc, $data)
+    public function aktualizujAktualnosc($id, $naglowek, $tresc, $data, $czyAktualne)
     {
-        $aktualnosc = array(
-            'naglowek'  => $naglowek,
-            'tresc'     => $tresc,
-            'Data'      => $data
-        );
+        if(!(empty($id) || empty($naglowek) || empty($tresc) || empty($data))) {
+            $aktualnosc = array(
+                'naglowek'  => $naglowek,
+                'tresc'     => $tresc,
+                'Data'      => $data,
+                'czyAktualne' => $czyAktualne
+            );
         
-        $where = $this->getAdapter()->quoteInto('idAktualnosci = ?', $id);
+            $where = $this->getAdapter()->quoteInto('idAktualnosci = ?', $id);
         
-        return $this->update($aktualnosc, $where);
+            return $this->update($aktualnosc, $where);
+        }
+        
+        return null;
     }
     
-    public function dodajAktualnosc($naglowek, $tresc, $data)
+    public function dodajAktualnosc($naglowek, $tresc, $data, $czyAktualne)
     {
         $idAktualnosc = null;
         
-        if(!(empty($naglowek) || empty($tresc))) {
+        if(!(empty($naglowek) || empty($tresc) || empty($data))) {
             $newAktualnosc = array(
                 'naglowek'      => $naglowek,
                 'tresc'         => $tresc,
                 'Data'          => $data,
-                'czyAktualne'   => 1
+                'czyAktualne'   => $czyAktualne
             );
             
             $idAktualnosc = $this->insert($newAktualnosc);
