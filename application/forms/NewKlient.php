@@ -14,7 +14,7 @@ class Application_Form_NewKlient extends Zend_Form
         $mail = new Zend_Form_Element_Text("Mail");
         $validatorHostname = new Zend_Validate_Hostname();
         $validatorHostname->setMessages(array(
-            Zend_Validate_Hostname::IP_ADDRESS_NOT_ALLOWED => "'%value%' zdaje się być adresem IP, które są niedopuszczalne",
+            Zend_Validate_Hostname::IP_ADDRESS_NOT_ALLOWED => "adresy IP, takie jak '%value%' są niedopuszczalne",
             Zend_Validate_Hostname::UNKNOWN_TLD => "Nieznana nazwa DNS",
             Zend_Validate_Hostname::INVALID_DASH => "Nazwa DNS zawiera myślnik (-) na niewłaściwej pozycji",
             Zend_Validate_Hostname::INVALID_HOSTNAME_SCHEMA => "Niewłaściwa struktura nazwy DNS",
@@ -113,7 +113,7 @@ class Application_Form_NewKlient extends Zend_Form
 			   
                
                 
-        $validatorDate = new Zend_Validate_Date(array('format' => 'dd.mm.yyyy'));
+        $validatorDate = new Zend_Validate_Date(array('format' => 'dd.MM.yyyy'));
         $validatorDate->setMessages(array(Zend_Validate_Date::INVALID => "'%value%' niepoprawny format daty. Format wymagany dd.mm.yyyy"));
         
         
