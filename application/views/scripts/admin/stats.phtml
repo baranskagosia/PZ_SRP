@@ -31,7 +31,8 @@
 		        ]);
 		
 		        var options = {
-		          title: 'Ogólna liczba rezerwacji'
+		          title: 'Ogólna liczba rezerwacji',
+		          titleTextStyle: {fontSize : 16}
 		        };
 		
 		        var chart = new google.visualization.PieChart(document.getElementById('wykres_ogolny_kolowy'));
@@ -87,7 +88,8 @@
 		          title: 'Ilość rezerwacji pod względem miesięcy',
 		          hAxis: {title: 'Miesiąc', titleTextStyle: {color: 'red'}},
 		          vAxis: {format: '.'},
-		          legend: {position: 'top'}
+		          legend: {position: 'top'},
+		          titleTextStyle: {fontSize : 16}
 				};
 				
 		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_miesieczny'));
@@ -133,6 +135,7 @@
         var options = {
           title: 'Liczba rezerwacji ze wzgledu na tor',
           pieHole: 0.35,
+          titleTextStyle: {fontSize : 16}
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('wykres_tor'));
@@ -187,7 +190,8 @@
 		        var options = {
 		          title: 'Rezerwacje dla danej godziny (cały okres czasu)',
 		          hAxis: {title: 'Godzina', titleTextStyle: {color: 'red'}},
-		          legend: {position: 'top'}
+		          legend: {position: 'top'},
+		          titleTextStyle: {fontSize : 16}
 				};
 				
 		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_godzinny'));
@@ -223,7 +227,8 @@
 		        ]);
 		
 		        var options = {
-		          title: 'Ogólna liczba rezerwacji dla bieżącego miesiąca'
+		          title: 'Ogólna liczba rezerwacji dla bieżącego miesiąca',
+		          titleTextStyle: {fontSize : 16}
 		        };
 		
 		        var chart = new google.visualization.PieChart(document.getElementById('wykres_ogolny_kolowy_miesiac'));
@@ -298,7 +303,8 @@
 		          title: 'Ilość rezerwacji pod względem dni dla bieżacego miesiąca',
 		          hAxis: {title: 'Dzień', titleTextStyle: {color: 'red'}},
 		          vAxis: {format: '.'},
-		          legend: {position: 'top'}
+		          legend: {position: 'top'},
+		          titleTextStyle: {fontSize : 16}
 				};
 				
 		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_dzienny_miesiac'));
@@ -353,7 +359,8 @@
 		        var options = {
 		          title: 'Rezerwacje dla danej godziny dla bieżącego miesiąca',
 		          hAxis: {title: 'Godzina', titleTextStyle: {color: 'red'}},
-		          legend: {position: 'top'}
+		          legend: {position: 'top'},
+		          titleTextStyle: {fontSize : 16}
 				};
 				
 		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_godzinny_miesiac'));
@@ -410,7 +417,8 @@
 		        var options = {
 		          title: 'Rezerwacje dla danej godziny dla bieżącego miesiąca',
 		          hAxis: {title: 'Godzina', titleTextStyle: {color: 'red'}},
-		          legend: {position: 'top'}
+		          legend: {position: 'top'},
+				  titleTextStyle: {fontSize : 16}
 				};
 				
 		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_godzinny_miesiac'));
@@ -456,6 +464,7 @@
         var options = {
           title: 'Liczba rezerwacji ze wzgledu na tor',
           pieHole: 0.35,
+          titleTextStyle: {fontSize : 16}
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('wykres_tor_miesiac'));
@@ -510,7 +519,8 @@
 		        var options = {
 		          title: 'Rezerwacje dla danej godziny dla dnia dzisiejszego',
 		          hAxis: {title: 'Godzina', titleTextStyle: {color: 'red'}},
-		          legend: {position: 'top'}
+		          legend: {position: 'top'},
+		          titleTextStyle: {fontSize : 16}
 				};
 				
 		        var chart = new google.visualization.ColumnChart(document.getElementById('wykres_godzinny_dzisiaj'));
@@ -542,8 +552,9 @@
 		        ]);
 		
 		        var options = {
-		          title: 'Ogólna liczba rezerwacji na dzień dzisiejszy'
-		        };
+		          title: 'Ogólna liczba rezerwacji na dzień dzisiejszy',
+		        titleTextStyle: {fontSize : 16}
+				};
 		
 		        var chart = new google.visualization.PieChart(document.getElementById('wykres_ogolny_kolowy_dzisiaj'));
 		        chart.draw(data, options);
@@ -587,6 +598,8 @@
         var options = {
           title: 'Liczba rezerwacji ze wzgledu na tor',
           pieHole: 0.35,
+		          titleTextStyle: {fontSize : 16}
+          
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('wykres_tor_dzisiaj'));
@@ -625,7 +638,8 @@
 		        ]);
 		
 		        var options = {
-		          title: 'ZYSK OGÓLNY'
+		          title: 'ZYSK OGÓLNY',
+		          titleTextStyle: {fontSize : 16}
 		        };
 		
 		        var chart = new google.visualization.PieChart(document.getElementById('wykres_zysk'));
