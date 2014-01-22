@@ -65,7 +65,7 @@ class RecepcjaController extends Zend_Controller_Action
             $this->view->rezerwacje_list = $db->query($sqlstr, $data_format)->fetchAll();
             
         } else {
-            $this->view->error = "Błędny format daty (".$date.")";
+            $this->view->error = "Błędny format daty";
         }
     }
     
@@ -76,14 +76,19 @@ class RecepcjaController extends Zend_Controller_Action
         $this->view->IDRezerwacja=$IDRezerwacja;
         $table=new Application_Model_Rezerwacja;
         $sql="SELECT * FROM rezerwacja where idRezerwacja LIKE $IDRezerwacja";
-                    $db=Zend_Db_Table_Abstract::getDefaultAdapter();
-                    $dane=$db->query($sql)->fetch();
-        $dane['CzyOdwolana']=1;
+        $db=Zend_Db_Table_Abstract::getDefaultAdapter();
+        $dane=$db->query($sql)->fetchAll();
+        
         //print_r($dane);
         
-        $table->update($dane, "idRezerwacja=".$IDRezerwacja);
+        if(!empty($dane)) {
+            $dane[0]['CzyOdwolana']=1;
+            $table->update($dane[0], "idRezerwacja=".$IDRezerwacja);
        
-        $this->_redirect('recepcja/index-rezerwacje');
+            $this->_redirect('recepcja/index-kalendarz-rezerwacji');
+        } else {
+            $this->view->error = "Podana rezerwacja nie istnieje w bazie danych.";
+        }
         
     }
 	

@@ -45,7 +45,7 @@ var x;
 var r=confirm("Czy jesteś pewny, że chcesz odwołać rezerwację?");
 if (r==true)
   {
-   window.location = "../delete-rezerwacja/IDRezerwacja/"+id_rez;
+   window.location = "../delete-rezerwacja?IDRezerwacja="+id_rez;
    x="<p class='confirm-box'>Dokonano usunięcia rezerwacji</p>";
   }
 else
