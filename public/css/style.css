@@ -392,8 +392,12 @@ form label{
 }
 .wolny{
     background-color: greenyellow/*#F5785A*/;
+    color: rgb(255, 255, 255);
 }
 
+.termin{
+    background-color: rgb(34, 34, 34);
+}
 .wolne a{
     color:green;
 }

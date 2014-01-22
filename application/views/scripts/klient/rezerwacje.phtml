@@ -7,10 +7,11 @@
     $rowCount = count($this->rezerwacje);
    
     if($rowCount == 0) {
-        echo "<p class='info'>Nie masz obecnie rezerwacji. </br>
-            W celu dokonania rezerwacji przejdź do <a href=".$this->baseUrl('index/kalendarz').">widoku rezerwacji </p>";
+        echo "<p class='info'>Nie masz obecnie zaplanowanych rezerwacji. </br>
+            W celu dokonania rezerwacji przejdź do widoku rezerwacji<a href=".$this->baseUrl('index/kalendarz')."  class='button'>Rezerwacje</a> </p>";
     }
     else {
+        echo "<h2>Zaplanowane rezerwacje</h2>";
         echo "<table>";
         echo "<thead><tr><th>Data</th><th>Godzina</th><th>Tor</th><th>Ilość osób</th>";
         echo "<th>Czas trwania</th><th>Na wyłączność?</th><th>Odwołaj</th></tr></thead>";

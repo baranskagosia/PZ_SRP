@@ -50,7 +50,7 @@ public function Historia($idUzytkownik) {
         $query = $db->select()
                 ->from('rezerwacja')
                 ->where('uzytkownik_idUzytkownik = ?', $idUzytkownik)
-                ->where('DataCzas < ?', new Zend_Db_Expr('NOW()'))
+               
                 ->order('DataCzas DESC');
         $result = $db->query($query)->fetchAll();
     }

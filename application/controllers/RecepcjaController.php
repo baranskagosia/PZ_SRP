@@ -105,7 +105,7 @@ class RecepcjaController extends Zend_Controller_Action
         $sqlstr .= "    LEFT JOIN (SELECT r2.uzytkownik_idUzytkownik AS id2, COUNT(*) AS liczbaOdwolanychRezerwacji";
         $sqlstr .= "        FROM rezerwacja r2";
         $sqlstr .= "        WHERE CzyOdwolana = 1 GROUP BY r2.uzytkownik_idUzytkownik) AS liczbyOdwolanychRezerwacji";
-        $sqlstr .= "    ON id2 = klient.idKlient";
+        $sqlstr .= "    ON id2 = klient.idUzytkownik";
         
         $this->view->klient_ranking = $db->query($sqlstr)->fetchAll();
     }
