@@ -1,6 +1,9 @@
 
 <?php
 
+$now=date("Y-m-d H:i:s");
+$plus=date("Y-m-d H:i:s", strtotime($now .' + 1 hours') );
+             
 $data=$this->data;
 $time=$this->time;
 $tor=$this->tor;
@@ -8,6 +11,14 @@ $IDUzytkownik=$this->IDUzytkownik;
 $data_format=date("Y-m-d", strtotime($data));
 
 $data_time=$data_format." ".$time.":00";
+
+// sprawdzenie czy już nie jest za późno na zrobienie rejestracji.
+
+ if($data_time<$plus){
+     echo "<p class='error-box'>Dokonanie rezerwacji jest już niemożliwe, ponieważ upłynął termin.</p> 
+        <p class='info' >Rezerwacja toru może być dokonywana do godziny przed rozpoczęciem terminu.</p>";
+ }
+ else{
 $rezerwacja=czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor);
         if(sizeof($rezerwacja)>0){
             echo "<p class='info'>Dokonałeś już rezerwacji w wybranym terminie. </p>";
@@ -173,6 +184,7 @@ if(isset($zajety_termin[0]['CzyNaWylacznasc'])){
      
 
   }
+ }
 //------------------------------------    
      
       function czyMaszTerminTeraz($IDUzytkownik,$data_time,$tor){

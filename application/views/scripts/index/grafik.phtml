@@ -50,17 +50,26 @@ for($j=1;$j<=$ilosc_torow;$j++){
 
             $zajete_terminy[$j]=$db->query($sql_zajete)->fetchAll();
            // print_r($zajete_terminy);
-            $now=date("Y-m-d H:s");
-            $initDate = new DateTime($now);
-
-        $initDate->add(new DateInterval("PT15M"));
-        echo $initDate->format("Y-m-d H:s");
-           // print_r($now);
+            $now=date("Y-m-d H:i:s");
+             $plus=date("Y-m-d H:i:s", strtotime($now .' + 1 hours') );
+           $datetime_check=$data_format." $akk:00";
             
+            
+              
           for($i=1;$i<=$czas;$i++){
             $data_time=$data."/".$akk;
             //sprawdzenie czy dany termin nie jest już zajęty 
+            $moznaRezerwowac=true;
+            $datetime_check=$data_format." $akk:00";
             
+        //sprawdzenie godziny
+            if($datetime_check<$plus){
+               echo "<td class='termin'><strong>$akk</strong></td>";
+               $akk = date('H:i', strtotime($akk . ' + 1 hours')); 
+               
+            }
+            else{    
+                
             $zajete = false;
            
             for($z=0;$z<sizeof($zajete_terminy[$j]);$z++){
@@ -90,6 +99,7 @@ for($j=1;$j<=$ilosc_torow;$j++){
         }
               $akk = date('H:i', strtotime($akk . ' + 1 hours')); 
     }
+ }
       echo"</tr>
     </tbody>
  </table>";

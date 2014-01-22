@@ -396,8 +396,11 @@ form label{
 }
 
 .termin{
-    background-color: rgb(34, 34, 34);
+    background-color:#222222;
+    color: buttonface;
 }
+
+
 .wolne a{
     color:green;
 }

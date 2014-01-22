@@ -50,7 +50,6 @@ public function Historia($idUzytkownik) {
         $query = $db->select()
                 ->from('rezerwacja')
                 ->where('uzytkownik_idUzytkownik = ?', $idUzytkownik)
-               
                 ->order('DataCzas DESC');
         $result = $db->query($query)->fetchAll();
     }
