@@ -59,7 +59,7 @@ class RecepcjaController extends Zend_Controller_Action
             $db = Zend_Db_Table::getDefaultAdapter();
             $sqlstr  = "SELECT * ";
             $sqlstr .= "FROM rezerwacja JOIN klient";
-            $sqlstr .= "    ON rezerwacja.uzytkownik_idUzytkownik = klient.idKlient ";
+            $sqlstr .= "    ON rezerwacja.uzytkownik_idUzytkownik = klient.idUzytkownik ";
             $sqlstr .= "WHERE rezerwacja.CzyOdwolana = 0 ";
             $sqlstr .= "AND DATE(rezerwacja.DataCzas) = '$data_format'";
             $this->view->rezerwacje_list = $db->query($sqlstr, $data_format)->fetchAll();
@@ -98,9 +98,10 @@ class RecepcjaController extends Zend_Controller_Action
         
         $db = Zend_Db_Table::getDefaultAdapter();
         $sqlstr  = "SELECT *";
-        $sqlstr .= "FROM klient LEFT JOIN (SELECT r1.uzytkownik_idUzytkownik AS id1, COUNT(*) AS liczbaRezerwacji";
+        $sqlstr .= "FROM klient 
+                        LEFT JOIN (SELECT r1.uzytkownik_idUzytkownik AS id1, COUNT(*) AS liczbaRezerwacji";
         $sqlstr .= "        FROM rezerwacja r1 GROUP BY r1.uzytkownik_idUzytkownik) AS liczbyRezerwacji";
-        $sqlstr .= "    ON id1 = klient.idKlient";
+        $sqlstr .= "    ON id1 = klient.idUzytkownik";
         $sqlstr .= "    LEFT JOIN (SELECT r2.uzytkownik_idUzytkownik AS id2, COUNT(*) AS liczbaOdwolanychRezerwacji";
         $sqlstr .= "        FROM rezerwacja r2";
         $sqlstr .= "        WHERE CzyOdwolana = 1 GROUP BY r2.uzytkownik_idUzytkownik) AS liczbyOdwolanychRezerwacji";

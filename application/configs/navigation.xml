@@ -65,13 +65,7 @@
                 <resource>recepcjaRezerwacje</resource>
         </recepcjaRezerwacje>
         
-        <recepcjaGrafik>
-                 <label>Grafik zajęć</label>
-                 <controller>recepcja</controller>
-                <action>grafik</action>
-                <resource>recepcjaGrafik</resource>
-        </recepcjaGrafik>
-        
+           
         <recepcjaReputacja>
                  <label>Reputacja użytkowników</label>
                  <controller>recepcja</controller>
