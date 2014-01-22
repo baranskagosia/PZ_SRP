@@ -291,15 +291,16 @@ class KlientController extends Zend_Controller_Action
         $table=new Application_Model_Rezerwacja;
         $sql="SELECT * FROM rezerwacja where idRezerwacja LIKE $IDRezerwacja";
                     $db=Zend_Db_Table_Abstract::getDefaultAdapter();
-                    $dane=$db->query($sql)->fetchAll();;
-        $dane[0]['CzyOdwolana']=1;
-                    print_r($dane);
+                    $dane=$db->query($sql)->fetchAll();
+                    
+        if(!empty($dane)) {
+            $dane[0]['CzyOdwolana']=1;
+            // print_r($dane);
         
+            $table->update($dane[0], "idRezerwacja=".$IDRezerwacja);
        
-           // $where = $table->getAdapter()->quoteInto('idrezerwacja= ?', $IDRezerwacja);
-           $table->update($dane[0], "idRezerwacja=".$IDRezerwacja);
-       
-      $this->_redirect('klient/rezerwacje');
+            $this->_redirect('klient/rezerwacje');
+        }
         
     }
 
