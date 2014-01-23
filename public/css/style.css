@@ -395,9 +395,8 @@ form label{
     color: rgb(255, 255, 255);
 }
 
-.termin{
+td.termin{
     background-color:#222222;
-    color: buttonface;
 }
 
 

@@ -63,15 +63,17 @@ for($j=1;$j<=$ilosc_torow;$j++){
             $datetime_check=$data_format." $akk:00";
             
         //sprawdzenie godziny
-            if($datetime_check<$plus){
-               echo "<td class='termin'><strong>$akk</strong></td>";
-               $akk = date('H:i', strtotime($akk . ' + 1 hours')); 
-               
-            }
-            else{    
+          
+            $nie_dostepne= false;  
                 
             $zajete = false;
            
+           if($datetime_check<$plus){
+              $nie_dostepne=true;
+               echo "<td class='termin'><strong>$akk</strong></td>";
+               $akk = date('H:i', strtotime($akk . ' + 1 hours')); 
+              }
+           else{   
             for($z=0;$z<sizeof($zajete_terminy[$j]);$z++){
               $zajeta_godzina= date("H:i", strtotime($zajete_terminy[$j][$z]['Godzina']));
                 
