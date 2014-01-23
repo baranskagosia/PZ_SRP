@@ -395,11 +395,6 @@ form label{
     color: rgb(255, 255, 255);
 }
 
-td.termin{
-    background-color:#222222;
-}
-
-
 .wolne a{
     color:green;
 }
@@ -561,13 +556,14 @@ background-image: url('../img/icon/information.png');
 	border:1px solid #dcdcdc;
 	display:inline-block;
 	color:#777777;
-	font-family:arial;
-	font-size:14px;
-	font-weight:bold;
+	font-family:Arial;
+	font-size: large;
+	t-weight:bold;
 	padding:4px 13px;
 	text-decoration:none;
 	text-shadow:1px 1px 10px #ffffff;
-}.button:hover {
+}
+.button:hover {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
 	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
@@ -751,6 +747,8 @@ td.calendar-day, td.calendar-day-np {
 .wolny{
     background-color: rgb(68, 207, 24)/*greenyellow #F5785A*/;}
 
+
+
 .zajete_nieWylacznosc{
     background-color: rgb(255, 173, 0);
 }
@@ -765,6 +763,11 @@ td.calendar-day, td.calendar-day-np {
 	background-color:#222222;
 }	
 .masz-rezerwacje{ 
+	background:hotpink;
+        font-weight: bold;
+}
+
+.nie-dostepne{ 
 	background:hotpink;
         font-weight: bold;
 }

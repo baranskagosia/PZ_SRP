@@ -70,7 +70,8 @@ for($j=1;$j<=$ilosc_torow;$j++){
            
            if($datetime_check<$plus){
               $nie_dostepne=true;
-               echo "<td class='termin'><strong>$akk</strong></td>";
+ echo "<td class='nieczynne-stare'>".$akk."</td>";               
+//echo "<td class='termin'><a href=''><strong>$akk</strong></a></td>";
                $akk = date('H:i', strtotime($akk . ' + 1 hours')); 
               }
            else{   
@@ -112,7 +113,7 @@ $akk=$od;
         <p><table id="legenda">
             <tbody>
                  <tr>
-                    <td class='termin'> </td>
+                    <td class='nieczynne-stare'> </td>
                     <td>Termin zapisów minął</td>
                 </tr>
                 <tr>
